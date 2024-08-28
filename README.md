@@ -1,6 +1,6 @@
 # 🤖 #aiwitharyan
 
-Welcome to **#aiwitharyan**! This is where Aryan dives deep into the world of AI and shares all the cool stuff he's learning. From Generative AI to Python fundamentals, this space is packed with resources that can level up your AI journey.
+yoo! this is where I shitcode and share whatever I feel might help you all gain some info about programming :)
 
 ## 🔥 What You'll Find Here
 
