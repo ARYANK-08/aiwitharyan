@@ -5,8 +5,8 @@ yoo! this is where I shitcode and share whatever I feel might help you all gain 
 ## 🔥 What You'll Find Here
 
 - 🌟 **Super Cool Gen AI Codes**
-- 🐍 **Python Fundamentals Cheat Sheets**
-- 📚 **Computer Science Fundamentals **
+- 🐍 **Python + Other languages Cheat Sheets**
+- 📚 **Computer Science Fundamentals**
   
 ## 🐍 Python Fundamentals
 - [Python Fundamentals Cheat Sheets](https://github.com/ARYANK-08/aiwitharyan/tree/main/python%20fundamentals) 🐍
