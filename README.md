@@ -15,7 +15,7 @@ yoo! this is where I shitcode and share whatever I feel might help you all gain 
 
 Stay tuned for more articles on:
 
-- **AWS** 
+- [**AWS**](https://github.com/ARYANK-08/aiwitharyan/blob/main/AWS/README.md)
 - **Django**
 - **DBMS**
 - **Operating Systems (OS)**
