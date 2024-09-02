@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/d39664f3-6e98-403d-8d27-146ce7faee20)# AWS - Everything You Need to Know
+# AWS - Everything You Need to Know
 
 ## Table of Contents
 1. [What is Cloud Computing?](#what-is-cloud-computing)
