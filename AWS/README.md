@@ -759,26 +759,6 @@ Grant a role to S3, allowing an application on the instance to access an S3 buck
 
 # Amazon EC2 Cost Optimization
 
-### Amazon EC2 Pricing Models
-- **On-Demand Instances
-- **: Pay for what you use.
-- **Reserved Instances**: Discounted price for commitment to usage.
-- **Spot Instances**: Bid for unused capacity at lower rates.
-
----
-
-### EC2 Auto Scaling
-- **Auto Scaling**: Automatically adjusts capacity to maintain performance and minimize costs.
-- **Scaling Policies**: Based on metrics such as CPU utilization.
-
-#### Common Terms:
-- **Scaling Up**: Add more instances to handle increased load.
-- **Scaling Down**: Reduce the number of instances during low traffic periods.
-
-![Auto Scaling Image](https://github.com/user-attachments/assets/1c8d6c1d-2480-4f2e-8253-569b7a0c550e)
-
----
-
 ## Amazon EC2 Pricing Models
 
 ### On-Demand Instances
@@ -814,6 +794,7 @@ Grant a role to S3, allowing an application on the instance to access an S3 buck
 | **Cost & Flexibility** | Low cost and flexibility     | Large scale, dynamic workload   | Predictability ensures compute capacity is available when needed | Save money on licensing costs <br> Help meet compliance and regulatory requirements |
 
 ### Use Cases
+![image](https://github.com/user-attachments/assets/3c90fee2-90d2-4f26-8673-1d3677003540)
 
 ## The 4 Pillars of Cost Optimization
 ![4pillars](https://github.com/user-attachments/assets/fca16bb3-59c4-4774-bc8a-46c995424fc1)
