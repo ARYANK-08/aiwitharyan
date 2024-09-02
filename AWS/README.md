@@ -1,4 +1,4 @@
-# AWS - Everything You Need to Know
+![image](https://github.com/user-attachments/assets/d39664f3-6e98-403d-8d27-146ce7faee20)# AWS - Everything You Need to Know
 
 ## Table of Contents
 1. [What is Cloud Computing?](#what-is-cloud-computing)
@@ -268,53 +268,62 @@ Example: An EC2 Linux instance in the US East (Ohio) region costs $0.0416 per ho
   - HTTPS is protected from man-in-the-middle attacks and eavesdropping due to bidirectional communication and encryption by SSL.
 
 ## Networking Basics
-- A computer network is two or more client machines connected together to share resources.
+
+- A computer network is formed when two or more client machines are connected to share resources. 
+  - A network can be partitioned into subnets and requires a networking device such as a router or switch.
 
 ![Networking Basics](https://github.com/user-attachments/assets/da67918f-9811-4310-b09e-c572e00d2e62)
+![image](https://github.com/user-attachments/assets/914bbdc9-853d-43cd-9a06-bb0c9e469385)
 
-- Each client machine has a unique IP.
-  - Example: 192 = `11000000` 0 = `00000000` 2 = `0000010` 0 = `00000000`
-  - **IPv4 (32 bits)**: `192.0.2.0`
-  - **IPv6 (128 bits)**: `2600:1f18:22ba:8c00:ba86`
+- Each client machine has a unique IP address.
+  - **Example:**  
+    - `192` = `11000000`, `0` = `00000000`, `2` = `00000010`, `0` = `00000000`
+  - **IPv4 (32 bits):** `192.0.2.0`
+  - **IPv6 (128 bits):** `2600:1f18:22ba:8c00:ba86`
 
+![image](https://github.com/user-attachments/assets/58faaf29-17fc-436d-bdea-2a927d585294)
 ## CIDR (Classless Inter-Domain Routing)
-Classless Inter-Domain Routing (CIDR) is a method of IP address allocation and IP routing that allows for more efficient use of IP addresses. CIDR is based on the idea that IP addresses can be allocated and routed based on their network prefix rather than their class, which was the traditional way of IP address allocation.
+
+Classless Inter-Domain Routing (CIDR) is a method of IP address allocation and routing that allows for more efficient use of IP addresses. CIDR is based on the idea that IP addresses can be allocated and routed based on their network prefix rather than their class, which was the traditional way of IP address allocation. A CIDR address is expressed as an IP address and is the first address of the network.
 
 ### Advantages of CIDR
-- **Efficient use of IP addresses**: CIDR allows for more efficient use of IP addresses, which is important as the pool of available IPv4 addresses continues to shrink.
-- **Flexibility**: CIDR allows for more flexible allocation of IP addresses, which can be important for organizations with complex network requirements.
-- **Better routing**: CIDR allows for more efficient routing of IP traffic, which can lead to better network performance.
-- **Reduced administrative overhead**: CIDR reduces administrative overhead by allowing for easier management of IP addresses and routing.
+
+- **Efficient use of IP addresses:** CIDR allows for more efficient use of IP addresses, which is essential as the pool of available IPv4 addresses continues to shrink.
+- **Flexibility:** CIDR offers more flexible allocation of IP addresses, which is beneficial for organizations with complex network requirements.
+- **Better routing:** CIDR enables more efficient routing of IP traffic, leading to improved network performance.
+- **Reduced administrative overhead:** CIDR simplifies the management of IP addresses and routing, reducing administrative overhead.
 
 ![CIDR Example](https://github.com/user-attachments/assets/8bdf19d3-416a-4f33-a788-d9cd25f1518f)
 ![CIDR Range](https://github.com/user-attachments/assets/26711456-6f37-4873-95d5-8473bc7df765)
 
-**Example**: `192.0.2.0/24` -> The last number (24) tells you that the first 24 bits must be fixed, and the last 8 bits are flexible -> `2^8 = 256 IP addresses`.
-- **Range**: `192.0.2.0` to `192.0.2.255`.
-  - **Special Cases**:
-    - Fixed: `192.0.2.0/24`
-    - Flexible: `0.0.0.0/0`
+**Example:** `192.0.2.0/24`  
+The last number (24) indicates that the first 24 bits must be fixed, and the last 8 bits are flexible, giving `2^8 = 256 IP addresses`.  
+- **Range:** `192.0.2.0` to `192.0.2.255`.
+- **Special Cases:**
+  - Fixed: `192.0.2.0/24`
+  - Flexible: `0.0.0.0/0`
 
 ## OSI Model
-Explains how data travels over a network.
+
+The OSI Model explains how data travels over a network.
 
 | Layer        | Number | Function                                           | Protocol                        |
 |--------------|--------|----------------------------------------------------|---------------------------------|
-| Application  | 7      | Means for an application to access the network     | HTTPS, FTP, LDAP, DHCP          |
-| Presentation | 6      | Encryption, ensuring application layer reads data  | ASCII, ICA                      |
-| Session      | 5      | Enables orderly exchange of data                   | NETBIOS, RPC                    |
-| Transport    | 4      | Provides protocols to support host-to-host comm.   | TCP, UDP                        |
-| Network      | 3      | Routing and packet forwarding (routers)            | IP                              |
-| Data Link    | 2      | Reliable transfer of data across physical link     | ARP                             |
-| Physical     | 1      | Transmit raw bit stream (hubs)                     | Ethernet, FDDI                  |
+| Application  | 7      | Provides means for applications to access the network | HTTPS, FTP, LDAP, DHCP          |
+| Presentation | 6      | Handles encryption and ensures that the application layer reads data correctly | ASCII, ICA                      |
+| Session      | 5      | Manages orderly data exchange                      | NETBIOS, RPC                    |
+| Transport    | 4      | Supports host-to-host communication                | TCP, UDP                        |
+| Network      | 3      | Manages routing and packet forwarding (routers)    | IP                              |
+| Data Link    | 2      | Ensures reliable data transfer across the physical link | ARP                             |
+| Physical     | 1      | Transmits the raw bit stream (hubs)                | Ethernet, FDDI                  |
 
-**Example**: A web browser sends a request to `www.google.com`. This action triggers the following:
+**Example:** When a web browser sends a request to `www.google.com`, the following sequence occurs:
 
-- Application layer -> Presentation layer -> Session layer -> Transport layer (TCP/IP) -> Network layer (IP) -> Data link layer (MAC) -> Physical layer (Ethernet)
-- The OSI model ensures the seamless transmission of data from one network to another.
+- Application layer -> Presentation layer -> Session layer -> Transport layer (TCP/IP) -> Network layer (IP) -> Data link layer (MAC) -> Physical layer (Ethernet).
+
+The OSI model ensures seamless data transmission from one network to another.
 
 ---
-
 
 # VPC (Virtual Private Cloud)
 
@@ -342,6 +351,7 @@ Explains how data travels over a network.
   - Subnets are ranges of IP addresses within a VPC.
   - A VPC belongs to a single AWS region and contains subnets that belong to a single availability zone.
   - Subnets can be public or private.
+![image](https://github.com/user-attachments/assets/6747863c-bd12-4a41-9ec2-8f6597a14a58)
 
 ## Subnets
 
@@ -372,6 +382,7 @@ Explains how data travels over a network.
 ---
 
 ## Internet Gateway
+![image](https://github.com/user-attachments/assets/7f5998a4-3064-4550-977d-2fddbe73a81e)
 
 - **Definition:**  
   An Internet Gateway allows communication between EC2 instances in your VPC and the internet.
@@ -384,20 +395,26 @@ Explains how data travels over a network.
 ---
 
 ## NAT Gateway (Network Address Translation Gateway)
+![image](https://github.com/user-attachments/assets/1b9586a3-124e-4486-b36e-002808957e71)
 
 - **Definition:**  
   Allows instances in private subnets to connect to the internet or AWS services while preventing the internet from initiating a connection to them.
 
 - **VPC Sharing:**  
   Share a subnet with other AWS accounts within the same organization, enabling services like EC2, RDS, Lambda, and Redshift.
+![image](https://github.com/user-attachments/assets/535d270d-c1e9-413c-820d-affd195fd9c8)
 
 - **VPC Peering:**  
   A VPC-to-VPC connection.
+![image](https://github.com/user-attachments/assets/e44ec2a4-8cb0-4d50-9c4f-e6f0e807f83c)
 
 - **AWS Direct Connect:**  
   Connects a VPC to a remote network.
+![image](https://github.com/user-attachments/assets/14f87c4e-0cc7-4d12-9fa6-3c31ed5b8049)
+
 
 ![NAT Gateway Diagram](https://github.com/user-attachments/assets/337dc9d0-b4a6-46ec-8a95-a86cd7bdd32e)
+![image](https://github.com/user-attachments/assets/46422f0d-369e-4683-8dba-3319bd114412)
 
 ---
 
@@ -409,8 +426,8 @@ Explains how data travels over a network.
 - **Characteristics:**
   - Operates at the instance level, not the subnet level.
   - Default Security Group: Denies all inbound traffic and allows all outbound traffic.
+![Security Groups Example](https://github.com/user-attachments/assets/62ec8d58-9c3e-4f53-9491-742673be59a6)
   
-Here's the table for the example rules along with the note:
 
 | **Type**         | **Source/Destination** | **Protocol** | **Port Range** | **Description**      |
 |------------------|------------------------|--------------|----------------|----------------------|
@@ -418,6 +435,13 @@ Here's the table for the example rules along with the note:
 | **Outbound**     | ::/0                   | All          | All            | IPv6 IP              |
 | **Custom Rules** | 0.0.0.0/0              | TCP          | 80             | HTTP (IPv4)          |
 | **Custom Rules** | ::/0                   | TCP          | 443            | HTTPS (IPv4)         |
+![image](https://github.com/user-attachments/assets/a0c7294b-8e6c-43c7-a68d-295ef6fbd77f)
+
+
+- **Example:**  
+  Incoming web traffic is distributed among a group of web servers located in different Availability Zones to ensure no single server is overwhelmed.
+
+![Load Balancer Example](https://github.com/user-attachments/assets/71b7a731-e63e-4f59-b7f1-dc6b9d7f5428)
 
 ---
 
@@ -463,6 +487,7 @@ Here's the table for the example rules along with the note:
   - IPv4 and IPv6
 
 ![Route 53 Diagram](https://github.com/user-attachments/assets/8fd789cb-1a50-4cc2-9b25-b0944f5d20a3)
+![image](https://github.com/user-attachments/assets/4616c315-e236-4c45-9613-75e1887edd63)
 
 ---
 
@@ -501,6 +526,52 @@ Here's the table for the example rules along with the note:
   2. Primary routing policy: Load balancer for web application.
   3. Secondary policy: S3 static website.
   4. Health checks ensure the primary site works correctly. If it fails, the web application stack fails over to the static backup site.
+![image](https://github.com/user-attachments/assets/cd0d4043-4280-4114-a368-e67cb2b9529b)
+
+---
+
+# Amazon CloudFront
+
+### Content Delivery and Network Latency
+
+- **Challenge of Network Communication:**  
+  Network performance can be impacted by latency, especially depending on the geographical location of the user.
+
+### Amazon CloudFront
+
+- **Overview:**  
+  Amazon CloudFront is a fast, global, and secure Content Delivery Network (CDN) service.
+
+- **Features:**
+  - **Global Network:**  
+    Utilizes a global network of edge locations and regional edge caches.
+  - **Self-Service Model:**  
+    Allows users to manage and deploy CDN services easily.
+  - **Pay-as-You-Go Pricing:**  
+    Flexible pricing model based on usage.
+
+### Infrastructure
+
+- **How it Works:**
+  - When a customer makes a request, CloudFront responds with the IP address of the edge location closest to the customer.
+  - CloudFront obtains the requested data and caches it at the edge location to serve it quickly in subsequent requests.
+
+### Edge Locations
+
+- **Definition:**  
+  Edge locations are data centers that CloudFront uses to deliver popular content quickly to users.
+
+- **Regional Edge Cache:**
+  - Acts as an intermediary between the origin server and global edge locations.
+  - Stores content that isn't popular enough to remain at the edge location but may still be requested.
+  - When data becomes stale, it is removed from the edge location's cache.
+
+<details>
+  <summary>Which AWS networking service enables a company to create a virtual network within AWS?</summary>
+
+  **Answer:** Amazon VPC (Virtual Private Cloud)  
+  A VPC allows you to provision a logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network that you define.
+</details>
 
 ---
 
@@ -514,3 +585,103 @@ Here's the table for the example rules along with the note:
 | **Elastic Beanstalk** | PaaS, Web applications            | Focus on building your application code, easily integrate with RDS, DNS. |
 
 ---
+
+**: Pay for what you use.
+- **Reserved Instances**: Discounted price for commitment to usage.
+- **Spot Instances**: Bid for unused capacity at lower rates.
+
+---
+
+### EC2 Auto Scaling
+- **Auto Scaling**: Automatically adjusts capacity to maintain performance and minimize costs.
+- **Scaling Policies**: Based on metrics such as CPU utilization.
+
+#### Common Terms:
+- **Scaling Up**: Add more instances to handle increased load.
+- **Scaling Down**: Reduce the number of instances during low traffic periods.
+
+![Auto Scaling Image](https://github.com/user-attachments/assets/1c8d6c1d-2480-4f2e-8253-569b7a0c550e)
+
+---
+
+This structure should provide a clear and visually appealing presentation for your documentation. Let me know if there are any changes or additions you'd like to make!
+
+![image](https://github.com/user-attachments/assets/d5dc1d8f-9c65-4f27-a617-661e67838271)
+
+---
+
+# Amazon EC2 Cost Optimization
+
+## The 4 Pillars of Cost Optimization
+
+### Pillar 1: Right Size
+- **Provision Instances**: Match the instances to your actual needs in terms of CPU, memory, storage, and network throughput.
+- **Instance Types**: Select the appropriate instance types for your use case.
+- **Monitoring**: Use Amazon CloudWatch metrics to assess instance utilization and identify idle instances.
+- **Optimization**: Downsize instances as needed.
+- **Best Practice**: Right-size instances before considering Reserved Instances.
+
+### Pillar 2: Increase Elasticity
+- **Stop or Hibernate**: For Amazon EBS-backed instances that are not actively in use, such as non-production development or test instances.
+- **Automatic Scaling**: Use scaling policies to adjust capacity based on usage.
+- **Elasticity Types**:
+  - Automated scaling
+  - Time-based scaling
+
+### Pillar 3: Optimal Pricing Model
+- **Pricing Models**: Choose the right pricing model based on your usage patterns.
+- **Optimization**:
+  - **On-Demand and Spot Instances**: For variable workloads.
+  - **Reserved Instances**: For predictable workloads.
+  - **Serverless Solutions**: Consider AWS Lambda for certain use cases.
+
+### Pillar 4: Optimize Storage Choices
+- **Cost Reduction**: Reduce costs while maintaining storage performance and availability.
+- **EBS Volume Management**:
+  - Resize EBS volumes as needed.
+  - Change EBS volume types if appropriate.
+  - Evaluate if performance requirements can be met with less expensive storage.
+- **Examples**: Amazon EBS Throughput Optimized HDD (st1) storage is typically cheaper than General Purpose SSD (gp2).
+- **Cleanup**: Delete unnecessary EBS snapshots.
+- **Data Storage**: Determine the most suitable storage destination.
+  - Consider Amazon S3 storage options with lifecycle policies to reduce costs.
+
+### Measure, Monitor, and Improve
+- **Ongoing Process**: Cost optimization should be continuous.
+- **Recommendations**:
+  - Define and enforce cost allocation tagging.
+  - Define metrics, set targets, and review regularly.
+  - Encourage cost-effective architecture designs.
+  - Assign responsibility for optimization to an individual or team.
+
+---
+
+# Container Services
+
+## Container Basics
+- **Definition**: Containers are a method of operating system virtualization.
+- **Benefits**:
+  - **Repeatable**: Consistent environments across different stages (development, test, production).
+  - **Self-Contained**: Environments encapsulate everything needed to run the software.
+  - **Efficiency**: Faster to launch, stop, or terminate compared to virtual machines.
+
+## What is Docker?
+- **Definition**: Docker is a software platform that facilitates building, testing, and deploying applications quickly.
+- **Containers**: Run on Docker and are created from images (templates).
+  - **Components**: Containers include all the dependencies required for the application to run.
+
+### Containers vs VMs
+- **Containers**:
+  - Share the host OS kernel.
+  - More lightweight and faster to start.
+- **Virtual Machines (VMs)**:
+  - Include a full OS along with the application.
+  - Generally more resource-intensive.
+
+![Containers vs VMs](https://github.com/user-attachments/assets/3aeaf742-3fa8-4141-a914-e4b10f6ec35c)
+![Docker vs VMs](https://github.com/user-attachments/assets/fca16bb3-59c4-4774-bc8a-46c995424fc1)
+
+---
+
+Feel free to modify or add any additional information as needed!
+
