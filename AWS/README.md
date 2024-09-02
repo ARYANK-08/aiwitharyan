@@ -1,16 +1,18 @@
-![image](https://github.com/user-attachments/assets/0d5416f8-e2ac-4f9d-acd2-047a69f4d307)# AWS - Everything You Need to Know
+# AWS - Everything You Need to Know
 
 ## Table of Contents
-1. [What is Cloud Computing?](#what-is-cloud-computing)
-2. [Why Cloud Computing Came into Existence](#why-cloud-computing-came-into-existence)
-3. [Cloud Service Models](#cloud-service-models)
-   - [Infrastructure as a Service (IaaS)](#infrastructure-as-a-service-iaas)
-   - [Platform as a Service (PaaS)](#platform-as-a-service-paas)
-   - [Software as a Service (SaaS)](#software-as-a-service-saas)
-4. [Six Advantages of Cloud Computing](#six-advantages-of-cloud-computing)
-5. [What is a Web Service?](#what-is-a-web-service)
-6. [AWS Pricing Model](#aws-pricing-model)
-7. [Traditional Infrastructure vs. Cloud Computing](#traditional-infrastructure-vs-cloud-computing)
+
+| **Table of Contents**                                | **Link**                                                        |
+|------------------------------------------------------|-----------------------------------------------------------------|
+| ☁️ **Cloud Computing**                              | [Cloud Computing](#cloud-computing)                             |
+| 🌐 **Networking**                                  | [Networking](#networking-basics)                                |
+| 🔄 **Route 53**                                     | [Route 53](#route-53)                                          |
+| ⚙️ **Compute**                                      | [Compute](#compute)                                            |
+| 📦 **Containers**                                  | [Containers](#container-services)                               |
+| 💾 **Storage**                                      | [Storage](#module-7-storage)                                    |
+| 🗄️ **Database**                                    | [Database](#module-8-databases)                                 |
+| 🏗️ **Cloud Architecture**                          | [Cloud Architecture](#module-9-cloud-architecture)              |
+| 📈 **Automatic Scaling & Monitoring**                | [Automatic Scaling & Monitoring](#module-10-automatic-scaling-and-monitoring) |
 
 ## What is Cloud Computing?
 Cloud computing is the **on-demand** delivery of computing power, database storage, applications, and other IT resources via the internet with a pay-as-you-go pricing model. It enables you to shift from thinking of infrastructure as hardware to thinking of it as software.
