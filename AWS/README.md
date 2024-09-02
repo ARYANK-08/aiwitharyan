@@ -4,10 +4,10 @@
 
 | **Table of Contents**                                | **Link**                                                        |
 |------------------------------------------------------|-----------------------------------------------------------------|
-| ☁️ **Cloud Computing**                              | [Cloud Computing](#cloud-computing)                             |
+| ☁️ **Cloud Computing**                              | [Cloud Computing](#what-is-cloud-computing)                             |
 | 🌐 **Networking**                                  | [Networking](#networking-basics)                                |
 | 🔄 **Route 53**                                     | [Route 53](#route-53)                                          |
-| ⚙️ **Compute**                                      | [Compute](#compute)                                            |
+| ⚙️ **Compute**                                      | [Compute](#ec2-instance-elastic-compute-cloud)                                            |
 | 📦 **Containers**                                  | [Containers](#container-services)                               |
 | 💾 **Storage**                                      | [Storage](#module-7-storage)                                    |
 | 🗄️ **Database**                                    | [Database](#module-8-databases)                                 |
