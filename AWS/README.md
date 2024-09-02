@@ -305,9 +305,7 @@ Explains how data travels over a network.
 | Session      | 5      | Enables orderly exchange of data                   | NETBIOS, RPC                    |
 | Transport    | 4      | Provides protocols to support host-to-host comm.   | TCP, UDP                        |
 | Network      | 3      | Routing and packet forwarding (routers)            | IP                              |
-| Data Link    | 2
-
-      | Reliable transfer of data across physical link     | ARP                             |
+| Data Link    | 2      | Reliable transfer of data across physical link     | ARP                             |
 | Physical     | 1      | Transmit raw bit stream (hubs)                     | Ethernet, FDDI                  |
 
 **Example**: A web browser sends a request to `www.google.com`. This action triggers the following:
@@ -317,3 +315,199 @@ Explains how data travels over a network.
 
 ---
 
+
+# VPC (Virtual Private Cloud)
+
+- **Definition:**  
+  A VPC enables you to provision a logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network that you define.
+
+- **Control Over Networking Resources:**  
+  VPC provides control over your virtual networking resources, including:
+  - Selection of IP address ranges (IPv4, IPv6)
+  - Creation of subnets
+  - Configuration of network gateways and route tables
+
+- **Customization:**  
+  You can customize the network configuration for your VPC and use multiple layers of security.
+
+- **Example Use Case:**  
+  - Create a public subnet for web servers to access the public internet.
+  - Use RDS in a private subnet to restrict public internet access.
+
+- **Security:**  
+  VPC allows the use of security groups and network access control lists (Network ACLs) to help control access to EC2 instances in each subnet.
+
+- **Key Points:**
+  - VPCs are logically isolated and dedicated to your account.
+  - Subnets are ranges of IP addresses within a VPC.
+  - A VPC belongs to a single AWS region and contains subnets that belong to a single availability zone.
+  - Subnets can be public or private.
+
+## Subnets
+
+- **Definition:**  
+  A range of IP addresses in a VPC. Public subnets have direct access to the internet, while private subnets do not.
+
+- **Reserved IP Addresses Example:**  
+  - A VPC with an IPv4 CIDR of 10.0.0.0/16 has 65,536 total IP addresses.
+  - If divided into 4 equal-sized subnets, only 251 IP addresses are available per subnet as 5 are reserved.
+  
+  Example:
+  - **CIDR (10.0.0.0/24) | Reserved for:**
+    - 10.0.0.0 | Network address
+    - 10.0.0.1 | Internal communication
+    - 10.0.0.2 | DNS
+    - 10.0.0.3 | Future use
+    - 10.0.0.255 | Network broadcast address
+
+- **Elastic IP Address:**  
+  Allocate and remap Elastic IPs at any time.
+
+- **Route Tables:**  
+  Control traffic for a subnet.
+
+![VPC Diagram](https://github.com/user-attachments/assets/ee6e132b-c8f8-49c3-90e8-ba78a78b1863)
+![Route Table Example](https://github.com/user-attachments/assets/e4bf979f-d03a-45ba-bf20-8c68bbf0b86a)
+
+---
+
+## Internet Gateway
+
+- **Definition:**  
+  An Internet Gateway allows communication between EC2 instances in your VPC and the internet.
+  
+- **Route Table Example:**
+  - **Destination | Target**
+    - 10.0.0.0/16 | Local
+    - 0.0.0.0/0 | Internet Gateway ID
+
+---
+
+## NAT Gateway (Network Address Translation Gateway)
+
+- **Definition:**  
+  Allows instances in private subnets to connect to the internet or AWS services while preventing the internet from initiating a connection to them.
+
+- **VPC Sharing:**  
+  Share a subnet with other AWS accounts within the same organization, enabling services like EC2, RDS, Lambda, and Redshift.
+
+- **VPC Peering:**  
+  A VPC-to-VPC connection.
+
+- **AWS Direct Connect:**  
+  Connects a VPC to a remote network.
+
+![NAT Gateway Diagram](https://github.com/user-attachments/assets/337dc9d0-b4a6-46ec-8a95-a86cd7bdd32e)
+
+---
+
+## Security Groups
+
+- **Definition:**  
+  Acts as a virtual firewall for your instances, controlling inbound and outbound traffic.
+  
+- **Characteristics:**
+  - Operates at the instance level, not the subnet level.
+  - Default Security Group: Denies all inbound traffic and allows all outbound traffic.
+  
+- **Example Rules:**
+  - **Outbound Destination | Protocol | Port Range | Description**
+    - 0.0.0.0/0 | All | All | IPv4 IP
+    - ::/0 | All | All | IPv6 IP
+  
+  **Custom Rules:**
+  - **Source | Protocol | Port | Description**
+    - 0.0.0.0/0 | TCP | 80 | HTTP (IPv4)
+    - ::/0 | TCP | 443 | HTTPS (IPv4)
+
+---
+
+### SGs vs. ACLs (Security Groups vs. Network Access Control Lists)
+
+- **Scope:** Instance level | Subnet level
+- **Rules:** Allow rules only | Allow and deny rules
+- **State:** Stateful (return traffic allowed) | Stateless
+- **Order of Rules:** All rules are evaluated before a decision is made to allow traffic.
+
+---
+
+# Example VPC Design for an AI Anime Website
+
+1. **Create a VPC** with CIDR: 10.0.0.0/24.
+2. **Public Subnet:** 10.0.0.0/25 - For the web server.
+3. **Private Subnet:** 10.0.0.128/25 - For the database server.
+4. **Attach an Internet Gateway.**
+5. **Routing:**
+   - Public subnet -> Internet Gateway.
+   - Private subnet -> NAT Gateway.
+6. **Security Groups:**
+   - Allow HTTP & HTTPS traffic.
+7. **Deploy EC2 Instances:**
+   - Web server in the public subnet.
+   - Database server in the private subnet.
+8. **Use Multiple Availability Zones & Elastic Load Balancing.**
+9. **Firewall Protection:**
+   - NACLS and Security Groups to secure the VPC.
+
+---
+
+# Route 53
+
+- **Definition:**  
+  A highly available and scalable domain name system (DNS) service.
+
+- **Functionality:**  
+  Route end users to internet applications by translating names like `www.nicevibes.co` into numeric IP addresses like 192.0.2.1 that computers use to connect with each other.
+  
+- **Supports:**  
+  - IPv4 and IPv6
+
+![Route 53 Diagram](https://github.com/user-attachments/assets/8fd789cb-1a50-4cc2-9b25-b0944f5d20a3)
+
+---
+
+## DNS Overview
+
+- **DNS as a Phonebook:**  
+  IP addresses of websites are stored as domain names, similar to how a phonebook stores names and numbers.
+
+## Routing Policies
+
+- **Simple Routing:**  
+  Round-robin for single server environments or small portions of traffic to a server.
+  
+- **Weighted Round Robin:**  
+  Assign weights to resource record sets to specify frequency. Example: A/B testing with 90% traffic to the main website and 10% to a test website.
+  
+- **Latency Routing:**  
+  Improve global application performance by routing based on latency.
+  
+- **Geolocation Routing:**  
+  Route traffic based on user location.
+  
+- **Geoproximity Routing:**  
+  Route traffic based on your resources.
+  
+- **Failover Routing:**  
+  Failover to a backup site if your primary site becomes unreachable.
+
+### DNS Failover Example:
+
+- **High Availability:**
+  1. Create two DNS records (CNAME) with failover routing.
+  2. Primary routing policy: Load balancer for web application.
+  3. Secondary policy: S3 static website.
+  4. Health checks ensure the primary site works correctly. If it fails, the web application stack fails over to the static backup site.
+
+---
+
+## AWS Services Summary:
+
+| **Service**          | **Key Concepts**                  | **Characteristics**                                           |
+|----------------------|-----------------------------------|---------------------------------------------------------------|
+| **EC2**              | IaaS, Instance-based, Virtual Machines | Provision VMs that you can manage as you choose.              |
+| **Lambda Function**  | Serverless computing, Function-based, Low cost | Write and deploy code that executes on a schedule or can be triggered by events. Use when possible. |
+| **ECS/EKS/ECR/Fargate** | Container-based, Instance-based | Spin up and execute jobs more quickly.                        |
+| **Elastic Beanstalk** | PaaS, Web applications            | Focus on building your application code, easily integrate with RDS, DNS. |
+
+---
