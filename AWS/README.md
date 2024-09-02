@@ -1,4 +1,4 @@
-# AWS - Everything You Need to Know
+![image](https://github.com/user-attachments/assets/0d5416f8-e2ac-4f9d-acd2-047a69f4d307)# AWS - Everything You Need to Know
 
 ## Table of Contents
 1. [What is Cloud Computing?](#what-is-cloud-computing)
@@ -1812,10 +1812,139 @@ A SysOps engineer working at a company wants to protect their data in transit an
 - Amazon Elastic Block Store (Amazon EBS)
 - Amazon Simple Storage Service (Amazon S3)
 - All of the above 
-  <details>
+<details>
   <summary>Select your answer</summary>
     All of the above 
 </details>
 
 ---
 
+## Module 10: Automatic Scaling and Monitoring
+
+### Section 1: Load Balancing
+
+**Distributes** incoming app or network traffic across multiple targets in a single or multiple Availability Zones (AZs). It scales your load balancer as traffic to your app changes over time.
+![image](https://github.com/user-attachments/assets/8e5e3da6-a70a-4e89-992a-9a33f541b612)
+
+#### Types of Load Balancers
+![image](https://github.com/user-attachments/assets/8df49442-4101-4c02-9da0-86b3c9f49b0c)
+
+**How Elastic Load Balancing Works:**
+- **Application Load Balancers** and **Network Load Balancers**: Register targets in traffic to the target groups.
+- **Classic Load Balancers**: Register instances with the load balancer.
+- **Load balancer** performs health checks to monitor the health of registered targets.
+![image](https://github.com/user-attachments/assets/31fb9b8c-9eaf-48ce-ab4f-f14cbb55f0fc)
+
+**Elastic Load Balancing Use Cases:**
+- **High availability** and fault-tolerant app
+- **Containerized app**
+- **Elasticity and scalability**
+- **VPC**
+- **Hybrid environments**
+- **Invoke Lambda functions over HTTP(S)**
+
+**Load Balancer Monitoring:**
+- **Amazon CloudWatch metrics**: Used to verify system performance and create alarms if metrics go outside an acceptable range.
+- **Access logs**: Capture detailed information about requests sent to your load balancer.
+- **AWS CloudTrail logs**: Capture the who, what, when, and where of API interactions in AWS services.
+
+### Section 2: Amazon CloudWatch
+
+**Monitoring AWS Resources:**
+To use AWS efficiently, you need insight into your AWS resources:
+- How do you know when you should launch more Amazon EC2 instances?
+- Is your app's performance or availability being affected by a lack of sufficient capacity?
+- How much of your infrastructure is actually being used?
+
+**Amazon CloudWatch:**
+- **Monitors**:
+  - AWS resources
+  - Apps that run on AWS
+- **Collects and Tracks**:
+  - Standard metrics
+  - Custom metrics
+- **Alarms**:
+  - Send notifications to an Amazon SNS topic
+  - Perform Amazon EC2 Auto Scaling or Amazon EC2 actions
+- **Events**:
+  - Define rules to match changes in AWS environment and route these events to one or more target functions or streams for processing.
+
+**CloudWatch Alarms:**
+- Create alarms based on:
+  - **Static threshold**
+  - **Anomaly detection**
+  - **Metric math expression**
+- Specify:
+  - **Namespace**
+  - **Metric**
+  - **Statistic**
+  - **Period**
+  - **Conditions**
+- Additional configuration and actions
+![image](https://github.com/user-attachments/assets/7de7a3a8-2fef-4505-93a7-eee6225b5b3c)
+
+### Section 3: Amazon EC2 Auto Scaling
+
+**Why is Scaling Important?**
+> [!NOTE]
+> Scaling is the ability to increase or decrease the compute capacity of your app.
+![image](https://github.com/user-attachments/assets/777b4e07-f582-4a79-a717-e9a061274a3c)
+
+> **_First graph:_** Unused capacity on most days of the week, not cost-optimized  
+> **_Second graph:_** Under capacity on certain days
+
+> [!WARNING] 
+> Automatic capacity scaling is necessary to support the fluctuating demands for service.
+
+**Amazon EC2 Auto Scaling:**
+- **Helps you maintain app performance**
+- **Enables** you to automatically add or remove EC2 instances according to conditions that you define.
+- **Detects** impaired EC2 instances and unhealthy apps, and replaces the instances without your intervention.
+- **Provides several scaling options**:
+  - **Manual**
+  - **Scheduled**
+  - **Dynamic (on-demand)**
+  - **Predictive**
+![image](https://github.com/user-attachments/assets/ea7ca31d-7190-4f9a-b2e6-2d2ad43eba4c)
+
+**Typical Weekly Traffic at Amazon.com**
+![image](https://github.com/user-attachments/assets/8f419760-cdb3-4560-9564-ed8cd6d2b62a)
+
+**November Traffic to Amazon.com**
+![image](https://github.com/user-attachments/assets/63d34446-384c-4f7f-9dd6-3527605bfd32)
+
+**Auto Scaling Groups:**
+- An Auto Scaling group is a collection of EC2 instances that are treated as a logical grouping for automatic scaling and management.
+![image](https://github.com/user-attachments/assets/23e88700-6743-45ed-a74d-9cac0cb97873)
+
+**Scaling Out vs Scaling In**
+![image](https://github.com/user-attachments/assets/ac3dfa01-48d6-408e-adfb-5aac881bc3b0)
+
+**How Amazon EC2 Auto Scaling Works**
+![image](https://github.com/user-attachments/assets/1c8ed840-52ee-4af4-bc51-5ed3612a6ec5)
+
+**Implementing Dynamic Scaling**
+![image](https://github.com/user-attachments/assets/53604060-2e0b-42ae-8106-c224223c1a10)
+
+**AWS Auto Scaling:**
+- Monitors your app and automatically adjusts capacity to maintain steady, predictable performance at the lowest possible cost.
+- Provides a simple, powerful user interface that enables you to build scaling plans for resources, including:
+  - **Amazon EC2 instances and Spot Fleet**
+  - **Amazon Elastic Container Service (Amazon ECS) Tasks**
+  - **Amazon DynamoDB tables and indexes**
+  - **Amazon Aurora Replicas**
+
+### Wrap-Up
+
+**Which service would you use to send alerts based on Amazon CloudWatch alarms?**
+- Amazon Simple Notification Service
+- AWS CloudTrail
+- AWS Trusted Advisor
+- Amazon Route 53
+
+<details>
+   <summary> Anwer </summary>
+   Amazon Simple Notification Service
+</details>
+
+---
