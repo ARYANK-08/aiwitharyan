@@ -1,4 +1,4 @@
-# AWS - Everything You Need to Know
+![image](https://github.com/user-attachments/assets/85cdee2b-96d7-4e80-b2f7-78449fd33f8a)![image](https://github.com/user-attachments/assets/b6a959eb-6b26-4e0d-871a-2c51f2b2e4fb)![image](https://github.com/user-attachments/assets/2171e2e5-7217-42fc-ac17-a1d3747f1f24)# AWS - Everything You Need to Know
 
 ## Table of Contents
 1. [What is Cloud Computing?](#what-is-cloud-computing)
@@ -426,7 +426,8 @@ The OSI model ensures seamless data transmission from one network to another.
 - **Characteristics:**
   - Operates at the instance level, not the subnet level.
   - Default Security Group: Denies all inbound traffic and allows all outbound traffic.
-![Security Groups Example](https://github.com/user-attachments/assets/62ec8d58-9c3e-4f53-9491-742673be59a6)
+ 
+![image](https://github.com/user-attachments/assets/23532658-4487-4c2a-8ca3-0a064fa5db07)
   
 
 | **Type**         | **Source/Destination** | **Protocol** | **Port Range** | **Description**      |
@@ -435,13 +436,13 @@ The OSI model ensures seamless data transmission from one network to another.
 | **Outbound**     | ::/0                   | All          | All            | IPv6 IP              |
 | **Custom Rules** | 0.0.0.0/0              | TCP          | 80             | HTTP (IPv4)          |
 | **Custom Rules** | ::/0                   | TCP          | 443            | HTTPS (IPv4)         |
-![image](https://github.com/user-attachments/assets/a0c7294b-8e6c-43c7-a68d-295ef6fbd77f)
+
+![image](https://github.com/user-attachments/assets/78e13ef9-e026-4670-aa1c-ba99574b66fb)
 
 
 - **Example:**  
   Incoming web traffic is distributed among a group of web servers located in different Availability Zones to ensure no single server is overwhelmed.
 
-![Load Balancer Example](https://github.com/user-attachments/assets/71b7a731-e63e-4f59-b7f1-dc6b9d7f5428)
 
 ---
 
