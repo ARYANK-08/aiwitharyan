@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/e2901636-eb40-4521-99cf-68296c1666a4)# AWS - Everything You Need to Know
+![image](https://github.com/user-attachments/assets/e8168d88-3966-4874-92cd-b360b07f200f)# AWS - Everything You Need to Know
 
 ## Table of Contents
 1. [What is Cloud Computing?](#what-is-cloud-computing)
@@ -1274,3 +1274,240 @@ A company wants to store data that is not frequently accessed. What is the best 
 - Not frequently accessed
 - Cost-effective solution
 </details>
+
+# Module 8: Databases
+
+## Section 1: Amazon Relational Database Service (RDS)
+
+### Unmanaged vs Managed Services
+
+- **Unmanaged**: 
+  - Managed by you
+  - Includes scaling, fault tolerance, availability
+  - Provides more fine-tuned control
+
+- **Managed**: 
+  - Built-in service
+  - Includes scaling, fault tolerance, availability
+  - Requires less configuration
+
+### Challenges of Relational Databases
+
+- Server maintenance and energy footprint
+- Software installation and patches
+- Database backups and high availability
+- Limits on scalability
+- Data security
+- OS installation and patches
+
+### Amazon RDS
+
+> [!IMPORTANT]
+> Amazon RDS provides a managed service for setting up and operating a relational database in the cloud.
+
+- **Managed Services Responsibilities**:
+  - **You manage**: Application optimization
+  - **AWS manages**:
+    - OS installation and patches
+    - Database software installation and patches
+    - Database backups
+    - High availability
+    - Scaling
+    - Power, racking, and stacking servers
+    - Server maintenance
+
+### Amazon RDS DB Instances
+![image](https://github.com/user-attachments/assets/0f02cf14-69bb-4442-a4fd-f44ef7c7c609)
+
+- **In a VPC**:
+  ![image](https://github.com/user-attachments/assets/7755b0d6-59d1-43a7-89d5-20090c97dd16)
+
+  - Select IP address range
+  - Subnets
+  - Configure routing and access control lists
+  - High availability with Multi-AZ deployment:
+  - ![image](https://github.com/user-attachments/assets/b9b01728-068b-459f-a245-e68bcaffa09c)
+    - Automatically generates a standby copy in another AZ within the same VPC
+![image](https://github.com/user-attachments/assets/2b85f477-5675-402f-a16d-38ffe3bc5aaa)
+   > [!WARNING] 
+   > If the main database instance fails, Amazon RDS automatically brings the standby instance online
+
+### Amazon RDS Read Replicas
+
+- **Features**:
+  - Asynchronous replication
+  - Can be promoted to master if needed
+
+- **Functionality**:
+  - Use for read-heavy database workloads
+  - Offload read queries
+
+- **Use Cases**:
+
+![image](https://github.com/user-attachments/assets/9205bcae-f856-47ad-aa8b-47e6f2b76b8d)
+
+| **When to Use**                                             | **Do Not Use When**                                    |
+|-------------------------------------------------------------|--------------------------------------------------------|
+| - Complex transactions or complex queries                  | - Massive read/write rates                             |
+| - Medium to high query or write rate (up to 30,000 IOPS)   | - Sharding due to high data size or throughput demands |
+| - No more than a single worker node or shard                | - Simple GET or PUT requests and queries that a NoSQL database can handle |
+| - High durability                                          | - Relational database management (RDBMS) customization  |
+
+### Amazon RDS: Clock-Hour Billing and DB Characteristics
+
+- **Clock-Hour Billing**:
+  - Resources incur charges when running
+
+- **Database Characteristics**:
+  - Physical capacity
+  - Engine
+  - Size
+  - Memory class
+
+### Amazon RDS: DB Purchase Type and Multiple DB Instances
+
+- **DB Purchase Type**:
+  - On-Demand Instances: Compute capacity by the hour
+  - Reserved Instances: Low, one-time, upfront payment for DB instances reserved with a 1-year or 3-year term
+
+- **Number of DB Instances**:
+  - Provision multiple DB instances to handle peak loads
+
+### Amazon RDS Storage
+
+- **Provisioned Storage**:
+  - No charge
+  - Backup storage up to 100% of DB storage for an active DB
+
+- **Charges**:
+  - Backup storage for terminated DB instances
+  - Additional storage (GB/month)
+  - Backup storage in addition to provisioned storage
+
+### Amazon RDS: Deployment Type and Data Transfer
+
+- **Requests**:
+  - The number of input and output requests made to the DB
+
+- **Deployment Type**:
+  - Storage and I/O vary depending on whether you deploy to Single AZ or Multiple AZ
+
+- **Data Transfer**:
+  - No charge for inbound data transfer
+  - Tiered charges for outbound data transfer
+
+## Section 2: Amazon DynamoDB
+
+### Relational vs Non-Relational DB
+![image](https://github.com/user-attachments/assets/b051c128-1419-44e1-b272-661d7afede11)
+
+- **Amazon DynamoDB**:
+> [!NOTE] Fast and flexible NoSQL DB service for any scale
+  - NoSQL DB tables can be scaled
+  - Create tables and add items
+  - Global tables automatically replicate across AWS regions
+  - Virtually unlimited storage
+  - Items can have differing attributes
+  - No need to migrate schema
+  - Low-latency queries
+  - Scalable read/write throughput
+  - Fault-tolerant architecture
+  - Stored in SSDs
+  - Encrypt data at rest
+  - Set time to live
+  - Automatically partitions data
+
+### Amazon DynamoDB Core Components
+
+- **Tables, Items, and Attributes**:
+  - Supports 2 types of primary keys:
+    - Partition key
+    - Sort key
+  - Items in a table must have a key
+![image](https://github.com/user-attachments/assets/92a31165-74a7-4c4a-901e-de5f19cafd52)
+
+## Section 3: Amazon Redshift
+
+### Introduction to Amazon Redshift
+
+- **Features**:
+ > [!NOTE] Fast, fully managed data warehouse, simple and cost-effective to analyze data using SQL and business intelligence tools.
+  - Pay for what you use
+  - Complex analytics queries
+  - Parallel processing
+  - Only seconds for query execution
+![image](https://github.com/user-attachments/assets/76570f98-6c75-4457-a1e6-f44c22c479f9)
+
+- **Architecture**:
+  - Parallel processing
+![image](https://github.com/user-attachments/assets/69f7ae49-822f-431d-9bfc-24c35d0339f9)
+
+- **Automation and Scaling**:
+  - Automate management, monitoring, and scaling
+   > [!WARNING]  Security is built-in with encryption of data
+
+- **Compatibility**:
+  - Supports standard SQL
+  - Connect with SQL clients, Java connectivity, Open DB connectivity
+  - Interact directly with AWS CLI or management console
+
+### Amazon Redshift Use Cases
+
+- **Enterprise Data Warehouse (EDW)**:
+  - Migrate at a comfortable pace
+  - Experiment without large upfront cost or commitment
+  - Respond faster to business needs
+
+- **Big Data**:
+  - Low price point for small customers
+  - Managed service for ease of deployment and maintenance
+  - Focus more on data and less on database management
+
+- **SaaS**:
+  - Scale the data warehouse capacity as demand grows
+  - Add analytic functionality to app
+  - Reduce hardware and software costs
+
+## Section 4: Amazon Aurora
+
+### Amazon Aurora
+
+- **Features**:
+    > [!NOTE]   MySQL and PostgreSQL compatible relational DB built for the cloud
+  - Enterprise-class relational DB
+  - Automates time-consuming tasks (e.g., provisioning, patching, backup, recovery, failure detection, repair)
+  - Can reduce DB costs
+
+### Amazon Aurora Service Benefits
+
+- **Performance and Availability**:
+  - Fast and available
+  - Managed service
+  - Simple
+  - Pay-as-you-go
+
+- **Compatibility and Resilience**:
+  - Compatible with MySQL or PostgreSQL
+  - High availability with data stored in multiple AZs
+  - Data backed up to Amazon S3
+  - Up to 15 read replicas
+  - Instant crash recovery
+  - Removes buffer cache from DB process
+  - No need to replay the redo log
+
+---
+
+**Wrap-up**
+
+Which of the following is a fully managed NoSQL DB service?
+- Amazon RDS
+- Amazon DynamoDB
+- Amazon Aurora
+- Amazon Redshift
+<details>
+  <summary>Select your answer</summary>
+**Answer**: Amazon DynamoDB
+</details>
+
+
+
