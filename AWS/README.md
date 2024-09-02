@@ -1074,7 +1074,8 @@ No additional charge for Elastic Beanstalk. Pay only for the underlying resource
 ## Section 2: Amazon Simple Storage Service (Amazon S3)
 
 ### Storage
-> [!NOTE] Amazon S3 is object-level storage
+> [!NOTE]
+> Amazon S3 is object-level storage
 - If you want to change part of a file, you must do the change and re-upload the entire file
 
 ### Amazon S3 Overview
@@ -1112,7 +1113,8 @@ No additional charge for Elastic Beanstalk. Pay only for the underlying resource
   - AWS CLI
   - AWS Management Console
   - SDK
--> [!WARNING]  
+
+> [!WARNING]  
 > Bucket names must be globally unique and DNS compliant: all lowercase, only letters, numbers, and dashes
 
 ### Amazon S3 Common Scenarios
@@ -1153,7 +1155,8 @@ No additional charge for Elastic Beanstalk. Pay only for the underlying resource
 ## Section 3: Amazon Elastic File System (Amazon EFS)
 
 ### Storage
-> [!Note] Implements storage for EC2 instances
+> [!NOTE]  
+> Implements storage for EC2 instances
 
 ### Features
 - File storage in the AWS Cloud
@@ -1188,7 +1191,8 @@ No additional charge for Elastic Beanstalk. Pay only for the underlying resource
 ## Section 4: Amazon S3 Glacier
 
 ### Storage
-> [!Note] Secure, durable, and extremely low-cost data archiving
+> [!NOTE]
+> Secure, durable, and extremely low-cost data archiving
 
 ### Archive
 - Any object such as photo, video, file, or document stored in Amazon S3 Glacier
