@@ -850,6 +850,11 @@ Grant a role to S3, allowing an application on the instance to access an S3 buck
   - **Self-Contained**: Environments encapsulate everything needed to run the software.
   - **Efficiency**: Faster to launch, stop, or terminate compared to virtual machines.
 
+> [!NOTE]
+> Containers are smaller than virtual machines (VMs) and do not have a complete operating system. Instead, they use a virtualized OS and run as resource-isolated processes.
+
+Feel free to adjust or expand as needed!
+
 ## What is Docker?
 - **Definition**: Docker is a software platform that facilitates building, testing, and deploying applications quickly.
 - **Containers**: Run on Docker and are created from images (templates).
@@ -866,6 +871,151 @@ Grant a role to S3, allowing an application on the instance to access an S3 buck
 ![Containers vs VMs](https://github.com/user-attachments/assets/3aeaf742-3fa8-4141-a914-e4b10f6ec35c)
 
 
----
+# Amazon Elastic Container Service (Amazon ECS)
+
+A highly scalable, fast, container management service.
+
+## Key Benefits
+- Orchestrates the running of Docker containers
+- Maintains and scales the fleet of nodes that run your containers
+- Removes the complexity of standing up the infrastructure
+- Integrated with features that are familiar to Amazon EC2 service users:
+  - Elastic Load Balancing
+  - Amazon EC2 security groups
+  - Amazon EBS volumes
+  - IAM roles
+
+Amazon ECS orchestrates containers.
+![image](https://github.com/user-attachments/assets/3d9da6a0-a6f7-40a8-93af-59ac53f7bedb)
+
+## Amazon ECS Cluster Options
+
+Do you want to manage the Amazon ECS cluster that runs the containers?
+
+- **Yes:** Create an Amazon ECS cluster backed by Amazon EC2
+  - Provides more granular control over infrastructure
+- **No:** Create an Amazon ECS cluster backed by AWS Fargate
+  - Easier to maintain, focus on your app
+![image](https://github.com/user-attachments/assets/ef8623ea-dc45-4fcf-bdbc-22895369c204)
+
+## What is Kubernetes?
+
+**Comment:** Kubernetes is open-source software for container orchestration. It deploys and manages containerized apps at scale. The same toolset can be used on-premises and in the cloud.
+
+- **Complements Docker:**
+  - Docker enables you to run multiple containers on a single OS host.
+  - Kubernetes orchestrates multiple Docker hosts (nodes).
+- **Automates:**
+  - Container provisioning
+  - Networking
+  - Load distribution
+  - Scaling
+
+### Amazon Elastic Kubernetes Service (Amazon EKS)
+
+- **EKS:** Enables you to run Kubernetes on AWS
+- Certified Kubernetes conformant
+- Supports Linux and Windows containers
+- Compatible with Kubernetes community tools and add-ons
+- Use Amazon EKS to:
+  - Manage clusters of Amazon EC2 instances
+  - Run containers that are orchestrated by Kubernetes on those instances
+
+## Amazon Elastic Container Registry (Amazon ECR)
+
+Amazon ECR is a fully managed Docker container registry that makes it easy for developers to store, manage, and deploy Docker container images.
+
+### Supports:
+- Team collaboration
+- Access control
+- Third-party integration
+- Possible to use with Amazon EKS
+
+# Section 7: Introduction to AWS Lambda
+
+AWS Lambda: Run code without servers. AWS Lambda is a serverless compute service.
+![image](https://github.com/user-attachments/assets/8de1e600-4a8d-4a02-87a4-3bd3b2ab350e)
+
+## Benefits of Lambda
+- Supports multiple programming languages
+- Completely automated administration
+- Built-in fault tolerance
+- Supports orchestration of multiple functions
+- Pay-per-use pricing
+
+## AWS Lambda Event Sources
+![image](https://github.com/user-attachments/assets/c09952ee-0dcb-495c-8353-d697f6bf4b61)
+
+### AWS Lambda Function Configuration
+- Create lambda function: Give a name
+- Runtime environment:
+  - Python
+  - Node.js
+- Execution role to grant IAM permission to the function to interact with other services
+- Configure the function:
+  - Adding a trigger
+  - Add function code
+  - Specify the memory in megabytes (up to 3008 MB)
+  - Specify environment variables
+![image](https://github.com/user-attachments/assets/4c92930e-fcf2-4a2e-8cc1-d28897f03d95)
+
+### Examples:
+- **Schedule-based Lambda Function:** Start and stop EC2 instances
+
+  ![image](https://github.com/user-attachments/assets/2334a666-a0a0-46ac-bf16-11a233bdf0ce)
+
+- **Event-based Lambda Function:** Create thumbnail images
+![image](https://github.com/user-attachments/assets/cabe217f-2dc6-45e2-9e8a-b5845492e79b)
+
+### AWS Lambda Limits
+- **Soft limits per Region:**
+  - Concurrent executions = 1,000
+  - Function and layer storage = 75 GB
+- **Hard limits for individual function:**
+  - Max function memory allocation = 3,008 MB
+  - Function timeout = 15 min
+  - Deployment package size = 250 MB unzipped, including layers
+
+# Section 8: Introduction to AWS Elastic Beanstalk
+
+AWS Elastic Beanstalk: An easy way to get a web app up and running. A managed service that automatically handles:
+- Infrastructure provisioning and configuration
+- Deployment
+- Load balancing
+- Automatic scaling
+- Health monitoring
+- Analysis and debugging
+- Logging
+
+No additional charge for Elastic Beanstalk. Pay only for the underlying resources that are used.
+
+## AWS Elastic Beanstalk Deployments
+- Supports web apps written for common platforms:
+  - Java, .NET, PHP, Node.js, Python, Ruby, Go, and Docker
+- You upload your code
+- Elastic Beanstalk automatically handles the deployment
+- Deploys on servers such as Apache, NGINX, Passenger, Puma, and Microsoft Internet Information Services (IIS)
+
+## Benefits of Elastic Beanstalk
+![image](https://github.com/user-attachments/assets/b4d926c1-5b3a-4a20-91f4-9d3d8d328870)
+
+# Wrap-up
+
+**Which AWS service helps developers quickly deploy resources which can make use of different programming languages, such as .NET and Java?**
+
+<details>
+  <summary>Select your answer</summary>
+  
+  - AWS CloudFormation
+  - AWS SQS
+  - AWS Elastic Beanstalk
+  - Amazon Elastic Compute Cloud (Amazon EC2)
+
+**Answer:** AWS Elastic Beanstalk
+
+**Keywords:**
+- Developers quickly deploy resources
+- Different programming languages
+</details>
 
 
