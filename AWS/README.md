@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/e8168d88-3966-4874-92cd-b360b07f200f)# AWS - Everything You Need to Know
+# AWS - Everything You Need to Know
 
 ## Table of Contents
 1. [What is Cloud Computing?](#what-is-cloud-computing)
@@ -1319,6 +1319,7 @@ A company wants to store data that is not frequently accessed. What is the best 
 ### Amazon RDS DB Instances
 ![image](https://github.com/user-attachments/assets/0f02cf14-69bb-4442-a4fd-f44ef7c7c609)
 
+
 - **In a VPC**:
   ![image](https://github.com/user-attachments/assets/7755b0d6-59d1-43a7-89d5-20090c97dd16)
 
@@ -1328,6 +1329,7 @@ A company wants to store data that is not frequently accessed. What is the best 
   - High availability with Multi-AZ deployment:
   - ![image](https://github.com/user-attachments/assets/b9b01728-068b-459f-a245-e68bcaffa09c)
     - Automatically generates a standby copy in another AZ within the same VPC
+
 ![image](https://github.com/user-attachments/assets/2b85f477-5675-402f-a16d-38ffe3bc5aaa)
    > [!WARNING] 
    > If the main database instance fails, Amazon RDS automatically brings the standby instance online
@@ -1431,7 +1433,8 @@ A company wants to store data that is not frequently accessed. What is the best 
 ### Introduction to Amazon Redshift
 
 - **Features**:
- > [!NOTE] Fast, fully managed data warehouse, simple and cost-effective to analyze data using SQL and business intelligence tools.
+ > [!NOTE]
+> Fast, fully managed data warehouse, simple and cost-effective to analyze data using SQL and business intelligence tools.
   - Pay for what you use
   - Complex analytics queries
   - Parallel processing
@@ -1444,7 +1447,8 @@ A company wants to store data that is not frequently accessed. What is the best 
 
 - **Automation and Scaling**:
   - Automate management, monitoring, and scaling
-   > [!WARNING]  Security is built-in with encryption of data
+   > [!WARNING]
+   > Security is built-in with encryption of data
 
 - **Compatibility**:
   - Supports standard SQL
@@ -1473,7 +1477,8 @@ A company wants to store data that is not frequently accessed. What is the best 
 ### Amazon Aurora
 
 - **Features**:
-    > [!NOTE]   MySQL and PostgreSQL compatible relational DB built for the cloud
+    > [!NOTE]
+    > MySQL and PostgreSQL compatible relational DB built for the cloud
   - Enterprise-class relational DB
   - Automates time-consuming tasks (e.g., provisioning, patching, backup, recovery, failure detection, repair)
   - Can reduce DB costs
