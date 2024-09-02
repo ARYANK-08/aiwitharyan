@@ -410,17 +410,17 @@ Explains how data travels over a network.
   - Operates at the instance level, not the subnet level.
   - Default Security Group: Denies all inbound traffic and allows all outbound traffic.
   
-- **Example Rules:**
-  - **Outbound Destination | Protocol | Port Range | Description**
-    - 0.0.0.0/0 | All | All | IPv4 IP
-    - ::/0 | All | All | IPv6 IP
-  
-  **Custom Rules:**
-  - **Source | Protocol | Port | Description**
-    - 0.0.0.0/0 | TCP | 80 | HTTP (IPv4)
-    - ::/0 | TCP | 443 | HTTPS (IPv4)
+Here's the table for the example rules along with the note:
+
+| **Type**         | **Source/Destination** | **Protocol** | **Port Range** | **Description**      |
+|------------------|------------------------|--------------|----------------|----------------------|
+| **Outbound**     | 0.0.0.0/0              | All          | All            | IPv4 IP              |
+| **Outbound**     | ::/0                   | All          | All            | IPv6 IP              |
+| **Custom Rules** | 0.0.0.0/0              | TCP          | 80             | HTTP (IPv4)          |
+| **Custom Rules** | ::/0                   | TCP          | 443            | HTTPS (IPv4)         |
 
 ---
+
 
 ### SGs vs. ACLs (Security Groups vs. Network Access Control Lists)
 
@@ -470,6 +470,9 @@ Explains how data travels over a network.
 
 - **DNS as a Phonebook:**  
   IP addresses of websites are stored as domain names, similar to how a phonebook stores names and numbers.
+
+🔵 **Note:**  
+**Interview Question:** Explain what happens when you hit a URL.
 
 ## Routing Policies
 
