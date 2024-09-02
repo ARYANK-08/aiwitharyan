@@ -1,4 +1,4 @@
-# AWS - Everything You Need to Know
+![image](https://github.com/user-attachments/assets/e2901636-eb40-4521-99cf-68296c1666a4)# AWS - Everything You Need to Know
 
 ## Table of Contents
 1. [What is Cloud Computing?](#what-is-cloud-computing)
@@ -218,7 +218,9 @@ Example: An EC2 Linux instance in the US East (Ohio) region costs $0.0416 per ho
 
 ![IAM Example](https://github.com/user-attachments/assets/9cce8ce3-e567-4d17-ad93-efabe210e6c5)
 
-**Note**: Follow the principle of least privilege (minimal set of permissions required).
+ 
+> [!NOTE]
+> Follow the principle of least privilege (minimal set of permissions required).
 
 **Example**: S3 bucket IAM policy example:
 ```json
@@ -497,8 +499,8 @@ The OSI model ensures seamless data transmission from one network to another.
 - **DNS as a Phonebook:**  
   IP addresses of websites are stored as domain names, similar to how a phonebook stores names and numbers.
 
-🔵 **Note:**  
-**Interview Question:** Explain what happens when you hit a URL.
+> [!NOTE]
+> **Interview Question:** Explain what happens when you hit a URL.
 
 ## Routing Policies
 
@@ -1018,4 +1020,253 @@ No additional charge for Elastic Beanstalk. Pay only for the underlying resource
 - Different programming languages
 </details>
 
+# Module 7: Storage
 
+## Section 1: Amazon Elastic Block Store (Amazon EBS)
+
+### Storage
+- Provides persistent block storage volumes with Amazon EC2 instances
+- Called non-volatile storage
+- Replicated within AZ
+- AWS Storage options: block storage vs object storage
+- What if you want to change one character in a 1-GB file?
+![image](https://github.com/user-attachments/assets/79448924-44e1-4df8-96f0-23d2fc3b1e45)
+
+### Amazon EBS
+> [!NOTE] Amazon EBS enables you to create individual storage volumes and attach them to an Amazon EC2 instance
+- Amazon EBS offers block-level storage
+- Volumes are automatically replicated within its AZ
+- Can be backed up automatically to Amazon S3 through snapshots
+
+#### Uses include:
+- Boot volumes and storage for Amazon Elastic Compute Cloud (Amazon EC2) instance
+- Data storage with a file system
+- Database hosts
+- Enterprise app
+
+### Amazon EBS Volume Types
+![image](https://github.com/user-attachments/assets/ff93adf9-63ac-42df-a9f8-b35ccca2456f)
+
+#### Snapshots
+- Point-in-time snapshots
+- Recreate a new volume at any time
+
+#### Encryption
+- Encrypted Amazon EBS volumes
+- No additional cost
+
+#### Elasticity
+- Increase capacity
+- Change to different types
+
+#### Volumes, IOPS and Pricing
+- **Volumes**: Amazon EBS volumes persist independently from the instance
+  - All volume types are charged by the amount that is provisioned per month
+- **IOPS**:
+  - General Purpose SSD: Charged by the amount that you provision in GB per month until storage is released
+  - Magnetic: Charged by the number of requests to the volume
+  - Provisioned IOPS SSD: Charged by the amount that you provision in IOPS (multiplied by the percentage of days that you provision for the month)
+- **Snapshots**: Added cost of Amazon EBS snapshots to Amazon S3 is per GB-month of data stored
+- **Data Transfer**:
+  - Inbound data transfer is free
+  - Outbound data transfer across Regions incurs charges
+
+## Section 2: Amazon Simple Storage Service (Amazon S3)
+
+### Storage
+> [!NOTE] Amazon S3 is object-level storage
+- If you want to change part of a file, you must do the change and re-upload the entire file
+
+### Amazon S3 Overview
+- Data stored as objects in buckets
+- Virtually unlimited storage
+- Single object is limited to 5 TB
+- Designed for 11 9s of durability
+- Granular access to bucket and objects
+- Data private by default
+- Can set up notification:
+  - When object is added
+  - When object is deleted
+
+### Amazon S3 Storage Classes
+- **Amazon S3 Standard**: High availability, high durability, performance, frequently accessed data
+- **Amazon S3 Intelligent-Tiering**: Optimize cost by moving data to the most cost-effective access tier, long-lived data with unpredictable access pattern
+- **Amazon S3 Standard-Infrequent Access (Amazon S3 Standard-IA)**: Data accessed less frequently, long-term storage
+- **Amazon S3 One Zone-Infrequent Access (Amazon S3 One Zone-IA)**: Data accessed less frequently, stores data in a single availability zone
+- **Amazon S3 Glacier**: Secure, durable, low cost, data archiving, three retrieval options (minutes to hours)
+- **Amazon S3 Glacier Deep Archive**: Lowest cost, long-term retention, retrieved once or twice a year
+
+### Amazon S3 Bucket URLs (Two Styles)
+- **Bucket Path-Style URL Endpoint**: `https://s3.ap-northeast-1.amazonaws.com/bucket-name`
+- **Bucket Virtual-Hosted-Style URL Endpoint**: `https://bucket-name.s3-ap-northeast-1.amazonaws.com`
+
+- Data is redundantly stored in the Region
+- Designed for seamless scaling
+  ![image](https://github.com/user-attachments/assets/69d6a6ec-1bca-4caf-a560-e0b2a86c0a34)
+
+- Amazon S3:
+  - Automatically manage the storage
+  - Scales to handle high volume of requests
+  - Billed for what you use
+- Access the data anywhere:
+  - AWS CLI
+  - AWS Management Console
+  - SDK
+-> [!WARNING]  
+> Bucket names must be globally unique and DNS compliant: all lowercase, only letters, numbers, and dashes
+
+### Amazon S3 Common Scenarios
+- Backup and storage
+- Application hosting
+- Media hosting
+- Software
+![image](https://github.com/user-attachments/assets/2640339a-5a87-4dac-8142-19596f419102)
+
+### Amazon S3 Pricing
+- Pay for what you use:
+  - GBs per month
+  - Transfer OUT to other Regions
+  - PUT, COPY, POST, LIST, and GET requests
+- You do not pay for:
+  - Transfers IN to Amazon S3
+  - Transfers OUT from Amazon S3 to Amazon CloudFront or Amazon EC2 in the same region
+
+### Amazon S3: Storage Pricing
+- **To estimate Amazon S3 costs**:
+  - Types of storage classes
+  - Standard storage is for:
+    - 11 9s of durability
+    - 4 9s of availability
+  - S3 Standard-Infrequent Access (S-IA) is for:
+    - 11 9s of durability
+    - 3 9s of availability
+  - Amount of storage
+  - The number and size of objects
+  - Requests:
+    - Number of requests (GET, PUT, COPY)
+    - Type of requests
+    - Different rates for GET requests
+  - Data transfer:
+    - Pricing based on the amount of data transferred out of Amazon S3 Region
+    - Data transfer in is free, but incur charges for data transferred out
+
+## Section 3: Amazon Elastic File System (Amazon EFS)
+
+### Storage
+> [!Note] Implements storage for EC2 instances
+
+### Features
+- File storage in the AWS Cloud
+- Works well for big data and analytics, media processing workflows, content management, web serving, and home directories
+- Petabyte-scale, low-latency file system
+- Shared storage
+- Elastic capacity:
+  - Gigabytes to petabytes of data
+- Supports Network File System (NFS) versions 4.0 and 4.1 (NFSv4)
+- Compatible with all Linux-based AMIs for Amazon EC2
+- Pay for what you use
+
+### Amazon EFS Architecture
+- Create your Amazon EC2 resources and launch your instance
+- Create your Amazon EFS file system
+- Create your mount targets in the appropriate subnets
+- Connect your Amazon EC2 instances to the mount targets
+- Verify the resources and protection of your AWS account
+![image](https://github.com/user-attachments/assets/e0aca94d-58f6-4b34-9c81-dd749ed5e8b7)
+
+### Amazon EFS Resources
+- **Mount Target**:
+  - Subnet ID
+  - Security groups
+  - One or more per file system
+  - Create in a VPC subnet
+  - One per AZ
+  - Must be in the same VPC
+- **Tags**:
+  - Key-value pairs
+
+## Section 4: Amazon S3 Glacier
+
+### Storage
+> [!Note] Secure, durable, and extremely low-cost data archiving
+
+### Archive
+- Any object such as photo, video, file, or document stored in Amazon S3 Glacier
+- Base unit of storage: unique ID
+- **Vault**:
+  - Container for storing archive
+  - Specifies vault name
+  - Permissions access policy
+  - Vault lock policy
+
+### Amazon S3 Glacier Review
+- Designed to provide 11 9s of durability for objects
+- Supports encryption of data in transit/at rest through Secure Sockets Layer (SSL) or Transport Layer Security (TLS)
+- Vault lock: enforces compliance through a policy
+- Extremely low-cost for long-term archiving
+- Three options: expedited, standard, or bulk
+  - Retrieval times from a few minutes to hours
+![image](https://github.com/user-attachments/assets/76aac8f3-6e41-4886-93bd-1785c45382b2)
+
+### Amazon S3 Glacier Use Cases
+- Media asset archiving
+- Healthcare info archiving
+- Regulatory and compliance archiving
+- Scientific data archiving
+- Digital preservation
+- Magnetic tape replacement
+
+### Using Amazon S3 Glacier
+- RESTful web services
+- Java or .NET SDKs
+- Amazon S3 with lifecycle policies
+
+### Lifecycle Policies
+- Amazon S3 lifecycle policies enable you to delete or move objects based on age
+![image](https://github.com/user-attachments/assets/88f0cbca-1e96-4ce8-b152-af908eb1c7a4)
+
+## AWS Storage Classes
+![image](https://github.com/user-attachments/assets/0001eeb0-29bf-457f-9e46-a4ad23d0f46d)
+
+## Storage Comparison
+![image](https://github.com/user-attachments/assets/dd99223e-39f4-40ed-9e81-56f427ba7ad5)
+
+### Server-side Encryption
+![image](https://github.com/user-attachments/assets/437b366b-f58c-4168-9cea-6998f0a1a97d)
+
+#### Server-side Encryption (SSE)
+- **SSE-S3**:
+  - Each object has a unique key
+  - AES 256
+- **SSE-C**:
+  - Own encryption keys
+  - AWS Key Management Service
+  - Scaled for the cloud
+  - Customer master keys
+  - IAM Console or API
+  - Access keys
+  - How keys can be used
+
+### Security with Amazon S3 Glacier
+- Control access with IAM
+- Amazon S3 Glacier encrypts your data with AES-256
+- Amazon S3 Glacier manages your keys for you
+
+## Wrap-up
+
+A company wants to store data that is not frequently accessed. What is the best and cost-effective solution that should be considered?
+
+<details>
+  <summary>Select your answer</summary>
+  
+  - Amazon S3 Storage Gateway
+  - Amazon S3 Glacier
+  - Amazon EBS
+  - Amazon S3
+
+**Answer:** Amazon S3 Glacier
+
+**Keywords:**
+- Not frequently accessed
+- Cost-effective solution
+</details>
