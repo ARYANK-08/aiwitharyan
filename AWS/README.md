@@ -1514,5 +1514,308 @@ Which of the following is a fully managed NoSQL DB service?
 **Answer**: Amazon DynamoDB
 </details>
 
+# Module 9: Cloud Architecture
 
+## Section 1: AWS Well-Architected Framework
+
+### Architecture
+> [!NOTE]
+> Architecture is the art and science of designing and building large structures.
+
+- It involves managing size and complexity, identifying business goals, and aligning tech deliverables with those goals while working with the delivery team.
+
+### What is the AWS Well-Architected Framework?
+The AWS Well-Architected Framework provides a guide for designing infrastructures that are:
+- **Secure**
+- **High-performing**
+- **Resilient**
+- **Efficient**
+![image](https://github.com/user-attachments/assets/da13198e-c6dd-463f-8624-80e7807721b6)
+
+It offers a consistent approach to evaluating and implementing cloud architectures, and provides best practices developed through lessons learned by reviewing customer architectures.
+
+### Pillars of the AWS Well-Architected Framework
+
+#### Pillar: Identity and Access Management
+**Question Text:** How do you manage credentials and authentication?
+
+**Credential and authentication mechanisms** include passwords, tokens, and keys granting access directly or indirectly in your workload. Protect credentials with appropriate mechanisms to help reduce the risk of accidental or malicious use.
+
+**Best Practices:**
+- Define requirements of identity and access management
+- Secure AWS account root user
+- Enforce use of multi-factor authentication
+- Automate enforcement of access controls
+- Integrate with centralized federation provider
+- Enforce password requirements
+- Rotate credentials regularly
+- Audit credentials periodically
+
+#### Pillar: Operational Excellence
+**Focus:** Run and monitor systems to deliver business value, and continually improve supporting processes and procedures.
+
+**Key Topics:**
+- Managing and automating changes
+- Responding to events
+- Defining standards to successfully manage daily operations
+
+**Operational Excellence Design Principles:**
+- Perform operations as code
+- Define entire workload (app and infra)
+- Limit human error
+- Consistent responses to events
+- Annotate documentation
+- Automate the creation of annotated documentation
+- Make frequent, small, reversible changes
+- Refine operations procedures frequently
+- Anticipate failure
+- Learn from all operational events and failures
+
+**Operational Excellence Questions:**
+
+*Prepare:*
+- How do you determine what your priorities are?
+- How do you design your workload to understand its state?
+- How do you reduce defects, ease remediation, and improve flow into production?
+- How do you mitigate deployment risks?
+- How do you know that you are ready to support a workload?
+
+*Operate:*
+- How do you understand the health of the workload?
+- How do you manage workload and operation events?
+
+*Evolve:*
+- How do you evolve operations?
+
+#### Pillar: Security
+**Focus:** Protect information, systems, and assets while delivering business value through risk assessments and mitigation strategies.
+
+**Key Topics:**
+- Identifying and managing who can do what
+- Establishing controls to detect security events
+- Protecting systems and services
+- Protecting confidentiality and integrity of data
+
+**Security Design Principles:**
+- Implement a strong identity foundation
+  - Principle of least privileges
+  - Separation of duties
+- Enable traceability
+  - Monitor, alert, and audit actions
+  - Integrate logs and metrics to automatically respond and take action
+- Apply security to all layers
+  - Defense-in-depth
+- Automate security best practices
+  - Improve ability to securely scale more rapidly and cost-effectively
+- Protect data in transit and at rest
+  - Classify data into sensitivity levels
+  - Use mechanisms such as encryption, tokenization, and access control
+- Keep people away from data
+  - Reduce risk of loss or modification of sensitive data due to human error
+  - Create tools to reduce manual processing of data
+- Prepare for security events
+  - Incident management process
+
+**Security Questions:**
+
+*Identity and Access Management:*
+- How do you manage credentials and authentication?
+- How do you control human access?
+- How do you control programmatic access?
+
+*Detective Controls:*
+- How do you detect and investigate security events?
+- How do you defend against emerging security threats?
+
+*Infrastructure Protection:*
+- How do you protect your networks?
+- How do you protect your compute resources?
+
+*Data Protection:*
+- How do you classify your data?
+- How do you protect your data at rest?
+- How do you protect your data in transit?
+
+*Incident Response:*
+- How do you respond to an incident?
+
+#### Pillar: Reliability
+**Focus:** Prevent and quickly recover from failures to meet business and customer demand.
+
+**Key Topics:**
+- Setting up
+- Cross-project requirements
+- Recovery planning
+- Handling change
+
+**Reliability Design Principles:**
+- Test recovery procedures
+  - Test how your system fails
+  - Validate recovery procedures
+- Automatically recover from failure
+  - Monitor systems for key performance indicators
+  - Configure system to trigger automated recovery when a threshold is breached
+- Scale horizontally to increase aggregate system availability
+  - Replace one large resource with multiple smaller ones
+- Stop guessing capacity
+  - Monitor demand and system usage
+  - Automate the addition or removal of resources to maintain the optimal level
+- Manage change in automation
+  - Use automation to make changes to infrastructure
+
+**Reliability Questions:**
+
+*Foundations:*
+- How do you manage service limits?
+- How do you manage your network topology?
+
+*Change Management:*
+- How does your system adapt to changes in demand?
+- How do you monitor your resources?
+- How do you implement change?
+
+*Failure Management:*
+- How do you back up data?
+- How does your system withstand component failure?
+- How do you test resilience?
+- How do you plan for disaster recovery?
+
+#### Pillar: Performance Efficiency
+**Focus:** Use IT and computing resources efficiently to meet system requirements and maintain efficiency as demand changes and technologies evolve.
+
+**Key Topics:**
+- Selecting the right resource types and sizes based on workload requirements
+- Monitoring performance
+- Making informed decisions to maintain efficiency as business needs evolve
+
+**Performance Efficiency Design Principles:**
+- Democratize advanced technologies
+  - Consume tech as a service
+  - Focus on product development
+- Go global in minutes
+  - Deploy systems in multiple AZs
+- Use serverless architectures
+  - Remove operational burden of maintaining servers
+  - Reduce costs
+- Experiment more often
+  - Comparative testing
+- Have mechanical sympathy
+  - Use tech approaches aligning best with what you want to achieve
+
+**Performance Efficiency Questions:**
+
+*Selection:*
+- How do you select the best performing architecture?
+- How do you select your compute solution?
+- How do you select your storage solution?
+- How do you select your database solution?
+- How do you select your networking solution?
+
+*Review:*
+- How do you evolve your workload to take advantage of new releases?
+
+*Monitoring:*
+- How do you monitor your resources to ensure they are performing as expected?
+
+*Tradeoffs:*
+- How do you use tradeoffs to improve performance?
+
+#### Pillar: Cost Optimization
+**Focus:** Run systems to deliver business value at the lowest price point.
+
+**Key Topics:**
+- Understanding and controlling when money is being spent
+- Selecting the most appropriate and right number of resource types
+- Analyzing spending over time
+- Scaling to meet business needs without overspending
+
+**Cost Optimization Design Principles:**
+- Adopt a consumption model
+  - Pay only for the computing resources required
+- Measure overall efficiency
+  - Measure business output and associated costs
+  - Measure the gain you are making
+- Stop spending money on data center operations
+  - AWS does the heavy-lifting
+- Analyze and attribute expenditure
+  - Accurately identify system usage and cost
+- Use managed and application-level services to reduce the cost of ownership
+  - Lower cost per transaction
+
+**Cost Optimization Questions:**
+
+*Expenditure Awareness:*
+- How do you govern usage?
+- How do you monitor usage and cost?
+- How do you decommission resources?
+
+*Cost-Effective Resources:*
+- How do you evaluate cost when selecting services?
+- How do you meet cost targets when selecting resource type and size?
+- How do you use pricing models to reduce cost?
+- How do you plan for data transfer changes?
+
+*Matching Supply and Demand:*
+- How do you match the supply of resources with demand?
+
+*Optimizing Over Time:*
+- How do you evaluate new services?
+
+#### Reliability and Availability
+> [!TIP]
+>  "Everything fails, all the time" - Werner Vogels, CTO, Amazon.com
+
+**Reliability:**
+- A measure of your system's ability to provide functionality when desired by the user.
+- Includes hardware, software, and firmware.
+- **Mean time between failures (MTBF):** Total time in service / Number of failures
+![image](https://github.com/user-attachments/assets/8a6037ae-df98-4e24-9a1e-95aa1d248d5e)
+
+**Availability:**
+- Normal operation time / Total time
+- A percentage of uptime (e.g., 99.9%) over time (e.g., 1 year)
+- **Number of 9s:** 5 9s means 99.999% availability
+
+**High Availability:**
+- System can withstand some measure of degradation while still remaining available.
+- Downtime is minimized.
+- Minimal human intervention is required.
+![image](https://github.com/user-attachments/assets/ea2dc903-7031-4a1e-996a-f6f0708cb929)
+
+**Factors Influencing Availability:**
+- **Fault Tolerance:** Built-in redundancy of app components and their ability to remain operational.
+- **Scalability:** Ability of an app to accommodate increases in capacity needs without changing design.
+- **Recoverability:** Process, policies, and procedures related to restoring service after a catastrophic event.
+
+#### AWS Trusted Advisor
+An online tool that provides real-time guidance to help you provision your resources following AWS best practices. It looks at your entire AWS environment and gives real-time recommendations in:
+
+- **Cost Optimization:**
+  - Eliminating unused resources
+  - Commitment to reserve capacity
+
+- **Performance:**
+  - Checking service limits
+  - Service throughput
+
+- **Security:**
+  - Improving security of the app by identifying gaps
+  - Permissions
+  - Increasing availability and redundancy
+
+- **Fault Tolerance:**
+  - Service usage more than 80% of the service limit
+
+**Wrap-up Question:**
+A SysOps engineer working at a company wants to protect their data in transit and at rest. What service could they use to protect their data?
+- Elastic Load Balancing
+- Amazon Elastic Block Store (Amazon EBS)
+- Amazon Simple Storage Service (Amazon S3)
+- All of the above 
+  <details>
+  <summary>Select your answer</summary>
+    All of the above 
+</details>
+
+---
 
