@@ -779,14 +779,44 @@ Grant a role to S3, allowing an application on the instance to access an S3 buck
 
 ---
 
+## Amazon EC2 Pricing Models
 
-![image](https://github.com/user-attachments/assets/d5dc1d8f-9c65-4f27-a617-661e67838271)
+### On-Demand Instances
+- **Pay**: By the hour
+- **Commitment**: No long-term commitments
+- **Eligibility**: Eligible for the AWS Free Tier
 
----
+### Dedicated Hosts
+- **Definition**: A physical server with EC2 instance capacity fully dedicated to your use
 
-# Amazon EC2 Cost Optimization
+### Dedicated Instances
+- **Definition**: Instances that run in a VPC on hardware dedicated to a single customer
+
+### Reserved Instances
+- **Payment Options**: Full, partial, or no upfront payment for instances you reserve
+- **Discount**: Discount on hourly charge for that instance
+- **Term**: 1-year or 3-year term
+
+### Scheduled Reserved Instances
+- **Definition**: Purchase a capacity reservation that is always available on a recurring schedule you specify
+- **Term**: 1-year term
+
+### Spot Instances
+- **Pricing**: Instances run as long as they are available and your bid is above the Spot Instance price
+- **Interruption**: Can be interrupted by AWS with a 2-minute notification; options include terminated, stopped, or hibernated
+- **Cost**: Prices can be significantly less expensive compared to On-Demand Instances
+- **Best For**: Good choice when you have flexibility in when your applications can run
+
+### Benefits
+
+|                   | On-Demand Instances         | Spot Instances                  | Reserved Instances               | Dedicated Hosts                  |
+|-------------------|------------------------------|---------------------------------|---------------------------------|----------------------------------|
+| **Cost & Flexibility** | Low cost and flexibility     | Large scale, dynamic workload   | Predictability ensures compute capacity is available when needed | Save money on licensing costs <br> Help meet compliance and regulatory requirements |
+
+### Use Cases
 
 ## The 4 Pillars of Cost Optimization
+![4pillars](https://github.com/user-attachments/assets/fca16bb3-59c4-4774-bc8a-46c995424fc1)
 
 ### Pillar 1: Right Size
 - **Provision Instances**: Match the instances to your actual needs in terms of CPU, memory, storage, and network throughput.
@@ -853,7 +883,7 @@ Grant a role to S3, allowing an application on the instance to access an S3 buck
   - Generally more resource-intensive.
 
 ![Containers vs VMs](https://github.com/user-attachments/assets/3aeaf742-3fa8-4141-a914-e4b10f6ec35c)
-![Docker vs VMs](https://github.com/user-attachments/assets/fca16bb3-59c4-4774-bc8a-46c995424fc1)
+
 
 ---
 
