@@ -574,20 +574,195 @@ The OSI model ensures seamless data transmission from one network to another.
   A VPC allows you to provision a logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network that you define.
 </details>
 
----
-
-## AWS Services Summary:
-
-| **Service**          | **Key Concepts**                  | **Characteristics**                                           |
-|----------------------|-----------------------------------|---------------------------------------------------------------|
-| **EC2**              | IaaS, Instance-based, Virtual Machines | Provision VMs that you can manage as you choose.              |
-| **Lambda Function**  | Serverless computing, Function-based, Low cost | Write and deploy code that executes on a schedule or can be triggered by events. Use when possible. |
-| **ECS/EKS/ECR/Fargate** | Container-based, Instance-based | Spin up and execute jobs more quickly.                        |
-| **Elastic Beanstalk** | PaaS, Web applications            | Focus on building your application code, easily integrate with RDS, DNS. |
+Here’s a structured and beautifully organized markdown for the provided content. I've preserved all the images and content as requested.
 
 ---
 
-**: Pay for what you use.
+# EC2 Instance (Elastic Compute Cloud)
+
+### Background Context
+Running servers on-premise can be:
+- **Expensive**: Purchase, data centers, maintenance, staff.
+- **Hardware Management**: Managing peak workloads; server capacity sits idle.
+
+### EC2 Provides:
+- **Virtual Machines** to host the same applications as on-premise servers.
+- **Example Uses**: Application server, web server, game server, database server.
+- **Full Control** over the guest operating system (Linux/Windows).
+- **Control Traffic** to and from instances using security groups.
+
+### Key EC2 Components:
+1. **AMI**: Linux/Windows (template)
+2. **Instance Type**: The type of instance you want to launch.
+3. **Network Settings**: Configure VPC, subnets, and public IP settings.
+4. **IAM Role**: Attach a role to allow the instance to interact with AWS services.
+5. **User Data**: Script that runs on the first start to customize the instance.
+6. **Storage Options**: Configure the root volume and additional volumes.
+7. **Tags**: Labels to categorize and organize resources.
+8. **Security Groups**: Firewall rules that control traffic to the instance.
+9. **Key Pair**: Used for secure access to your instances.
+
+---
+
+### 1. Amazon Machine Image (AMI)
+- **Definition**: A template used to create an EC2 instance.
+- **Content**: Windows or Linux OS, often with pre-installed software.
+
+#### AMI Choices:
+- **Quick Start**: Linux and Windows AMIs provided by AWS.
+- **My AMIs**: Any AMIs that you created.
+- **AWS Marketplace**: Pre-configured templates from third parties.
+- **Community AMIs**: AMIs shared by others; use at your own risk.
+
+![AMI Image](https://github.com/user-attachments/assets/a8a25673-63b0-4527-8c1f-0eaa6ac78cf8)
+
+![AMI Selection](https://github.com/user-attachments/assets/debcc63a-cc8a-4bb0-8793-f095ee5559ff)
+
+#### AMI Flowchart:
+1. **Launch Instance** (Unmodified Instance)
+2. **Connect to Instance** and run a script (e.g., install Python)
+3. **Capture** as a new AMI
+4. **Copy New AMI** to any other regions
+
+---
+
+### 2. Instance Type
+- **Memory (RAM)**
+- **Processing Power**
+- **Disk Storage and Space**
+- **Network Performance**
+
+#### Instance Types Table:
+| Instance Types       | Name      | vCPU | GB  |
+|----------------------|-----------|------|-----|
+| General Purpose      | t3.nano   | 2    | 0.5 |
+| Compute Optimized    | t3.micro  | 2    | 1   |
+| Memory Optimized     | t3.small  | 2    | 2   |
+| Storage Optimized    | t3.medium | 2    | 4   |
+| Accelerated Computing | t3.large  | 2    | 8   |
+|                      | t3.xlarge | 4    | 16  |
+|                      | t3.2xlarge | 8   | 32  |
+
+![Instance Type Image](https://github.com/user-attachments/assets/e9ed8551-17cb-4de6-a54b-1d729cecb7df)
+![Instance Type Graph](https://github.com/user-attachments/assets/7cf24746-33c9-4e04-a880-2514e29a62c3)
+![Instance Type Comparison](https://github.com/user-attachments/assets/0992d991-d950-4a32-b531-fc095652176d)
+
+---
+
+### 3. Specify the Instance Deployment under VPC
+- **Deployment Location**: Identify the VPC and optionally the subnet.
+- **Public IP Assignment**: To make it internet-accessible.
+
+![VPC Image](https://github.com/user-attachments/assets/47660088-f5b7-41a6-bd84-63dfb783d170)
+
+---
+
+### 4. Attach IAM Role (Optional)
+- **Purpose**: Allows the EC2 instance to interact with other AWS services.
+- **IAM Role**: An AWS Identity and Access Management role attached to an EC2 instance within an instance profile.
+
+#### Example: 
+Grant a role to S3, allowing an application on the instance to access an S3 bucket.
+
+---
+
+### 5. User Data Script (Optional)
+- **Customization**: Customize the runtime environment of your instance.
+- **Execution**: Script executes the first time the instance starts.
+- **Strategic Use**: Reduce the number of custom AMIs you need to build and maintain.
+
+---
+
+### 6. Specify Storage
+- **Root Volume**: Where the guest OS is installed.
+- **Additional Volumes**: Optionally attach more storage volumes.
+
+#### Volume Configuration:
+- **Size of the Disk**: In GB.
+- **Volume Type**: Different types of SSDs and HDDs.
+- **Retention**: If the volume will be deleted when the instance is terminated.
+- **Encryption**: Should encryption be used?
+
+#### Amazon EC2 Storage Options:
+- **Amazon Elastic Block Store (Amazon EBS)**: Durable, block-level storage volumes.
+- **Amazon Elastic File System (Amazon EFS)**: Mount a file system.
+- **Amazon S3**: Connect to Simple Storage Service.
+
+![Storage Options Image](https://github.com/user-attachments/assets/05a79351-8bf4-460b-aa04-49f27d4eafbd)
+
+#### Instance Characteristics:
+- **Instance 1**: Amazon EBS root volume type for the OS.
+  - OS volume survives after stopping and starting.
+  - Data in ephemeral volume 1 is lost.
+- **Instance 2**: Instance Store root volume type for the OS.
+  - All data stored in ephemeral volume 2 is lost, including the OS.
+
+---
+
+### 7. Add Tags
+- **Tagging**: Assign labels (key-value pairs) to AWS resources.
+- **Benefits**: Filtering, automation, cost allocation, and access control.
+
+---
+
+### 8. Security Group Settings
+- **Firewall Rules**: Control traffic to the instance outside the guest OS.
+- **Rule Creation**: Specify source, port number, protocol, and allowed source.
+
+---
+
+### 9. Identify the Key Pair
+- **Key Pair**: Consists of a public key (stored by AWS) and a private key file (stored by you).
+- **Windows AMIs**: Use the private key to obtain the administrator password.
+- **Linux AMIs**: Use the private key to SSH into your instance securely.
+
+![EC2 Instance Image](https://github.com/user-attachments/assets/32d8cfc6-5f57-4357-8a05-277b12c4acd8)
+
+---
+
+### Another Option: Launch an EC2 Instance with the AWS CLI
+- **AWS CLI Command Example**:
+  ```bash
+  aws ec2 run-instances --image0id ami-1a2b3c4d --count 1 --instance-type c3.large \
+  --key-name MyKeyPair --security-groups MySecurityGroup --region us-east-1
+  ```
+
+#### This command assumes that the key pair and security group already exist.
+
+---
+
+### Amazon EC2 Instance Lifecycle
+![Lifecycle Image](https://github.com/user-attachments/assets/c18319be-258c-41e0-8df4-4e7695d814f9)
+
+#### Elastic IP Address Consideration
+- **Rebooting**: Will not change IP addresses or DNS hostnames.
+- **Stopping and Starting**: Public IPv4 address and external DNS hostname will change, private IPv4 address and internal DNS hostname do not.
+- **Persistent Public IP**: Associate an Elastic IP address.
+
+---
+
+### EC2 Instance Metadata
+- **Data Retrieval**: View instance data while connected.
+  - **Browser**: `http://169.254.169.254/latest/meta-data/`
+  - **Terminal**: `curl http://169.254.169.254/latest/meta-data/`
+
+#### Example Retrievable Values:
+- Public IP address, private IP address, public hostname, instance ID, security groups, Region, Availability Zone.
+
+---
+
+### Amazon CloudWatch for Monitoring
+- **Monitoring EC2 Instances**: Provides near-real-time metrics, charts, and historical data (15 months).
+- **Basic Monitoring**: Default, no additional cost, metric data sent every 5 minutes.
+- **Detailed Monitoring**: Fixed monthly rate, metric data delivered every 1 minute.
+
+---
+
+# Amazon EC2 Cost Optimization
+
+### Amazon EC2 Pricing Models
+- **On-Demand Instances
+- **: Pay for what you use.
 - **Reserved Instances**: Discounted price for commitment to usage.
 - **Spot Instances**: Bid for unused capacity at lower rates.
 
@@ -605,7 +780,6 @@ The OSI model ensures seamless data transmission from one network to another.
 
 ---
 
-This structure should provide a clear and visually appealing presentation for your documentation. Let me know if there are any changes or additions you'd like to make!
 
 ![image](https://github.com/user-attachments/assets/d5dc1d8f-9c65-4f27-a617-661e67838271)
 
@@ -684,5 +858,4 @@ This structure should provide a clear and visually appealing presentation for yo
 
 ---
 
-Feel free to modify or add any additional information as needed!
 
