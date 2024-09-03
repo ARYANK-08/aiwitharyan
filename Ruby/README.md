@@ -136,3 +136,108 @@ puts 5 % 2     # Output: 1
 - `Math.sqrt(x)` - Square root of `x`
 - `Math.log(x)` - Natural logarithm of `x`
 
+
+## Getting Input from the User
+
+```ruby
+# Getting input from the user
+puts "Enter your name: "
+user_name = gets.chomp
+puts "Enter your age: "
+user_age = gets.chomp
+puts "Your name is #{user_name} and your age is #{user_age}. You are cool!"
+```
+
+**Explanation:**
+- `gets.chomp` reads input from the user and removes the newline character.
+- `#{}` is used for string interpolation to include variable values within a string.
+
+## Building a Calculator
+
+```ruby
+# Building a simple calculator
+puts "Enter a number: "
+num1 = gets.chomp # Gets input and removes newline
+puts "Enter another number: "
+num2 = gets.chomp
+
+# Concatenates two strings (not correct for numbers)
+puts num1 + num2
+
+# Convert strings to integers and floats for addition
+puts (num1.to_i + num2.to_i) # Addition of integers
+puts (num1.to_f + num2.to_f) # Addition of decimal numbers
+```
+
+**Explanation:**
+- `to_i` converts a string to an integer.
+- `to_f` converts a string to a float.
+
+## Building a Mad Libs Game
+
+```ruby
+# Building a Mad Libs game
+puts "Enter a color:"
+color = gets.chomp
+puts "Enter a plural noun:"
+noun = gets.chomp
+puts "Enter a description:"
+desc = gets.chomp
+
+puts "Roses are #{color}"
+puts "Violets are #{noun}"
+puts "The one who does DSA is a #{desc}"
+```
+
+**Explanation:**
+- This example uses string interpolation to create a playful text.
+
+## Arrays
+
+Arrays are ordered, integer-indexed collections of any object.
+
+```ruby
+# Creating and manipulating arrays
+friends = ["Pradyumnaa", "Myron", "Sharvin"] # Array with different data types
+puts friends           # Outputs entire array
+puts friends[0]        # Outputs the first element
+puts friends[-1]       # Outputs the last element
+puts friends[0, 2]     # Outputs elements from index 0 to 2 (exclusive)
+
+# Modifying an array
+friends[0] = "Aditya"
+puts friends[0]        # Outputs the modified first element
+puts friends           # Outputs entire array
+
+# Working with an empty array
+friends = Array.new
+friends[0] = "Aryan"
+friends[1] = "Myron"
+
+puts friends.length()  # Outputs the length of the array
+puts friends.include?("Aryan")  # Checks if "Aryan" is in the array
+puts friends.reverse() # Outputs the array in reverse order
+puts friends.sort()    # Outputs the array sorted alphabetically
+print friends          # Prints the entire array without new lines
+```
+
+## Hashes
+
+Hashes are collections of key-value pairs, similar to dictionaries in other languages.
+
+```ruby
+# Creating and using hashes
+states = {
+  "New York" => "NY",
+  "Pennsylvania" => "PA",
+  "California" => "CA", # Corrected abbreviation
+  :Maharashtra => "MH"  # Symbol as a key
+}
+
+puts states["New York"] # Outputs the value associated with the key "New York"
+```
+
+**Explanation:**
+- Hashes are used to store data in key-value pairs.
+- You can use symbols (`:key`) or strings (`"key"`) as keys.
+
