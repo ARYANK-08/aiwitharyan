@@ -18,6 +18,7 @@ plss star the repo <3
 
 Stay tuned for more articles on:
 
+- **Ruby**
 - **DBMS**
 - **Operating Systems (OS)**
 - **Computer Networks (CN)**
