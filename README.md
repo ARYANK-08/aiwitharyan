@@ -1,6 +1,8 @@
 # 🤖 #aiwitharyan
 
 yoo! this is where I shitcode and share whatever I feel might help you all gain some info about programming :)
+plss star the repo <3
+![MixCollage-03-Sep-2024-05-50-AM-1729](https://github.com/user-attachments/assets/659f2978-55af-463a-afa3-8967c08a3dfe)
 
 ## 🔥 What You'll Find Here
 
