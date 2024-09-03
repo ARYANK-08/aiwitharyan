@@ -1,5 +1,8 @@
 # AWS - Everything You Need to Know
 
+please star the repo tanjiro :)
+![image](https://github.com/user-attachments/assets/5a3388c7-75b2-4cbb-a1b3-1f34831c3865)
+
 ## Table of Contents
 
 | **Table of Contents**                                | **Link**                                                        |
