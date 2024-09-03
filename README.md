@@ -13,12 +13,12 @@ plss star the repo <3
 ## 🐍 Python Fundamentals
 - [Python Fundamentals Cheat Sheets](https://github.com/ARYANK-08/aiwitharyan/tree/main/python%20fundamentals) 🐍
 - [AWS 1shot](https://github.com/ARYANK-08/aiwitharyan/blob/main/AWS/README.md) ☁️
+- [Ruby](https://github.com/ARYANK-08/aiwitharyan/tree/main/Ruby)♦️
 
 ## 🚀 Coming Soon
 
 Stay tuned for more articles on:
 
-- **Ruby**
 - **DBMS**
 - **Operating Systems (OS)**
 - **Computer Networks (CN)**
