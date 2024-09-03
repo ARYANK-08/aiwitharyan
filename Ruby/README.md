@@ -241,3 +241,208 @@ puts states["New York"] # Outputs the value associated with the key "New York"
 - Hashes are used to store data in key-value pairs.
 - You can use symbols (`:key`) or strings (`"key"`) as keys.
 
+
+# Ruby Methods
+
+## Methods (Functions)
+
+Methods in Ruby are blocks of code that perform specific tasks. They can accept parameters and return values.
+
+### Defining and Calling Methods
+
+```ruby
+# Basic method definition
+def say_hi
+  puts "Hello User"
+end
+
+say_hi # Calls the method
+```
+
+**Output:**
+```
+Hello User
+```
+
+### Methods with Parameters
+
+```ruby
+# Method with parameters
+def say_hi_to(name, age)
+  puts "Hello #{name}, your age is #{age}"
+end
+
+say_hi_to("Aryan", "20")
+```
+
+**Output:**
+```
+Hello Aryan, your age is 20
+```
+
+### Methods with Default Parameter Values
+
+```ruby
+# Method with default parameter values
+def say_hi_to1(name="no name", age=-1)
+  puts "Hello #{name}, your age is #{age}"
+end
+
+say_hi_to1("Aryan")
+```
+
+**Output:**
+```
+Hello Aryan, your age is -1
+```
+
+### Returning Values from Methods
+
+```ruby
+# Method that returns a value
+def cube_number(number)
+  cubed_value = number**3
+  return cubed_value
+end
+
+puts cube_number(2)
+```
+
+**Output:**
+```
+8
+```
+
+## Conditional Statements
+
+Conditional statements allow you to execute code based on certain conditions.
+
+### Basic `if` Statement
+
+```ruby
+# Basic if statement
+grind = false 
+if grind
+  puts "Grind is ON!"
+else
+  puts "Start the GRIND ASAP!"
+end 
+```
+
+**Output:**
+```
+Start the GRIND ASAP!
+```
+
+### Multiple Conditions with `if` Statements
+
+```ruby
+# Multiple conditions
+dsa_grind = true
+dev_grind = false
+
+if dsa_grind && dev_grind
+  puts "Cracked Coder"
+elsif dsa_grind && !dev_grind
+  puts "Mega noob Coder"
+elsif dev_grind && !dsa_grind
+  puts "Cool Coder"
+else
+  puts "Noob Coder"
+end
+```
+
+**Output:**
+```
+Mega noob Coder
+```
+
+### Using Comparisons in `if` Statements
+
+```ruby
+# Method to find the greatest number
+def max_number(n1, n2, n3)
+  if n1 >= n2 && n1 >= n3
+    puts "n1 is the greatest"
+    return n1
+  elsif n2 >= n1 && n2 >= n3
+    puts "n2 is the greatest"
+    return n2
+  else
+    puts "n3 is the greatest"
+    return n3
+  end
+end
+
+puts max_number(10, 20, 30)
+```
+
+**Output:**
+```
+n3 is the greatest
+30
+```
+
+### Comparison Operators
+
+Ruby supports various comparison operators:
+- `!=` (not equal)
+- `==` (equal)
+- `>` (greater than)
+- `<` (less than)
+- `>=` (greater than or equal to)
+- `<=` (less than or equal to)
+
+## Building a Simple Calculator
+
+```ruby
+# Calculator method
+def calculator
+  # Get the first number from user input
+  puts "Enter the first number:"
+  num1 = gets.chomp.to_i
+
+  # Get the second number from user input
+  puts "Enter the second number:"
+  num2 = gets.chomp.to_i
+
+  # Get the user's choice of operation
+  puts "Enter 1: add, 2: sub, 3: mul, 4: div"
+  user_input = gets.chomp
+
+  # Perform the chosen operation using if statements
+  if user_input == "1"
+    puts num1 + num2
+  elsif user_input == "2"
+    puts num1 - num2
+  elsif user_input == "3"
+    puts num1 * num2
+  elsif user_input == "4"
+    if num2 == 0
+      puts "Cannot divide by zero"
+    else
+      puts num1.to_f / num2
+    end
+  else
+    puts "Invalid input"
+  end
+end
+
+calculator
+```
+
+**Explanation:**
+- This method allows the user to perform basic arithmetic operations by entering numbers and choosing an operation.
+- Handles division by zero and invalid inputs.
+
+**Example Usage:**
+```
+Enter the first number:
+5
+Enter the second number:
+3
+Enter 1: add, 2: sub, 3: mul, 4: div
+1
+8
+```
+
