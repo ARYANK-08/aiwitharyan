@@ -1,6 +1,6 @@
-# 🤖 #aiwitharyan
-
 # Ruby Programming Language
+
+![image](https://github.com/user-attachments/assets/c17326f4-97d3-43da-83c1-60c30665cb67)
 
 Ruby is a dynamic, open-source programming language with a focus on simplicity and productivity. It features an elegant syntax that is natural to read and easy to write. Ruby can be used for a variety of applications, including:
 
@@ -10,6 +10,8 @@ Ruby is a dynamic, open-source programming language with a focus on simplicity a
 - Custom database solutions
 - Prototyping
 - And more
+
+tbh : ruby is very similar to python in terms of syntax except (:) xD
 
 ## Examples and Explanations
 
