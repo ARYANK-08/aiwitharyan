@@ -1053,5 +1053,69 @@ fish.breathe  # Output: Breathing
 
 **Explanation:**
 - Both `Bird` and `Fish` inherit from `Animal` and share the `breathe` method.
+Here's an explanation of different types of inheritance in Ruby, along with examples. I've also included an explanation of the `module` and `require_relative` concepts, and a brief on Interactive Ruby (IRB).
 
+---
+
+## Modules
+
+Modules in Ruby are a way to group related methods, classes, or constants. They cannot be instantiated but can be included in other classes to share functionality.
+
+### Example of a Module
+
+#### `file.rb`:
+```ruby
+module Tools
+  def say_hi(name)
+    puts "Hello #{name}"
+  end
+
+  def say_bye(name)
+    puts "Bye #{name}"
+  end
+end
+```
+
+**Explanation:**
+- `Tools` module defines two methods: `say_hi` and `say_bye`.
+
+### Using Modules in Your Code
+
+#### Main File:
+```ruby
+require_relative "file"  # Include the module from file.rb
+include Tools
+
+say_hi("Aryan")  # Output: Hello Aryan
+say_bye("Aryan") # Output: Bye Aryan
+```
+
+**Explanation:**
+- `require_relative "file"` tells Ruby to load the `file.rb` file.
+- `include Tools` makes the `Tools` module's methods available in the current context.
+- The methods `say_hi` and `say_bye` can now be used directly.
+
+## Interactive Ruby (IRB)
+
+IRB (Interactive Ruby) is a REPL (Read-Eval-Print Loop) environment for Ruby. It allows you to execute Ruby code interactively and is useful for testing snippets of code and experimenting with Ruby.
+
+### Example:
+
+```bash
+$ irb
+> puts "Hello, world!"
+Hello, world!
+> 2 + 2
+=> 4
+```
+
+**Explanation:**
+- Start IRB from the command line by typing `irb`.
+- You can enter Ruby code directly, and IRB will execute it and display the result immediately.
+
+---
+
+thanks for reading :) 
+
+![5283106](https://github.com/user-attachments/assets/be6a4ebf-2a1a-4570-92f5-0e01d7428b75)
 
