@@ -699,4 +699,118 @@ Sharvin, Masters
 - `file.readline` - Reads one line at a time.
 - `file.readchar` - Reads a single character.
 
+---
+
+
+## Writing to Files
+
+### Append Mode (`"a"`)
+
+Use `"a"` mode to open a file for appending data. This will add new content to the end of the file without affecting existing content.
+
+```ruby
+File.open("emp.txt", "a") do |file|
+  file.write("\nTanjiro, Anime")  # Append new employee
+end
+```
+
+**Explanation:** 
+- Opens `emp.txt` in append mode.
+- Adds `"Tanjiro, Anime"` to the end of the file.
+
+**Example Content of `emp.txt` After Execution:**
+```
+Aryan, Tech
+Myron, QA
+Pradyumnaa, CyberSecurity
+Sharvin, Masters
+Tanjiro, Anime
+```
+
+### Read and Write Mode (`"r+"`)
+
+Use `"r+"` mode to open a file for both reading and writing. This will start at the beginning of the file and can overwrite existing content if not handled carefully.
+
+```ruby
+File.open("emp.txt", "r+") do |file|
+  file.write("Tanjiro, Anime")  # Overwrite content from the beginning
+end
+```
+
+**Explanation:** 
+- Opens `emp.txt` in read and write mode.
+- Overwrites the file's content starting from the beginning.
+
+**Example Content of `emp.txt` After Execution:**
+```
+Tanjiro, Anime
+```
+
+### Write Mode (`"w+"`)
+
+Use `"w+"` mode to open a file for both reading and writing. If the file already exists, its contents are truncated (cleared). If it doesn’t exist, a new file is created.
+
+```ruby
+File.open("emp.txt", "w+") do |file|
+  file.write("Tanjiro, Anime")  # Write new content, file is cleared first
+end
+```
+
+**Explanation:** 
+- Opens `emp.txt` in write and read mode.
+- Clears the file and writes `"Tanjiro, Anime"`.
+
+**Example Content of `emp.txt` After Execution:**
+```
+Tanjiro, Anime
+```
+
+## Exception Handling
+
+Ruby uses `begin` and `rescue` blocks to handle exceptions and errors gracefully.
+
+### Basic Exception Handling
+
+```ruby
+begin
+  puts 2 / 0  # This will raise a ZeroDivisionError
+rescue
+  puts "Division by zero error"  # Handle the exception
+end
+```
+
+**Explanation:**
+- `begin` starts the block of code that may raise an exception.
+- `rescue` handles the exception if it occurs.
+
+**Output:**
+```
+Division by zero error
+```
+
+### Handling Specific Exceptions
+
+```ruby
+nums = [1, 2, 3, 4]
+begin
+  puts nums["doh1"]  # This will raise a TypeError
+rescue TypeError
+  puts "Wrong Type"  # Handle TypeError specifically
+rescue ZeroDivisionError
+  puts "Division by zero error"  # Handle ZeroDivisionError specifically
+rescue TypeError => e
+  puts e  # Handle TypeError and print the error message
+end
+```
+
+**Explanation:**
+- Handles `TypeError` and `ZeroDivisionError` separately.
+- `rescue TypeError => e` captures the exception and prints its message.
+
+**Output:**
+```
+Wrong Type
+```
+
+
 
