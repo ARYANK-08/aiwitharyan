@@ -812,5 +812,228 @@ end
 Wrong Type
 ```
 
+# Ruby Classes and Inheritance
+
+## Classes and Objects
+
+In Ruby, a class is a blueprint for creating objects. Objects are instances of classes and can hold data and methods.
+
+### Defining a Class
+
+```ruby
+class Book
+  attr_accessor :title, :author, :pages  # Attributes for the Book class
+
+  def initialize(title, author, pages)
+    @title = title
+    @author = author
+    @pages = pages
+  end
+end
+
+book1 = Book.new("Harry Potter", "JK Rowling", 400)
+puts book1.title   # Output: Harry Potter
+
+book2 = Book.new("What You Call a Python Living?", "Aryan", 100)
+puts book2.author  # Output: Aryan
+```
+
+**Explanation:**
+- `attr_accessor` creates getter and setter methods for the attributes.
+- `initialize` method is used to set initial values for the object’s attributes.
+
+## More Examples of Classes
+
+### Student Class
+
+```ruby
+class Student
+  attr_accessor :name, :major, :gpa
+
+  def initialize(name, major, gpa)
+    @name = name
+    @major = major
+    @gpa = gpa
+  end
+
+  def has_honors?
+    @gpa >= 9.0
+  end
+end
+
+student1 = Student.new("Myron", "AI", 9.6)
+student2 = Student.new("Aryan", "CS", 9.5)
+
+puts student1.has_honors?  # Output: true
+puts student2.has_honors?  # Output: true
+```
+
+### Question Class for a Quiz
+
+```ruby
+class Question
+  attr_accessor :prompt, :answer
+
+  def initialize(prompt, answer)
+    @prompt = prompt
+    @answer = answer
+  end
+end
+
+p1 = "What color are apples?\n(a).red\n(b).purple\n(c).yellow\n(d).orange"
+p2 = "What color are bananas?\n(a).red\n(b).purple\n(c).yellow\n(d).orange"
+p3 = "What color are pears?\n(a).red\n(b).green\n(c).yellow\n(d).orange"
+
+questions = [
+  Question.new(p1, "a"),
+  Question.new(p2, "c"),
+  Question.new(p3, "b")
+]
+
+def run_test(questions)
+  score = 0
+  questions.each do |question|
+    puts question.prompt
+    answer = gets.chomp
+    score += 1 if answer == question.answer
+  end
+  puts "You got #{score} / #{questions.length}"
+end
+
+run_test(questions)
+```
+
+**Explanation:**
+- The `Question` class represents a question with a prompt and an answer.
+- `run_test` method iterates through questions, prompts the user, and calculates the score.
+
+## Inheritance
+
+Inheritance allows a class to inherit features from another class, promoting code reuse and extending functionality.
+
+### Basic Inheritance Example
+
+```ruby
+class Chef
+  def make_chicken
+    puts "Chef makes chicken"
+  end
+
+  def make_salad
+    puts "Chef makes salad"
+  end
+
+  def make_special_dish
+    puts "Chef makes BBQ"
+  end
+end
+
+class ItalianChef < Chef
+  def make_special_dish
+    puts "Italian Chef makes Paneer Tikka"
+  end
+
+  def make_pasta
+    puts "Italian Chef makes Pasta"
+  end
+end
+
+chef = Chef.new
+chef.make_chicken      # Output: Chef makes chicken
+
+italian_chef = ItalianChef.new
+italian_chef.make_salad       # Output: Chef makes salad
+italian_chef.make_special_dish  # Output: Italian Chef makes Paneer Tikka
+```
+
+**Explanation:**
+- `ItalianChef` inherits from `Chef` and overrides the `make_special_dish` method.
+- `ItalianChef` also adds a new method `make_pasta`.
+
+## Types of Inheritance
+
+### 1. **Single Inheritance**
+
+A class inherits from one parent class. This is the most common form of inheritance.
+
+```ruby
+class Animal
+  def speak
+    puts "Animal speaks"
+  end
+end
+
+class Dog < Animal
+  def bark
+    puts "Dog barks"
+  end
+end
+
+dog = Dog.new
+dog.speak  # Output: Animal speaks
+dog.bark   # Output: Dog barks
+```
+
+### 2. **Multiple Inheritance (Through Mixins)**
+
+Ruby does not support multiple inheritance directly but allows a form of it using modules.
+
+```ruby
+module Swimmer
+  def swim
+    puts "Swimming"
+  end
+end
+
+module Flyer
+  def fly
+    puts "Flying"
+  end
+end
+
+class Duck
+  include Swimmer
+  include Flyer
+end
+
+duck = Duck.new
+duck.swim  # Output: Swimming
+duck.fly   # Output: Flying
+```
+
+**Explanation:**
+- Modules `Swimmer` and `Flyer` are mixed into the `Duck` class, allowing it to have both functionalities.
+
+### 3. **Hierarchical Inheritance**
+
+Multiple classes inherit from the same parent class.
+
+```ruby
+class Animal
+  def breathe
+    puts "Breathing"
+  end
+end
+
+class Bird < Animal
+  def fly
+    puts "Flying"
+  end
+end
+
+class Fish < Animal
+  def swim
+    puts "Swimming"
+  end
+end
+
+bird = Bird.new
+fish = Fish.new
+bird.breathe  # Output: Breathing
+fish.breathe  # Output: Breathing
+```
+
+**Explanation:**
+- Both `Bird` and `Fish` inherit from `Animal` and share the `breathe` method.
 
 
