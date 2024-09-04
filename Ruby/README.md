@@ -2,6 +2,25 @@
 
 ![image](https://github.com/user-attachments/assets/c17326f4-97d3-43da-83c1-60c30665cb67)
 
+#Table of Contents
+
+| Topic Name                                    | Link                                    |
+|-----------------------------------------------|-----------------------------------------|
+| 📜 [Ruby Programming Language](#ruby-programming-language) | #ruby-programming-language |
+| 🧩 [Variables in Ruby](#variables-in-ruby)   | #variables-in-ruby |
+| 🔢 [Data Types](#data-types)                  | #data-types |
+| 🔠 [Working with Strings](#working-with-strings) | #working-with-strings |
+| ➕ [Math and Numbers](#math-and-numbers)       | #math-and-numbers |
+| 🛠️ [Defining and Calling Methods](#defining-and-calling-methods) | #defining-and-calling-methods |
+| 📝 [Conditional Statements](#conditional-statements) | #conditional-statements |
+| 🔄 [While Loop](#while-loop)                  | #while-loop |
+| 🧑‍🎓 [Classes and Objects](#classes-and-objects) | #classes-and-objects |
+| 🏛️ [Inheritance](#inheritance)                | #inheritance |
+
+
+
+
+
 Ruby is a dynamic, open-source programming language with a focus on simplicity and productivity. It features an elegant syntax that is natural to read and easy to write. Ruby can be used for a variety of applications, including:
 
 - Web applications
