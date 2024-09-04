@@ -448,3 +448,255 @@ Enter 1: add, 2: sub, 3: mul, 4: div
 8
 ```
 
+## Case Statement
+
+A `case` statement in Ruby is used for conditional logic based on the value of a variable. Here’s an example that converts a shorthand day name to a full day name.
+
+```ruby
+def get_day_name(day)
+  day_name = ""
+
+  case day
+  when "mon"
+    day_name = "Monday"
+  when "tue"
+    day_name = "Tuesday"
+  when "wed"
+    day_name = "Wednesday"
+  when "thurs"
+    day_name = "Thursday"
+  when "fri"
+    day_name = "Friday"
+  when "sat"
+    day_name = "Saturday"
+  when "sun"
+    day_name = "Sunday"
+  else
+    day_name = "Invalid day"
+  end 
+
+  return day_name
+end
+
+puts get_day_name(gets.chomp())
+```
+
+**Example:**
+```
+Input: "fri"
+Output: "Friday"
+```
+
+## While Loop
+
+The `while` loop repeats a block of code as long as a given condition is true. Here are some examples:
+
+### Simple While Loop
+
+Print numbers from `0` to `4`.
+
+```ruby
+i = 0
+while i < 5
+  puts i
+  i += 1
+end
+```
+
+**Output:**
+```
+0
+1
+2
+3
+4
+```
+
+### While Loop with Conditional Printing
+
+Print even numbers from `0` to `11`.
+
+```ruby
+i = 0
+while i < 12
+  puts i if i % 2 == 0
+  i += 1
+end
+```
+
+**Output:**
+```
+0
+2
+4
+6
+8
+10
+```
+
+**Note:** Ensure the loop condition will eventually become false to avoid infinite loops.
+
+## Guessing Game
+
+A simple guessing game where the user has to guess a secret word within 10 attempts.
+
+```ruby
+secret_word = "godlevel"
+guess = ""
+guess_count = 0
+
+while guess != secret_word && guess_count < 10
+  puts "Enter the guess word:"
+  guess = gets.chomp
+  guess_count += 1
+  puts "Guesses left: #{10 - guess_count}"
+end
+
+if guess_count < 10
+  puts "You guessed it in #{guess_count} attempts!"
+else
+  puts "You lost! The correct word was '#{secret_word}'."
+end
+```
+
+**Example:**
+```
+Input: "godlevel"
+Output: "You guessed it in 1 attempts!"
+```
+
+## For Loops
+
+### Iterating Over an Array
+
+Print each name from an array of friends.
+
+```ruby
+friends = ["Aryan", "Myron", "Sharvin", "Pradyumnaa"]
+
+for friend in friends
+  puts friend
+end
+```
+
+**Output:**
+```
+Aryan
+Myron
+Sharvin
+Pradyumnaa
+```
+
+### Using a Range
+
+Print numbers from `0` to `5`.
+
+```ruby
+for i in 0..5
+  puts i
+end
+```
+
+**Output:**
+```
+0
+1
+2
+3
+4
+5
+```
+
+### Using Times Iterator
+
+Print numbers from `0` to `5` using the `times` iterator.
+
+```ruby
+6.times do |index|
+  puts index
+end
+```
+
+**Output:**
+```
+0
+1
+2
+3
+4
+5
+```
+
+## Building an Exponent Method
+
+Calculate the exponent of a base number.
+
+```ruby
+def expo(base, power)
+  result = 1
+  power.times do
+    result *= base
+  end
+  return result
+end
+
+puts expo(5, 2)
+```
+
+**Output:**
+```
+25
+```
+
+## Comments
+
+Comments are used to explain code or temporarily disable it.
+
+```ruby
+# This is a single-line comment
+
+=begin
+This is a multi-line comment.
+It can span multiple lines.
+=end
+```
+
+## Reading Files
+
+Read from a file and print its content.
+
+```ruby
+File.open("emp.txt", "r") do |file|
+  puts file.readlines()[2] # Print the third line
+  file.each do |line|
+    puts line # Print each line
+  end
+end
+```
+
+**Example Content of `emp.txt`:**
+```
+Aryan, Tech
+Myron, QA
+Pradyumnaa, CyberSecurity
+Sharvin, Masters
+```
+
+**Output:**
+```
+Pradyumnaa, CyberSecurity
+Myron, QA
+Pradyumnaa, CyberSecurity
+Sharvin, Masters
+```
+
+**Modes:** 
+- `"r"`: Read mode
+- `"w"`: Write mode
+- `"r+"`: Read and write mode
+
+**Methods:**
+- `file.readline` - Reads one line at a time.
+- `file.readchar` - Reads a single character.
+
+
