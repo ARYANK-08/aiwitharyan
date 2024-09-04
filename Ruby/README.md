@@ -6,16 +6,15 @@
 
 | Topic Name                                    | Link                                    |
 |-----------------------------------------------|-----------------------------------------|
-| 📜 [Ruby Programming Language](#ruby-programming-language) | #ruby-programming-language |
-| 🧩 [Variables in Ruby](#variables-in-ruby)   | #variables-in-ruby |
-| 🔢 [Data Types](#data-types)                  | #data-types |
-| 🔠 [Working with Strings](#working-with-strings) | #working-with-strings |
-| ➕ [Math and Numbers](#math-and-numbers)       | #math-and-numbers |
-| 🛠️ [Defining and Calling Methods](#defining-and-calling-methods) | #defining-and-calling-methods |
-| 📝 [Conditional Statements](#conditional-statements) | #conditional-statements |
-| 🔄 [While Loop](#while-loop)                  | #while-loop |
-| 🧑‍🎓 [Classes and Objects](#classes-and-objects) | #classes-and-objects |
-| 🏛️ [Inheritance](#inheritance)                | #inheritance |
+| 🧩 Variables in Ruby  | [Variables in Ruby](#variables-in-ruby)  |
+| 🔢 Data Types                | [Data Types](#data-types)    |
+| 🔠 Working with Strings | [Working with Strings](#working-with-strings) |
+| ➕ Math and Numbers       | [Math and Numbers](#math-and-numbers)   |
+| 🛠️ Defining and Calling Methods]| [Defining and Calling Methods](#defining-and-calling-methods)|
+| 📝 Conditional Statements] | [Conditional Statements](#conditional-statements) |
+| 🔄 While Loop]            | [While Loop](#while-loop) |
+| 🧑‍🎓 Classes and Objects] | [Classes and Objects](#classes-and-objects) |
+| 🏛️ Inheritance]              | [Inheritance](#inheritance)|
 
 
 
