@@ -1695,8 +1695,280 @@ def __init__(self):
 - When you create an instance of the derived class and call the overridden method, the version of the method in the derived class is executed rather than the version in the base class.
 
 ---
-## Super keyword
-## Dunder magical methods
+
+
+# **Python Class Concepts**
+
+## **1. Static Methods**
+- Static methods belong to the **class** rather than an **instance** of a class.
+- They are defined using the `@staticmethod` decorator and don't have access to the instance of the class (i.e., they don't use `self`).
+- Used to create utility functions that don't need access to instance data.
+
+**Example**:
+```python
+class Math:
+   @staticmethod
+   def add(a, b):
+      return a + b
+
+result = Math.add(1, 2)
+print(result)  # Output: 3
+```
+
+---
+
+## **2. Class vs Instance Variables**
+
+- **Class variables** are shared among all instances of a class and are used to store data common to all instances.
+- **Instance variables** are unique to each instance of a class and are used to store data specific to each instance.
+
+### **Accessing Class and Instance Variables**:
+- Class variable: `ClassName.variable` or `self.__class__.variable`
+- Instance variable: `self.variable`
+
+**Example**:
+```python
+class Car:
+   wheels = 4  # Class variable
+
+   def __init__(self, color):
+      self.color = color  # Instance variable
+
+c1 = Car('Red')
+c2 = Car('Blue')
+
+print(Car.wheels)  # Output: 4 (shared)
+print(c1.color)    # Output: Red (unique to c1)
+print(c2.color)    # Output: Blue (unique to c2)
+```
+
+---
+
+## **3. Exercise: Clear Clutter in a Folder**
+
+### Problem: Rename all PNG images inside a folder based on the file number (e.g., `1.png`, `2.png`).
+```python
+import os
+
+files = os.listdir("cluttered_folder")
+i = 1
+for file in files:
+    if file.endswith(".png"):
+        os.rename(f"cluttered_folder/{file}", f"cluttered_folder/{i}.png")
+        i += 1
+```
+
+---
+
+## **4. Library Class Example**
+Write a `Library` class with `no_of_books` and `books` as instance variables. Create a library, add books, and display information.
+
+```python
+class Library:
+   def __init__(self):
+      self.no_of_books = 0
+      self.books = []
+
+   def add_book(self, book):
+      self.books.append(book)
+      self.no_of_books = len(self.books)
+
+   def show_info(self):
+      print(f"No. of books: {self.no_of_books}")
+      for book in self.books:
+         print(book)
+
+# Creating a library and adding books
+lib = Library()
+lib.add_book("Harry Potter")
+lib.add_book("The Hobbit")
+lib.show_info()
+```
+
+**Output**:
+```
+No. of books: 2
+Harry Potter
+The Hobbit
+```
+
+---
+
+## **5. Class Methods**
+
+- A class method is bound to the class and not the instance of the class.
+- It operates on the class as a whole rather than a specific instance.
+- Defined using the `@classmethod` decorator.
+
+**Example**:
+```python
+class Employee:
+   company = "Apple"
+
+   def show(self):
+      print(f"Name: {self.name}, Company: {self.company}")
+
+   @classmethod
+   def change_company(cls, new_company):
+      cls.company = new_company
+
+# Test
+e1 = Employee()
+e1.name = "Aryan"
+e1.show()  # Output: Name: Aryan, Company: Apple
+Employee.change_company("Tesla")
+e1.show()  # Output: Name: Aryan, Company: Tesla
+print(Employee.company)  # Output: Tesla
+```
+
+### **Class Methods as Alternative Constructors**
+```python
+class Employee:
+   def __init__(self, name, salary):
+      self.name = name
+      self.salary = salary
+
+   @classmethod
+   def from_str(cls, emp_str):
+      name, salary = emp_str.split("-")
+      return cls(name, int(salary))
+
+# Test
+e1 = Employee("John", 1200)
+e2 = Employee.from_str("Jane-1500")
+print(e1.name, e1.salary)  # Output: John 1200
+print(e2.name, e2.salary)  # Output: Jane 1500
+```
+
+---
+
+## **6. Useful Methods: `dir()`, `__dict__`, `help()`**
+
+- `dir()` returns a list of all attributes and methods of an object.
+- `__dict__` returns a dictionary representation of the object’s attributes.
+- `help()` provides detailed help documentation for an object.
+
+```python
+class Person:
+   def __init__(self, name, age):
+      self.name = name
+      self.age = age
+
+p = Person("John", 30)
+print(p.__dict__)  # Output: {'name': 'John', 'age': 30}
+print(dir(p))  # Shows all methods and attributes
+```
+
+---
+
+## **7. Super Keyword**
+
+- `super()` is used to refer to the parent class and call its methods or constructor.
+
+**Example**:
+```python
+class Employee:
+   def __init__(self, name, id):
+      self.name = name
+      self.id = id
+
+class Programmer(Employee):
+   def __init__(self, name, id, language):
+      super().__init__(name, id)
+      self.language = language
+
+# Test
+p = Programmer("Harry", 23, "Python")
+print(p.name, p.id, p.language)  # Output: Harry 23 Python
+```
+
+---
+
+## **8. Dunder (Magic) Methods**
+
+These are special methods that allow you to customize class behavior.
+
+1. **`__init__`**: Constructor method that initializes an instance.
+2. **`__str__`** and **`__repr__`**: For string representations.
+3. **`__len__`**: Defines the behavior for `len()` on an object.
+4. **`__call__`**: Makes an object callable.
+
+```python
+class Employee:
+   def __init__(self, name):
+      self.name = name
+
+   def __len__(self):
+      return len(self.name)
+
+   def __str__(self):
+      return f"Employee name: {self.name}"
+
+   def __repr__(self):
+      return f"Employee({self.name})"
+
+   def __call__(self):
+      print(f"{self.name} is called!")
+
+e = Employee("Aryan")
+print(len(e))  # Output: 5
+print(str(e))  # Output: Employee name: Aryan
+e()            # Output: Aryan is called!
+```
+
+---
+
+## **9. Method Overriding**
+Allows redefinition of methods in a derived class to override the base class method.
+
+```python
+class Shape:
+   def __init__(self, x, y):
+      self.x = x
+      self.y = y
+
+   def area(self):
+      return self.x * self.y
+
+class Circle(Shape):
+   def __init__(self, radius):
+      super().__init__(radius, radius)
+
+   def area(self):
+      return 3.14 * super().area()
+
+# Test
+rect = Shape(3, 5)
+circle = Circle(5)
+print(rect.area())  # Output: 15
+print(circle.area())  # Output: 78.5
+```
+
+---
+
+## **10. Operator Overloading**
+Allows the redefinition of behavior for mathematical and comparison operators.
+
+```python
+class Vector:
+   def __init__(self, i, j, k):
+      self.i = i
+      self.j = j
+      self.k = k
+
+   def __add__(self, other):
+      return Vector(self.i + other.i, self.j + other.j, self.k + other.k)
+
+   def __str__(self):
+      return f"{self.i}i + {self.j}j + {self.k}k"
+
+v1 = Vector(3, 5, 6)
+v2 = Vector(1, 2, 9)
+v3 = v1 + v2
+print(v3)  # Output: 4i + 7j + 15k
+```
+
+
 ## Python class methods
 ## Operator over riding
 ## CLI Utility
