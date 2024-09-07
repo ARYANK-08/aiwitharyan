@@ -1976,16 +1976,266 @@ print(v3)  # Output: 4i + 7j + 15k
 ```
 
 > **Note:** `super()` is helpful in extending the behavior of a base class method rather than replacing it entirely.
+---
 
 
+# **Exercise: Merge PDFs into a Single PDF**
 
-## Python class methods
-## Operator over riding
-## CLI Utility
-## WAlrus oeprator
-## Generaots
-## Function caching (@lru_cache)
-## REG EX
+```python
+from PyPDF2 import PdfWriter
+import os
+
+merger = PdfWriter()
+files = [file for file in os.listdir() if file.endswith(".pdf")]
+
+for pdf in files:
+    merger.append(pdf)
+
+merger.write("Merged-pdf.pdf")
+merger.close()
+```
+
+Output:
+- Merges all the PDF files in the current directory into a single file named `Merged-pdf.pdf`.
+
+---
+
+# **Time Module:**
+
+- **Provides a set of functions to work with time-related operations such as timekeeping, formatting, and time conversions.**
+- **Common Functions:**
+
+  - **`time.time()`**: Returns the current time in seconds since the Epoch (1970).
+    
+    **Example:**
+    ```python
+    import time
+    start_time = time.time()
+    print("Current Time:", start_time)
+    ```
+
+  - **`time.sleep(seconds)`**: Suspends the execution of the current thread for a specific number of seconds.
+    
+    **Example:**
+    ```python
+    import time
+    print("Start")
+    time.sleep(2)
+    print("End after 2 seconds")
+    ```
+
+  - **`time.strftime()`**: Formats a time value as a string based on a specific format.
+    
+    **Example:**
+    ```python
+    import time
+    t = time.localtime()
+    formatted_time = time.strftime("%Y-%m-%d, %H:%M:%S", t)
+    print(formatted_time)
+    ```
+
+---
+
+# **Command Line Utility:**
+
+- **Command-line programs are essential for automating tasks and working efficiently in development workflows.**
+
+### **Basic Example:**
+
+```python
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("arg1", help="Description of Arg1")
+parser.add_argument("arg2", help="Description of Arg2")
+args = parser.parse_args()
+
+print(args.arg1)
+print(args.arg2)
+```
+
+### **File Downloader Example:**
+
+```python
+import argparse
+import requests
+import shutil
+
+def download_file(url, local_filename=None):
+    if local_filename is None:
+        local_filename = url.split('/')[-1]
+    response = requests.get(url, stream=True)
+    with open(local_filename, 'wb') as out_file:
+        shutil.copyfileobj(response.raw, out_file)
+    del response
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Download a file from a URL")
+    parser.add_argument("url", help="URL of the file")
+    parser.add_argument("output", help="Output filename")
+    args = parser.parse_args()
+    download_file(args.url, args.output)
+    print("File downloaded:", args.output)
+```
+
+Output:
+- Downloads a file from the provided URL and saves it with the specified output name.
+
+---
+
+# **Walrus Operator (`:=`):**
+
+- **Introduced in Python 3.8, the Walrus Operator allows assignment within expressions.**
+
+### **Example:**
+
+```python
+happy = False
+print("Before:", happy)
+print("After:", happy := True)
+
+foods = list()
+while (food := input("What food do you like? ")) != "quit":
+    foods.append(food)
+
+print("Foods you like:", foods)
+```
+
+---
+
+# **`shutil` Module:**
+
+- **A high-level file operation utility in Python.**
+
+### **Functions:**
+
+- **`shutil.copy(src, dst)`**: Copies the file.
+- **`shutil.copy2(src, dst)`**: Copies the file along with metadata.
+- **`shutil.copytree(src, dst)`**: Recursively copies a directory.
+- **`shutil.move(src, dst)`**: Moves a file or directory.
+- **`shutil.rmtree(path)`**: Deletes a directory tree.
+
+---
+
+# **Beautiful Soup (bs4): Web Scraping**
+
+- **Beautiful Soup is a Python library for web scraping purposes.**
+  
+```python
+import requests
+from bs4 import BeautifulSoup
+
+url = "https://example.com"
+r = requests.get(url)
+soup = BeautifulSoup(r.text, "html.parser")
+
+print(soup.prettify())
+
+for heading in soup.find_all("h1"):
+    print(heading.text)
+```
+
+Output:
+- Prints the entire webpage content in a structured format and all `<h1>` headings.
+
+---
+
+# **Generators:**
+
+- **Generators are special types of functions that allow you to iterate over values one by one without creating a full list in memory.**
+
+### **Example:**
+
+```python
+def my_generator():
+    for i in range(5):
+        yield i
+
+gen = my_generator()
+print(next(gen))  # Output: 0
+
+for j in gen:
+    print(j)  # Output: 1, 2, 3, 4
+```
+
+---
+
+# **Function Caching (`@lru_cache`):**
+
+- **Caches function results to avoid recomputation for the same inputs, useful for expensive calculations.**
+
+### **Example:**
+
+```python
+from functools import lru_cache
+import time
+
+@lru_cache(maxsize=None)
+def fx(n):
+    time.sleep(5)  # Simulate a slow function
+    return n * 5
+
+print(fx(20))  # First call, takes 5 seconds
+print(fx(2))   # First call, takes 5 seconds
+print(fx(6))   # First call, takes 5 seconds
+
+# Cached calls, output is immediate
+print(fx(20))
+print(fx(2))
+print(fx(6))
+```
+
+---
+
+# **Regular Expressions (Regex):**
+
+- **A powerful tool for matching and manipulating strings using patterns.**
+
+### **Basic Regex:**
+
+```python
+import re
+pattern = r"expression"
+text = "hello world!"
+match = re.search(pattern, text)
+
+if match:
+    print("Match found!")
+else:
+    print("No match found.")
+```
+
+### **Example:**
+
+```python
+import re
+
+text = "The cat is in the hat"
+pattern = r"[a-z]+at"
+matches = re.findall(pattern, text)
+print("Matches:", matches)  # Output: ['cat', 'hat']
+
+new_text = re.sub(pattern, "dog", text)
+print("Updated text:", new_text)  # Output: "The dog is in the dog"
+```
+
+### **Extracting Emails:**
+
+```python
+import re
+
+text = "Email ID is example@example.com"
+pattern = r"\w+@\w+\.\w+"
+match = re.search(pattern, text)
+
+if match:
+    email = match.group()
+    print("Extracted Email:", email)
+```
+
+
+#AsyncIO
+
 ## ASYNCIO 
 ## MultiThreading
 ## Multiprocessing
