@@ -2233,9 +2233,175 @@ if match:
     print("Extracted Email:", email)
 ```
 
+# AsyncIO
+- Allows for high-performance I/O operations in a concurrent and non-blocking manner.
+- Module: `asyncio`
 
-#AsyncIO
+```python
+import asyncio
+import requests
 
-## ASYNCIO 
-## MultiThreading
-## Multiprocessing
+async def function1():
+    url = "https://example.com/wallpaper.jpg"
+    response = requests.get(url)
+    open("instagram.ico", "wb").write(response.content)
+    return "aryan"
+
+async def function2():
+    url = "https://example.com/preview.jpg"
+    response = requests.get(url)
+    open("insta2.png", "wb").write(response.content)
+
+async def main():
+    l = await asyncio.gather(function1(), function2())
+    print(l)
+
+asyncio.run(main())
+```
+
+### Output:
+- **instagram.ico** and **insta2.png** will be downloaded.
+- The list `['aryan', None]` will be printed.
+
+---
+
+# MultiThreading
+- Allows multiple threads of execution to run concurrently within a single process.
+- In Python, we use the `threading` module to implement multithreading.
+- Create a thread -> call its `start()` method.
+- `join()` stops execution until the thread completes.
+
+```python
+import threading
+
+def my_func():
+    print("Hello from thread", threading.current_thread().name)
+
+thread = threading.Thread(target=my_func)
+thread.start()
+thread.join()
+```
+
+### Output:
+- `Hello from thread Thread-1` (or similar, depending on the thread name).
+
+### Functions:
+1. **`threading.Thread(target, args)`**:
+   - Creates a new thread that runs the target function with arguments.
+   
+2. **`threading.Lock()`**:
+   - Creates a lock that can be used to synchronize access to shared resources between threads.
+   - A lock ensures that only one thread can execute a critical section at a time.
+
+### Example with Lock:
+
+```python
+import threading
+
+def increment(counter, lock):
+    for i in range(100):
+        lock.acquire()
+        counter[0] += 1
+        lock.release()
+
+if __name__ == "__main__":
+    counter = [0]  # List is used to allow modification in thread
+    lock = threading.Lock()
+    threads = []
+
+    for i in range(2):
+        thread = threading.Thread(target=increment, args=(counter, lock))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    print(f"Final counter value: {counter[0]}")
+```
+
+### Output:
+- The final counter value will be `200`.
+
+---
+
+# Using ThreadPoolExecutor
+
+```python
+import time
+from concurrent.futures import ThreadPoolExecutor
+
+def func(seconds):
+    print(f"Sleeping for {seconds} seconds")
+    time.sleep(seconds)
+    return seconds
+
+def main():
+    time1 = time.perf_counter()
+
+    # Using threads
+    with ThreadPoolExecutor() as executor:
+        t1 = executor.submit(func, 4)
+        t2 = executor.submit(func, 2)
+        t3 = executor.submit(func, 1)
+
+        print(t1.result())
+        print(t2.result())
+        print(t3.result())
+
+    time2 = time.perf_counter()
+    print(f"Finished in {time2 - time1} seconds")
+
+main()
+```
+
+### Output:
+- Threads will print sleep statements and the total time taken will be reduced since the threads run concurrently.
+
+---
+
+# Multiprocessing
+- A module in Python that provides a way to run multiple processes in parallel.
+- Allows you to take advantage of multiple cores/processors on the system, which can significantly improve the performance of code.
+
+```python
+import concurrent.futures
+import requests
+import os
+
+def download_file(url, name):
+    try:
+        print(f"Started downloading {name}")
+        response = requests.get(url)
+        file_path = f"{name}.jpg"
+        with open(file_path, "wb") as file:
+            file.write(response.content)
+        print(f"Finished downloading {name}")
+    except Exception as e:
+        print(f"Error downloading {name}: {e}")
+
+if __name__ == "__main__":
+    url = "https://picsum.photos/200/300"
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        pros = []
+        for i in range(50):
+            pros.append(executor.submit(download_file, url, f"image_{i}"))
+
+        for future in concurrent.futures.as_completed(pros):
+            future.result()
+```
+
+### Output:
+- The script will download 50 images concurrently.
+
+---
+
+# Multiprocessing vs Multithreading
+
+| **S.No** | **Multiprocessing**                                              | **Multithreading**                                               |
+|----------|-------------------------------------------------------------------|------------------------------------------------------------------|
+| 1.       | CPUs are added for increasing computing power.                    | Many threads are created of a single process for concurrency.    |
+| 2.       | Many processes are executed simultaneously.                       | Many threads of a process are executed simultaneously.           |
+| 3.       | Classified into Symmetric and Asymmetric multiprocessing.         | Not classified into categories.                                  |
+| 4.       | Process creation is time-consuming.                               | Thread creation is more economical.                              |
+| 5.       | Every process owns a separate address space.                      | A common address space is shared by all the threads.             |
