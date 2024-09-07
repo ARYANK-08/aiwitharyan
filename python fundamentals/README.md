@@ -1696,15 +1696,14 @@ def __init__(self):
 
 ---
 
+# Static Methods 
 
-# **Python Class Concepts**
+Static methods belong to the class rather than an instance of the class.
 
-## **1. Static Methods**
-- Static methods belong to the **class** rather than an **instance** of a class.
-- They are defined using the `@staticmethod` decorator and don't have access to the instance of the class (i.e., they don't use `self`).
+- Defined using the `@staticmethod` decorator.
+- Do not have access to the instance of the class (i.e., `self`).
 - Used to create utility functions that don't need access to instance data.
 
-**Example**:
 ```python
 class Math:
    @staticmethod
@@ -1717,90 +1716,90 @@ print(result)  # Output: 3
 
 ---
 
-## **2. Class vs Instance Variables**
+# Class vs Instance Variables
 
-- **Class variables** are shared among all instances of a class and are used to store data common to all instances.
-- **Instance variables** are unique to each instance of a class and are used to store data specific to each instance.
+- **Class variables** are shared among all instances of a class.  
+  - Example: Used to store info that is common across all instances.
 
-### **Accessing Class and Instance Variables**:
+- **Instance variables** are unique to each instance of a class.  
+  - Example: Used to store information specific to each instance.
+
+**Accessing Variables:**
 - Class variable: `ClassName.variable` or `self.__class__.variable`
-- Instance variable: `self.variable`
+- Instance variable: `self.variable_name`
 
-**Example**:
 ```python
-class Car:
-   wheels = 4  # Class variable
+class Animal:
+   species = "Mammal"  # Class variable
 
-   def __init__(self, color):
-      self.color = color  # Instance variable
+   def __init__(self, name):
+      self.name = name  # Instance variable
 
-c1 = Car('Red')
-c2 = Car('Blue')
+a1 = Animal("Dog")
+a2 = Animal("Cat")
 
-print(Car.wheels)  # Output: 4 (shared)
-print(c1.color)    # Output: Red (unique to c1)
-print(c2.color)    # Output: Blue (unique to c2)
+print(a1.species)  # Output: Mammal
+print(a2.name)     # Output: Cat
 ```
 
 ---
 
-## **3. Exercise: Clear Clutter in a Folder**
+# Exercise: Clear Clutter Inside Folder (Rename PNG Files)
 
-### Problem: Rename all PNG images inside a folder based on the file number (e.g., `1.png`, `2.png`).
+Rename all PNG images in a folder based on a sequence number (e.g., `1.png`, `2.png`).
+
 ```python
 import os
 
-files = os.listdir("cluttered_folder")
+files = os.listdir("clutter_folder")
 i = 1
 for file in files:
     if file.endswith(".png"):
-        os.rename(f"cluttered_folder/{file}", f"cluttered_folder/{i}.png")
+        os.rename(f"clutter_folder/{file}", f"clutter_folder/{i}.png")
         i += 1
 ```
 
 ---
 
-## **4. Library Class Example**
-Write a `Library` class with `no_of_books` and `books` as instance variables. Create a library, add books, and display information.
+# Library Class Exercise
+
+Create a `Library` class with two instance variables: `noBooks` (number of books) and `books`. Demonstrate adding books and printing the information.
 
 ```python
 class Library:
    def __init__(self):
-      self.no_of_books = 0
+      self.noBooks = 0
       self.books = []
 
-   def add_book(self, book):
+   def addBook(self, book):
       self.books.append(book)
-      self.no_of_books = len(self.books)
+      self.noBooks = len(self.books)
 
-   def show_info(self):
-      print(f"No. of books: {self.no_of_books}")
+   def showInfo(self):
+      print(f"No. of books: {self.noBooks}")
       for book in self.books:
          print(book)
 
-# Creating a library and adding books
-lib = Library()
-lib.add_book("Harry Potter")
-lib.add_book("The Hobbit")
-lib.show_info()
-```
+l1 = Library()
+l1.addBook("Harry Potter")
+l1.addBook("The Hobbit")
+l1.showInfo()
 
-**Output**:
-```
-No. of books: 2
-Harry Potter
-The Hobbit
+# Output:
+# No. of books: 2
+# Harry Potter
+# The Hobbit
 ```
 
 ---
 
-## **5. Class Methods**
+# Python Class Methods
 
-- A class method is bound to the class and not the instance of the class.
-- It operates on the class as a whole rather than a specific instance.
+- **Class methods** are bound to the class and not the instance.
+- Operates on the class as a whole rather than a specific instance.
 - Defined using the `@classmethod` decorator.
+- Useful for creating factory methods or alternative constructors.
 
-**Example**:
 ```python
 class Employee:
    company = "Apple"
@@ -1809,19 +1808,20 @@ class Employee:
       print(f"Name: {self.name}, Company: {self.company}")
 
    @classmethod
-   def change_company(cls, new_company):
-      cls.company = new_company
+   def changeCompany(cls, newCompany):
+      cls.company = newCompany
 
-# Test
 e1 = Employee()
 e1.name = "Aryan"
 e1.show()  # Output: Name: Aryan, Company: Apple
-Employee.change_company("Tesla")
+Employee.changeCompany("Tesla")
 e1.show()  # Output: Name: Aryan, Company: Tesla
-print(Employee.company)  # Output: Tesla
 ```
 
-### **Class Methods as Alternative Constructors**
+---
+
+# Class Methods as Alternative Constructors
+
 ```python
 class Employee:
    def __init__(self, name, salary):
@@ -1829,24 +1829,26 @@ class Employee:
       self.salary = salary
 
    @classmethod
-   def from_str(cls, emp_str):
-      name, salary = emp_str.split("-")
+   def fromStr(cls, string):
+      name, salary = string.split("-")
       return cls(name, int(salary))
 
-# Test
-e1 = Employee("John", 1200)
-e2 = Employee.from_str("Jane-1500")
-print(e1.name, e1.salary)  # Output: John 1200
-print(e2.name, e2.salary)  # Output: Jane 1500
+e1 = Employee("Aryan", 1200)
+print(e1.name)     # Output: Aryan
+print(e1.salary)   # Output: 1200
+
+e2 = Employee.fromStr("John-1500")
+print(e2.name)     # Output: John
+print(e2.salary)   # Output: 1500
 ```
 
 ---
 
-## **6. Useful Methods: `dir()`, `__dict__`, `help()`**
+# Useful Methods: `dir()`, `__dict__`, and `help()`
 
-- `dir()` returns a list of all attributes and methods of an object.
-- `__dict__` returns a dictionary representation of the object’s attributes.
-- `help()` provides detailed help documentation for an object.
+- **`dir()`**: Returns a list of attributes and methods, including special methods.
+- **`__dict__`**: Returns a dictionary representation of an object's attributes.
+- **`help()`**: Displays help documentation for an object.
 
 ```python
 class Person:
@@ -1855,17 +1857,17 @@ class Person:
       self.age = age
 
 p = Person("John", 30)
-print(p.__dict__)  # Output: {'name': 'John', 'age': 30}
-print(dir(p))  # Shows all methods and attributes
+print(p.__dict__)   # Output: {'name': 'John', 'age': 30}
+print(dir(p))       # Output: ['__class__', '__delattr__', ...] 
 ```
 
 ---
 
-## **7. Super Keyword**
+## Super Keyword
 
-- `super()` is used to refer to the parent class and call its methods or constructor.
+- The `super()` function is used to refer to the parent class.
+- Useful in class inheritance to extend the behavior of a method from the parent class.
 
-**Example**:
 ```python
 class Employee:
    def __init__(self, name, id):
@@ -1873,25 +1875,26 @@ class Employee:
       self.id = id
 
 class Programmer(Employee):
-   def __init__(self, name, id, language):
+   def __init__(self, name, id, lang):
       super().__init__(name, id)
-      self.language = language
+      self.lang = lang
 
-# Test
-p = Programmer("Harry", 23, "Python")
-print(p.name, p.id, p.language)  # Output: Harry 23 Python
+harry = Programmer("Harry", 23, "Python")
+print(harry.name)  # Output: Harry
+print(harry.lang)  # Output: Python
 ```
 
 ---
 
-## **8. Dunder (Magic) Methods**
+## Dunder (Magic) Methods
 
-These are special methods that allow you to customize class behavior.
+- Special methods that customize the behavior of classes.
+- Example: Implementing addition, comparison operators, etc.
 
-1. **`__init__`**: Constructor method that initializes an instance.
-2. **`__str__`** and **`__repr__`**: For string representations.
-3. **`__len__`**: Defines the behavior for `len()` on an object.
-4. **`__call__`**: Makes an object callable.
+1. **`__init__`**: Called when a new instance is created (constructor).
+2. **`__str__` & `__repr__`**: Convert objects to string.
+3. **`__len__`**: Returns the length of an object.
+4. **`__call__`**: Makes an object callable like a function.
 
 ```python
 class Employee:
@@ -1902,24 +1905,26 @@ class Employee:
       return len(self.name)
 
    def __str__(self):
-      return f"Employee name: {self.name}"
+      return f"Employee: {self.name}"
 
    def __repr__(self):
       return f"Employee({self.name})"
 
    def __call__(self):
-      print(f"{self.name} is called!")
+      print(f"Hello, I am {self.name}")
 
 e = Employee("Aryan")
-print(len(e))  # Output: 5
-print(str(e))  # Output: Employee name: Aryan
-e()            # Output: Aryan is called!
+print(len(e))      # Output: 5
+print(str(e))      # Output: Employee: Aryan
+e()                # Output: Hello, I am Aryan
 ```
 
 ---
 
-## **9. Method Overriding**
-Allows redefinition of methods in a derived class to override the base class method.
+## Method Overriding
+
+- Allows you to redefine a method in a derived class.
+- When you call an overridden method, the derived class method is executed.
 
 ```python
 class Shape:
@@ -1931,23 +1936,25 @@ class Shape:
       return self.x * self.y
 
 class Circle(Shape):
-   def __init__(self, radius):
-      super().__init__(radius, radius)
+   def __init__(self, r):
+      super().__init__(r, r)
 
    def area(self):
       return 3.14 * super().area()
 
-# Test
 rect = Shape(3, 5)
-circle = Circle(5)
 print(rect.area())  # Output: 15
+
+circle = Circle(5)
 print(circle.area())  # Output: 78.5
 ```
 
 ---
 
-## **10. Operator Overloading**
-Allows the redefinition of behavior for mathematical and comparison operators.
+## Operator Overriding
+
+- Allows you to redefine the behavior of mathematical and comparison operators for custom data types.
+- Example: Adding two `Vector` objects.
 
 ```python
 class Vector:
@@ -1967,6 +1974,9 @@ v2 = Vector(1, 2, 9)
 v3 = v1 + v2
 print(v3)  # Output: 4i + 7j + 15k
 ```
+
+> **Note:** `super()` is helpful in extending the behavior of a base class method rather than replacing it entirely.
+
 
 
 ## Python class methods
