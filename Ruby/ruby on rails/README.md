@@ -1,6 +1,7 @@
 # Rails and the MVC Architecture
 
 Ruby on Rails (Rails) is a web application framework that follows the Model-View-Controller (MVC) architecture. This design pattern separates an application into three interconnected components:
+![image](https://github.com/user-attachments/assets/a5ca3b66-0784-4f58-a8a7-a32c6d5a3183)
 
 - **Model**: Manages the database and business logic. In Rails, this often involves interacting with databases like MySQL.
 - **View**: Handles the presentation layer, i.e., the web pages that users interact with.
