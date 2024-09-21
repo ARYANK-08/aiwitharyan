@@ -530,3 +530,100 @@ end
 2. **Edit Button Condition**: Only allows the edit button to show if the friend belongs to the current user.
 3. **`correct_user` method**: Verifies the friend belongs to the current user, redirecting if not authorized.
 4. **`new` and `create` methods**: Associates new friend records with the current user.
+
+# 🌐 Deploying Ruby on Rails on Heroku
+
+Follow these steps to deploy your Rails app on Heroku:
+
+### 1. 📥 Install Heroku CLI
+
+- [Install Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+- Verify installation:
+
+  ```bash
+  heroku --version
+  ```
+
+### 2. 🔑 Login to Heroku
+
+Login to your Heroku account:
+
+```bash
+heroku login
+```
+
+### 3. 🛠️ Create a Heroku App
+
+Create a Heroku app:
+
+```bash
+heroku create
+```
+
+Rename your app:
+
+```bash
+heroku rename rails_friends
+```
+
+### 4. 🔑 Add SSH Keys
+
+Add your SSH key to Heroku:
+
+```bash
+heroku keys:add
+```
+
+### 5. 🛠️ Update Gemfile
+
+In `Gemfile`, replace `sqlite3` with `pg` for production:
+
+```ruby
+group :production do
+  gem 'pg'
+end
+```
+
+### 6. 💎 Install Dependencies
+
+Run `bundle install`:
+
+```bash
+bundle install
+```
+
+### 7. 🚀 Push to GitHub
+
+Commit your changes and push to GitHub:
+
+```bash
+git add .
+git commit -m "Prepare for Heroku deployment"
+git push origin main
+```
+
+### 8. 🚢 Deploy to Heroku
+
+Push your app to Heroku:
+
+```bash
+git push heroku main
+```
+
+### 9. 🛠️ Run Migrations
+
+Run database migrations on Heroku:
+
+```bash
+heroku run rails db:migrate
+```
+
+### 10. 🌍 Open Your App
+
+Launch your app:
+
+```bash
+heroku open
+```
+
+
