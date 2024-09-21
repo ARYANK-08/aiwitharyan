@@ -343,6 +343,7 @@ user_password PATCH
 
 
 ## Why Associations?
+[Link](https://guides.rubyonrails.org/association_basics.html)
 
 In Rails, an **association** is a connection between two Active Record models. Why do we need associations between models? Because they make common operations simpler and easier in your code.
 
@@ -403,7 +404,7 @@ To learn more about the different types of associations, read the next section o
 ---
 
 
-## The Types of Associations[Link](https://guides.rubyonrails.org/association_basics.html)
+## The Types of Associations
 
 Rails supports **six types of associations**, each with a particular use-case in mind.
 
