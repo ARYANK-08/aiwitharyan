@@ -499,3 +499,34 @@ If when creating a new account and going to the friends page, friends created by
 
 This will ensure that the friends displayed are the ones associated with the logged-in user's ID only.
 
+```ruby
+# Ensures user is authenticated before taking actions, except for viewing (index, show)
+before_action :authenticate_user!, except: [:index, :show]
+
+# Only show the edit button if the friend belongs to the current user
+<% if friend.user == current_user %>
+
+# Ensures only the correct user can edit, update, or destroy a friend
+def correct_user
+  @friend = current_user.friends.find_by(id: params[:id])
+  redirect_to friends_path, notice: "Not Authorized" if @friend.nil?
+end
+
+before_action :correct_user, only: [:edit, :update, :destroy]
+
+# Initialize a new friend associated with the current user
+def new
+  @friend = current_user.friends.build
+end
+
+# Create a friend record linked to the current user
+def create
+  @friend = current_user.friends.build(friend_params)
+end
+```
+
+### Explanation:
+1. **`before_action :authenticate_user!`**: Ensures that users must be logged in to take most actions, except viewing friends.
+2. **Edit Button Condition**: Only allows the edit button to show if the friend belongs to the current user.
+3. **`correct_user` method**: Verifies the friend belongs to the current user, redirecting if not authorized.
+4. **`new` and `create` methods**: Associates new friend records with the current user.
