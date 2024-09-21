@@ -342,3 +342,160 @@ user_password PATCH
 ```
 
 
+## Why Associations?
+
+In Rails, an **association** is a connection between two Active Record models. Why do we need associations between models? Because they make common operations simpler and easier in your code.
+
+For example, consider a simple Rails application that includes a model for authors and a model for books. Each author can have many books.
+
+Without associations, the model declarations would look like this:
+
+```ruby
+class Author < ApplicationRecord
+end
+
+class Book < ApplicationRecord
+end
+```
+
+Now, suppose we wanted to add a new book for an existing author. We'd need to do something like this:
+
+```ruby
+@book = Book.create(published_at: Time.now, author_id: @author.id)
+```
+
+Or consider deleting an author, and ensuring that all of its books get deleted as well:
+
+```ruby
+@books = Book.where(author_id: @author.id)
+@books.each do |book|
+  book.destroy
+end
+@author.destroy
+```
+
+With Active Record associations, we can streamline these—and other—operations by **declaratively** telling Rails that there is a connection between the two models. Here's the revised code for setting up authors and books:
+
+```ruby
+class Author < ApplicationRecord
+  has_many :books, dependent: :destroy
+end
+
+class Book < ApplicationRecord
+  belongs_to :author
+end
+```
+
+With this change, creating a new book for a particular author is easier:
+
+```ruby
+@book = @author.books.create(published_at: Time.now)
+```
+
+Deleting an author and all of its books is much easier:
+
+```ruby
+@author.destroy
+```
+
+To learn more about the different types of associations, read the next section of this guide. That's followed by some tips and tricks for working with associations, and then by a complete reference to the methods and options for associations in Rails.
+
+---
+
+## The Types of Associations
+
+Rails supports **six types of associations**, each with a particular use-case in mind.
+
+Here is a list of all the supported types with a link to their API docs for more detailed information on how to use them, their method parameters, etc.
+
+- `belongs_to`
+- `has_one`
+- `has_many`
+- `has_many :through`
+- `has_one :through`
+- `has_and_belongs_to_many`
+
+Associations are implemented using **macro-style calls**, so that you can declaratively add features to your models. For example, by declaring that one model `belongs_to` another, you instruct Rails to maintain **Primary Key-Foreign Key** information between instances of the two models, and you also get a number of utility methods added to your model.
+
+---
+
+```ruby
+class Friend < ApplicationRecord
+  belongs_to :user
+end
+```
+
+```ruby
+class User < ApplicationRecord
+  has_many :friends
+end
+```
+
+---
+
+### Adding `user_id` to friends table in `schema.rb`
+
+To add `user_id` to the friends table, run the following migration:
+
+```bash
+rails g migration add_user_id_to_friends user_id:integer:index
+```
+
+The `index` speeds up the searching process.
+
+Then, run:
+
+```bash
+rails db:migrate
+```
+
+This will add the following line to your schema:
+
+```ruby
+t.integer "user_id"
+t.index ["user_id"], name: "index_friends_on_user_id"
+```
+
+---
+
+Afterward, delete all friends because they haven't been tagged to the `user_id`. You can inspect the current user with:
+
+```erb
+<%= current_user.inspect %>
+<%= current_user.id %>
+```
+
+To ensure the `user_id` gets passed when creating a friend, use a hidden form field:
+
+```erb
+<div class="form-group">
+  <%= form.number_field :user_id, id: :friend_user_id, class: "form-control", value: current_user.id, type: :hidden %>
+</div>
+```
+
+---
+
+### Error: **"User must exist"**
+
+If you're getting this error, it means that the `user_id` is not being passed properly, which is causing the failure.
+
+Make sure the `friend_params` method includes `user_id` in the permitted parameters, like this:
+
+```ruby
+def friend_params
+  params.require(:friend).permit(:first_name, :last_name, :email, :phone, :twitter, :user_id)
+end
+```
+
+---
+
+### Issue: **Friends of Other Users Being Displayed**
+
+If when creating a new account and going to the friends page, friends created by other users are still being displayed, you need to ensure that you **only show friends that belong to the current user**. You can filter friends by `current_user` like this:
+
+```ruby
+@friends = current_user.friends
+```
+
+This will ensure that the friends displayed are the ones associated with the logged-in user's ID only.
+
