@@ -197,6 +197,148 @@ The scaffold generates form views like this for creating or editing records:
 
 Rails simplifies many aspects of web development, from generating code to managing routes and creating CRUD operations. If you're familiar with Django, you'll find Rails' conventions and scaffolding incredibly efficient. Rails offers a streamlined approach, reducing the amount of boilerplate code and configuration required, which can make web development feel faster and more intuitive.
 
-Feel free to explore more on [Rails Guides](https://guides.rubyonrails.org/) and enjoy the streamlined experience of building web applications with Rails!
+# Day 2 started with an error
+
+I wasn't able to solve the gem file errors. I guess `rails s` was not running.
+
+### The psych gem (v5.1.2) failed to install during `bundle install`.
+- The error is due to failing to build native extensions, specifically missing `yaml.h`.
+- This is likely caused by missing YAML development libraries on your Windows system.
+- The failed installation of psych is blocking other dependent gems from installing.
+
+---
+
+### Sign In, Sign Up, Generate a Password, Forget Password
+It's insanely easy using Ruby on Rails to do all this!  
+In Django, we `pip install` something, and in Rails, we `gem install devise`.  
+Devise handles all of the user management.
+
+---
+
+### rubygems.org -> hub
+
+Now I'm recalling my memories with Flutter,  
+where in `pubspec.yaml`, we add dependencies of a library.  
+In the same way, we have the `Gemfile`:
+
+```ruby
+gem 'devise', '~> 4.9', '>= 4.9.4'
+```
+
+---
+
+### Setup Devise
+
+```bash
+$ rails generate devise:install
+```
+
+- Creates `config/initializers/devise.rb`
+- Creates `config/locales/devise.en.yml`
+
+---
+
+### Manual Setup (if required)
+
+Depending on your application's configuration, some manual setup may be required:
+
+1. Ensure you have defined default URL options in your environments files.  
+   Example for development environment (`config/environments/development.rb`):
+
+   ```ruby
+   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+   ```
+
+   In production, `:host` should be set to the actual host of your application.
+
+   *Required for all applications.*
+
+2. Ensure you have defined `root_url` in your `config/routes.rb`.  
+   Example:
+
+   ```ruby
+   root to: "home#index"
+   ```
+
+   *Not required for API-only applications.*
+
+3. Ensure you have flash messages in `app/views/layouts/application.html.erb`.  
+   Example:
+
+   ```erb
+   <p class="notice"><%= notice %></p>
+   <p class="alert"><%= alert %></p>
+   ```
+
+   *Not required for API-only applications.*
+
+4. You can copy Devise views (for customization) to your app by running:
+
+   ```bash
+   rails g devise:views
+   ```
+
+   *Not required.*
+
+---
+
+### Custom Pages for Sign-Up and Forgot Password
+All the different pages can be created via:
+
+```bash
+rails g devise:views
+```
+
+All the views are created, just like friends.
+
+---
+
+I literally hardcoded the "Forget Password" mail sending link in Django a year ago.  
+It feels magical how all these things are set up using one library like Devise.  
+It's like building a whole CRUD just by installing libraries and tweaking here and there.
+
+---
+
+### User Table:
+
+```bash
+rails generate devise user
+rails db:migrate
+```
+
+---
+
+### `user_signed_in?` Check
+
+Remember:
+
+```erb
+{% if user_loggedin or authenticated %}
+```
+
+in Django?  
+We used to show different navbars if logged in or logged out.
+
+---
+
+### Routes
+
+To check routes in Rails:
+
+```bash
+rails routes
+```
+
+Example output:
+
+```bash
+Prefix Verb   URI Pattern                         Controller#Action
+new_user_session GET    /users/sign_in(.:format)     devise/sessions#new
+user_session POST   /users/sign_in(.:format)     devise/sessions#create
+destroy_user_session DELETE /users/sign_out(.:format) devise/sessions#destroy
+new_user_password GET    /users/password/new(.:format) devise/passwords#new
+edit_user_password GET    /users/password/edit(.:format) devise/passwords#edit
+user_password PATCH
+```
 
 
