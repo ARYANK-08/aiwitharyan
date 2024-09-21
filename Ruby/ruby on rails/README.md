@@ -402,7 +402,8 @@ To learn more about the different types of associations, read the next section o
 
 ---
 
-## The Types of Associations
+
+## The Types of Associations[Link](https://guides.rubyonrails.org/association_basics.html)
 
 Rails supports **six types of associations**, each with a particular use-case in mind.
 
