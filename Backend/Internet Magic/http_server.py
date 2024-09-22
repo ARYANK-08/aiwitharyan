@@ -130,3 +130,109 @@ def main():
 
 if __name__ == "__main__":
     main()  # Run the main function
+
+
+
+# Simple HTTP Server
+
+# This is a simple HTTP server implemented in Python. 
+# It allows clients to send requests for file uploads, echoes strings, retrieves user-agent information, 
+# and serves files from a specified directory. Additionally, it supports Gzip compression for responses.
+
+# Features
+# - Echo Endpoint: Returns a string specified in the URL.
+# - User-Agent Endpoint: Returns the User-Agent string sent by the client.
+# - File Uploads: Supports uploading files via POST requests.
+# - File Retrieval: Serves files from a specified directory on the server.
+# - Gzip Compression: Compresses responses for clients that support it.
+
+# Getting Started
+
+# Prerequisites
+# - Python 3.x installed on your system.
+
+# Installation
+# 1. Clone the Repository (if applicable):
+#    ```bash
+#    git clone <repository-url>
+#    cd <repository-name>
+#    ```
+# 2. Save the Server Code: Copy the provided server code into a file named `http_server.py`.
+
+# Running the Server
+# 1. Open a Terminal/Command Prompt.
+# 2. Navigate to the Directory where `http_server.py` is saved.
+# 3. Run the Server:
+#    ```bash
+#    python http_server.py --directory /path/to/your/directory
+#    ```
+#    Replace `/path/to/your/directory` with the actual path where you want to serve files from.
+
+# Important Endpoints
+# - Echo Endpoint: Returns the string that you send in the URL.
+#   - Example:
+#     ```bash
+#     curl http://localhost:4221/echo/hello
+#     ```
+
+# - User-Agent Endpoint: Returns the User-Agent header from the request.
+#   - Example:
+#     ```bash
+#     curl -A "TestUserAgent/1.0" http://localhost:4221/user-agent
+#     ```
+
+# - File Upload: Uploads a file to the server using a POST request.
+#   - Example:
+#     ```bash
+#     curl -X POST -d "This is a test content" http://localhost:4221/files/testfile.txt
+#     ```
+
+# - Retrieve File: Gets a file from the server.
+#   - Example:
+#     ```bash
+#     curl http://localhost:4221/files/testfile.txt
+#     ```
+
+# Code Explanation
+
+# Imports
+# - argparse: Used to handle command-line arguments.
+# - socket: For creating the server and managing connections.
+# - threading: Allows handling multiple client connections simultaneously.
+# - gzip: To compress responses using Gzip.
+# - io: To manage byte streams for compression.
+# - pathlib: For easy manipulation of file paths.
+
+# Main Functions
+# 1. response_with_content(content, content_type="text/plain", code=200, compress=False):
+#    - Generates an HTTP response with the specified content, type, and status code.
+#    - If `compress` is set to `True`, the response content is compressed using Gzip.
+
+# 2. file_response(http_method, path, body, directory):
+#    - Handles file uploads (via POST) and retrieval (via GET).
+#    - Saves uploaded content to a file and returns its content if it exists.
+
+# 3. response(http_method, path, user_agent, body, directory):
+#    - Routes requests to the appropriate handlers based on the requested path.
+#    - Checks if the user agent supports Gzip compression and applies it if so.
+
+# 4. parse_request(request):
+#    - Parses the incoming HTTP request to extract the method, path, user agent, and body content.
+
+# 5. handle_client(client_socket, address, directory):
+#    - Manages the communication with connected clients, processes requests, and sends responses.
+
+# 6. main():
+#    - Sets up the server to listen for connections, accepts client connections, and spawns threads for handling them.
+
+# Important Concepts
+# - HTTP Methods: The server supports GET and POST methods. GET is used to retrieve resources, while POST is used to send data to the server.
+# - Gzip Compression: This server can compress responses using Gzip, which reduces the amount of data sent over the network, improving performance for clients that support it.
+# - Concurrency: The server can handle multiple client connections at the same time using threading, allowing for efficient request handling.
+
+# Conclusion
+# This simple HTTP server is a great starting point for understanding how web servers work. 
+# You can expand its functionality or customize it for your needs.
+
+# For any issues or contributions, feel free to raise an issue or submit a pull request!
+
