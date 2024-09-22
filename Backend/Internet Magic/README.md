@@ -1,11 +1,13 @@
 # What is the Internet?
 
 **Main link**: 
+
 [What is the Internet?](https://roadmap.sh/guides/what-is-internet)
 
 [The Internet](https://cs.fyi/guide/how-does-internet-work#introduction-to-the-internet)
 
 [HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)
+
 The Internet is a global network of interconnected computers, allowing communication through standardized protocols. It is a network of networks, composed of various independently operated systems, and is designed to be decentralized, with no central control.
 
 ### Understanding Networks
