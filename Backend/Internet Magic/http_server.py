@@ -234,5 +234,4 @@ if __name__ == "__main__":
 # This simple HTTP server is a great starting point for understanding how web servers work. 
 # You can expand its functionality or customize it for your needs.
 
-# For any issues or contributions, feel free to raise an issue or submit a pull request!
 
