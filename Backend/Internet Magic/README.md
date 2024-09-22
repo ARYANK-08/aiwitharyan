@@ -14,23 +14,21 @@ Information on the Internet moves in the form of bits over various mediums, incl
 
 The Internet transmits information using binary code (0s and 1s), similar to how the postal service works, but much faster.
 
-### Highlights
-- 📦 The Internet functions like a postal service for digital data.
-- 💡 Information is represented as binary code (0s and 1s).
-- ⚡ Data is transmitted using electricity, light, and radio waves.
-- 🌐 Fiber optic cables enable long-distance, high-speed data transfer.
-- 📶 Wireless signals allow mobile Internet access but rely on wired connections.
-- ⏱ Bandwidth measures data transmission capacity; latency measures delay.
-- 💻 All Internet content ultimately reduces to binary representation and transmission processes.
+- The Internet functions like a postal service for digital data.
+- Information is represented as binary code (0s and 1s).
+- Data is transmitted using electricity, light, and radio waves.
+- Fiber optic cables enable long-distance, high-speed data transfer.
+- Wireless signals allow mobile Internet access but rely on wired connections.
+- Bandwidth measures data transmission capacity; latency measures delay.
+- All Internet content ultimately reduces to binary representation and transmission processes.
 
-### Key Insights
-- 📡 **Binary Code**: Essential for efficient encoding and transmission of digital information.
-- 💡 **Physical Mediums**: Electricity, light, and radio waves affect data speed and distance.
-- 🌊 **Fiber Optics**: Facilitate high-speed communication with minimal signal loss.
-- 📶 **Wireless Technology**: Enables mobility but depends on wired infrastructure for long distances.
-- ⏱ **Bandwidth vs. Latency**: Understanding these is crucial for optimizing Internet performance.
-- ⚠️ **System Fragility**: The Internet is physically vulnerable; disruptions can impact service.
-- 💖 **Binary Love**: All Internet content, from emails to videos, is delivered through electronic pulses and light, illustrating technology's role in global connectivity.
+- **Binary Code**: Essential for efficient encoding and transmission of digital information.
+- **Physical Mediums**: Electricity, light, and radio waves affect data speed and distance.
+- **Fiber Optics**: Facilitate high-speed communication with minimal signal loss.
+- **Wireless Technology**: Enables mobility but depends on wired infrastructure for long distances.
+- **Bandwidth vs. Latency**: Understanding these is crucial for optimizing Internet performance.
+- **System Fragility**: The Internet is physically vulnerable; disruptions can impact service.
+- **Binary Love**: All Internet content, from emails to videos, is delivered through electronic pulses and light, illustrating technology's role in global connectivity.
 
 ## IP Addresses and DNS
 
@@ -57,6 +55,7 @@ Information transfer on the Internet occurs in small chunks called packets, whic
 - **Role of Routers**: Routers manage the flow of packets across the network, akin to traffic managers on a highway.
 
 - **TCP Protocol**: TCP (Transmission Control Protocol) ensures data is delivered accurately, like a reliable mail carrier.
+![image](https://github.com/user-attachments/assets/f59aa1f1-30ee-495a-8e3b-4478fbf8d246)
 
 - **Network Structure**: The Internet consists of hundreds of thousands of interconnected networks and billions of devices, similar to streets and houses in a city.
 
@@ -92,6 +91,8 @@ Cryptography keeps our communication secure on the Internet.
 - **Open System**: The Internet allows the exchange of private data (like credit card numbers) over shared connections.
 - **Encryption**: This process scrambles data to keep it secret, while decryption reverses it to make it readable.
 - **Caesar’s Cipher**: An early method of encryption that shifts letters. For example, encrypting "hello" with a shift of 5 gives "mjqqt."
+  
+![image](https://github.com/user-attachments/assets/332a93bb-b2e1-4f5e-b649-db0a65bd2b4b)
 
 - **Modern Encryption**: Current secure communications use 256-bit keys, making it nearly impossible for computers to crack them.
 
@@ -113,3 +114,6 @@ Cybersecurity refers to protective measures against criminal activity on network
 
 ### DNS Analogy
 DNS is like a phonebook on your mobile phone. Just as you can call someone using their name, DNS allows you to browse websites by translating domain names into IP addresses. Your browser needs the IP address to open a website, similar to how your phone needs a number to make a call.
+
+
+![image](https://github.com/user-attachments/assets/9ac9f6fd-49ef-415a-a57d-86d160b641c5)
