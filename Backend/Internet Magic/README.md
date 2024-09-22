@@ -98,6 +98,59 @@ Think of DNS as a phonebook; it translates user-friendly domain names into IP ad
 
 ![image](https://github.com/user-attachments/assets/c098b375-832d-4451-8ef4-ce7d1b7c8ac1)
 
-By understanding the Internet's structure and protocols, you can better navigate and utilize this vast network effectively.
+
+# Transmission Control Protocol
+
+Under the application layer in the protocol stack is the TCP layer. When applications open a connection to another computer on the Internet, the messages they send (using a specific application layer protocol) get passed down the stack to the TCP layer. TCP is responsible for routing application protocols to the correct application on the destination computer. To accomplish this, port numbers are used. Ports can be thought of as separate channels on each computer. For example, you can surf the web while reading e-mail. This is because these two applications (the web browser and the mail client) used different port numbers. When a packet arrives at a computer and makes its way up the protocol stack, the TCP layer decides which application receives the packet based on a port number.
+
+## How TCP Works
+
+1. When the TCP layer receives the application layer protocol data from above, it segments it into manageable "chunks" and then adds a TCP header with specific TCP information to each "chunk". The information contained in the TCP header includes the port number of the application the data needs to be sent to.
+
+2. When the TCP layer receives a packet from the IP layer below it, the TCP layer strips the TCP header data from the packet, does some data reconstruction if necessary, and then sends the data to the correct application using the port number taken from the TCP header.
+
+This is how TCP routes the data moving through the protocol stack to the correct application.
+
+## Characteristics of TCP
+
+- TCP is **not** a textual protocol.
+- TCP is a **connection-oriented**, reliable, byte stream service. 
+  - **Connection-oriented** means that two applications using TCP must first establish a connection before exchanging data.
+  - TCP is reliable because for each packet received, an acknowledgment is sent to the sender to confirm delivery.
+  - TCP also includes a checksum in its header for error-checking the received data.
+
+### TCP Header
+
+The TCP header looks like this:
+
+![image](https://github.com/user-attachments/assets/d97a1c48-49a4-49e9-bba5-86cfd75e6dfc)
+
+
+Notice that there is no place for an IP address in the TCP header. This is because TCP doesn't know anything about IP addresses. TCP's job is to get application-level data from application to application reliably. The task of getting data from computer to computer is the job of IP.
+
+## Check It Out - Well Known Internet Port Numbers
+
+Listed below are the port numbers for some of the more commonly used Internet services:
+
+- **FTP**: 20/21
+- **Telnet**: 23
+- **SMTP**: 25
+- **HTTP**: 80
+- **Quake III Arena**: 27960
+
+---
+
+# Internet Protocol
+
+Unlike TCP, IP is an unreliable, connectionless protocol. IP doesn't care whether a packet gets to its destination or not. Nor does IP know about connections and port numbers. IP's job is to send and route packets to other computers. IP packets are independent entities and may arrive out of order or not at all. It is TCP's job to make sure packets arrive and are in the correct order. 
+
+About the only thing IP has in common with TCP is the way it receives data and adds its own IP header information to the TCP data. The IP header looks like this:
+
+![image](https://github.com/user-attachments/assets/54d21e4e-11e2-4e76-b7b2-f5a2a3782158)
+
+Above we see the IP addresses of the sending and receiving computers in the IP header. Below is what a packet looks like after passing through the application layer, TCP layer, and IP layer. The application layer data is segmented in the TCP layer, the TCP header is added, the packet continues to the IP layer, the IP header is added, and then the packet is transmitted across the Internet.
+
+![image](https://github.com/user-attachments/assets/59dc6ec9-d0ab-465f-89fa-615e91c2c6fd)
+
 
 
