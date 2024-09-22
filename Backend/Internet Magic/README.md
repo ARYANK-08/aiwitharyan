@@ -116,4 +116,4 @@ Cybersecurity refers to protective measures against criminal activity on network
 DNS is like a phonebook on your mobile phone. Just as you can call someone using their name, DNS allows you to browse websites by translating domain names into IP addresses. Your browser needs the IP address to open a website, similar to how your phone needs a number to make a call.
 
 
-![image](https://github.com/user-attachments/assets/9ac9f6fd-49ef-415a-a57d-86d160b641c5)
+![image](https://github.com/user-attachments/assets/c098b375-832d-4451-8ef4-ce7d1b7c8ac1)
