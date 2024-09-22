@@ -123,7 +123,7 @@ This is how TCP routes the data moving through the protocol stack to the correct
 
 The TCP header looks like this:
 
-![image](https://github.com/user-attachments/assets/d97a1c48-49a4-49e9-bba5-86cfd75e6dfc)
+![image](https://github.com/user-attachments/assets/2fcb3105-c8e4-4f00-a4e7-ec90c39c14a7)
 
 
 Notice that there is no place for an IP address in the TCP header. This is because TCP doesn't know anything about IP addresses. TCP's job is to get application-level data from application to application reliably. The task of getting data from computer to computer is the job of IP.
@@ -146,11 +146,11 @@ Unlike TCP, IP is an unreliable, connectionless protocol. IP doesn't care whethe
 
 About the only thing IP has in common with TCP is the way it receives data and adds its own IP header information to the TCP data. The IP header looks like this:
 
-![image](https://github.com/user-attachments/assets/54d21e4e-11e2-4e76-b7b2-f5a2a3782158)
+![image](https://github.com/user-attachments/assets/013cbc4f-1073-4584-ae14-959b923c1f27)
 
 Above we see the IP addresses of the sending and receiving computers in the IP header. Below is what a packet looks like after passing through the application layer, TCP layer, and IP layer. The application layer data is segmented in the TCP layer, the TCP header is added, the packet continues to the IP layer, the IP header is added, and then the packet is transmitted across the Internet.
 
-![image](https://github.com/user-attachments/assets/59dc6ec9-d0ab-465f-89fa-615e91c2c6fd)
+![image](https://github.com/user-attachments/assets/f9b54036-3f6a-493b-a299-ca12ae80f000)
 
 
 
