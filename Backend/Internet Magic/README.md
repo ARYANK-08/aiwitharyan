@@ -8,6 +8,9 @@ The Internet is a global network of computers connected to each other, allowing 
 - It is fully distributed, meaning there is no central control.
 - Any device can connect with any other device, similar to making phone calls.
 
+>[!NOTE]
+>The internet is a network of networks.
+
 ## Wires, Cables, and Wi-Fi
 
 Information on the Internet moves in the form of bits over various mediums, including Ethernet cables, fiber optic cables, and wireless signals (radio waves).
