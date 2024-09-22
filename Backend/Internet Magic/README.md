@@ -20,6 +20,7 @@ When you send data over the Internet, it is broken into small units called packe
 
 - **Internet Protocol (IP)**: Responsible for routing packets to their correct destinations.
 - **Transmission Control Protocol (TCP)**: Ensures packets are transmitted reliably and in order.
+![image](https://github.com/user-attachments/assets/00e398eb-7f45-4527-a565-672214635060)
 
 In addition to IP and TCP, various protocols facilitate data exchange, such as:
 
