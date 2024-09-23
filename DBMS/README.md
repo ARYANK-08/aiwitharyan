@@ -59,12 +59,8 @@ Almost all dynamic websites depend on this three-tier architecture.
 
 ![image](https://github.com/user-attachments/assets/df8022dc-4e0c-4eee-9aae-815250a56d83)
 
-<table>
-  <tr>
-    <td><img src="https://github.com/user-attachments/assets/e85b2319-ea19-41a0-819d-6775960a9935" alt="Image 1" width="300"/></td>
-    <td><img src="https://github.com/user-attachments/assets/df8022dc-4e0c-4eee-9aae-815250a56d83" alt="Image 2" width="300"/></td>
-  </tr>
-</table>
+| ![Image 1](https://github.com/user-attachments/assets/e85b2319-ea19-41a0-819d-6775960a9935) | ![Image 2](https://github.com/user-attachments/assets/df8022dc-4e0c-4eee-9aae-815250a56d83) |
+|:---:|:---:|
 
 ## Schema :  logical representation of data 
 
