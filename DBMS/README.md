@@ -36,7 +36,24 @@ A **Database Management System (DBMS)** is software designed to manage and organ
 
 ### Example:
 - **Two-Tier**: A Contact Management System built with MS Access.
-- **Three-Tier**: A registration form for a large website that includes various input elements like text boxes and buttons.
+### Three-Tier Architecture
+
+Almost all web applications operate on a three-tier architecture:
+
+1. **Presentation Tier**: 
+   - The web browser serves as the presentation tier. 
+   - It interacts with the user to present and capture data/information.
+
+2. **Application Tier**: 
+   - This tier handles the dynamic aspects of the website. 
+   - Development tools such as ASP, Java, PHP, Ruby on Rails, and Python (along with frameworks like Django) represent this second tier.
+
+3. **Database Tier**: 
+   - The database resides in the server-level infrastructure, forming the third tier. 
+   - Technologies like Oracle, MySQL, and MS SQL, along with server-level operating systems, constitute this layer.
+
+Almost all dynamic websites depend on this three-tier architecture.
+
 
 ![image](https://github.com/user-attachments/assets/e85b2319-ea19-41a0-819d-6775960a9935)
 
