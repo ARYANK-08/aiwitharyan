@@ -55,10 +55,6 @@ Almost all web applications operate on a three-tier architecture:
 Almost all dynamic websites depend on this three-tier architecture.
 
 
-![image](https://github.com/user-attachments/assets/e85b2319-ea19-41a0-819d-6775960a9935)
-
-![image](https://github.com/user-attachments/assets/df8022dc-4e0c-4eee-9aae-815250a56d83)
-
 | ![Image 1](https://github.com/user-attachments/assets/e85b2319-ea19-41a0-819d-6775960a9935) | ![Image 2](https://github.com/user-attachments/assets/df8022dc-4e0c-4eee-9aae-815250a56d83) |
 |:---:|:---:|
 
