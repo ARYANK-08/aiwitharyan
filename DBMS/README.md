@@ -59,3 +59,48 @@ Almost all dynamic websites depend on this three-tier architecture.
 
 ![image](https://github.com/user-attachments/assets/df8022dc-4e0c-4eee-9aae-815250a56d83)
 
+
+## Schema :  logical representation of data 
+
+## logical representation in rdbms -> tables eg : student -> table[rno.,name,marks], course->[course id, name, instructor] , in er models -> entitites
+
+# DBMS 3-Tier Architecture
+
+The 3-tier architecture in a Database Management System (DBMS) provides a logical framework for data organization and independence. It consists of three levels:
+
+## 1. Physical Level
+- **Description**: This level details how data is physically stored in secondary storage devices (like disks and tapes). 
+- **Example**: Information about the location of database objects (e.g., tables, indexes) is stored here. Users are unaware of these locations.
+  
+## 2. Conceptual Level
+- **Description**: Represents the logical structure of the database, showing how data is organized in tables.
+- **Example**: 
+  - **Tables**:
+    - **STUDENT**: [Roll No, Age, Address, Name]
+    - **COURSE**: [Course ID, Course Name, Instructor]
+  - **Relationships**: Links between tables, such as a student enrolling in a course.
+
+## 3. External Level
+- **Description**: This level provides user-specific views of the data, tailored to different user needs.
+- **Example**: 
+  - **FACULTY View**: Course details of students.
+  - **STUDENT View**: Academic records, accounts, courses, and hostel details.
+
+---
+
+## Data Independence
+
+Data independence ensures that changes at one level do not impact other levels. There are two types:
+
+### 1. Physical Data Independence
+- **Definition**: Changes in the physical storage (e.g., relocating tables) do not affect the conceptual level or external views.
+- **Example**: Moving the database to a new disk location will not alter how users interact with it.
+
+### 2. Conceptual Data Independence
+- **Definition**: Changes in the conceptual schema (like adding or deleting attributes) do not impact external views.
+- **Example**: If a new column is added to the STUDENT table, it shouldn't change how students view their data, though this type of independence is harder to achieve.
+
+---
+
+
+
