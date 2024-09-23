@@ -101,6 +101,61 @@ Data independence ensures that changes at one level do not impact other levels. 
 - **Example**: If a new column is added to the STUDENT table, it shouldn't change how students view their data, though this type of independence is harder to achieve.
 
 ---
+# Integrity Constraints
+
+Integrity constraints are rules defined in a database to maintain the accuracy, consistency, and reliability of data. They ensure that the data stored in the database adheres to predefined rules or conditions.
+
+## Types of Integrity Constraints
+
+| **Constraint Type**             | **Description**                                                                                | **Example**                          |
+|----------------------------------|------------------------------------------------------------------------------------------------|--------------------------------------|
+| **1. Domain Constraints**        | Ensure that data values fall within a specified range or set.                                 | Age > 20, Mobile phone length = 10  |
+| **2. Entity Integrity Constraints** | Ensure that each row in a table has a unique primary key that cannot be null.                | Roll Number as Primary Key (PK)     |
+| **3. Referential Integrity**     | Ensure that foreign keys reference valid primary keys in related tables.                       | Foreign key references in student/course tables. |
+| **4. Key Constraints**           | Ensure uniqueness of values in specified columns.                                             | Unique email addresses in a user table. |
+
+### Key Concepts
+
+- **Key**: An attribute used to uniquely identify rows in a table. For example, adding an Aadhaar number as a unique identifier.
+
+#### Types of Keys
+
+| **Key Type**        | **Description**                                                                                          | **Example**                             |
+|---------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| **1. Candidate Key**| A set of attributes that can uniquely identify a row. The primary key is chosen from this set.          | Aadhaar Number, Voter ID, Phone Number |
+| **2. Primary Key**  | An attribute that is unique and not null.                                                                | Roll Number (e.g., 101)                |
+| **3. Foreign Key**  | An attribute that references the primary key in the same or another table, maintaining referential integrity. | `rno` in the Course table referencing `rno` in the Student table. |
 
 
+#### Student Table
+| **rno (PK)** | **Name**  | **Address**     |
+|--------------|-----------|------------------|
+| 1            | Aryan     | Mumbai           |
+| 2            | Myron     | Bandra           |
+| 3            | Sharvin   | Chandigarh       |
+
+#### Course Table
+| **Course ID** | **Course Name** | **rno (FK)** |
+|----------------|-----------------|---------------|
+| C1             | DBMS            | 1             |
+| C2             | OS              | 2             |
+
+## Integrity in Action
+
+### Insertion
+Inserting a record into the base table (Student table) with `rno = 3` (Sharvin, Chandigarh) is valid since there is no existing foreign key constraint violation.
+
+### Deletion
+If we attempt to delete a student from the base table, such as `rno = 1` (Aryan), it may cause a violation if there are references to that `rno` in the Course table. 
+
+### Solutions to Deletion Violations
+1. **ON DELETE CASCADE**: Automatically deletes related records in the Course table when a record in the Student table is deleted.
+2. **ON DELETE SET NULL**: Sets the foreign key value in the Course table to NULL when the corresponding record in the Student table is deleted.
+
+### Update Scenarios
+- **Update with ON UPDATE CASCADE**: If the roll number changes from `9486` to `9701`, the referencing tables are automatically updated.
+- **Insertion Violation**: Trying to enroll a student who does not exist in the Student table will result in a violation.
+- **Deletion**: Deleting a record from the Student table where a roll number is enrolled in a course will not violate constraints if the foreign key references are handled appropriately.
+
+---
 
