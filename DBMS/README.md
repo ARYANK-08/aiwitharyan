@@ -286,3 +286,77 @@ The ER Model consists of various symbols that represent different components:
    ![image](https://github.com/user-attachments/assets/244bd0c3-0ccb-4d2b-bcc7-549b01dcff76)
 
 ---
+
+# Normalization
+
+**Normalization** is the process of minimizing redundancy in a relation or set of relations. Redundancy can lead to insertion, deletion, and update anomalies. By organizing data efficiently, normalization helps maintain data integrity.
+
+Normalization is achieved through various **Normal Forms** designed to eliminate or reduce redundancy in database tables.
+
+---
+
+## First Normal Form (1NF)
+
+A relation is in **First Normal Form (1NF)** if:
+1. All attributes contain only **single-valued** attributes.
+2. The **attribute domain** does not change.
+3. Every attribute/column has a **unique name**.
+4. The order of data storage does not affect the relation.
+
+### Example 1: Student Table
+
+#### Table 1: Original Relation (Not in 1NF)
+
+| **Roll No** | **Name** | **STUD_PHONE**       |
+|-------------|----------|-----------------------|
+| 1           | A        | 1234567890, 0987654321|
+| 2           | B        | 2345678901            |
+| 3           | C        | 3456789012, 1234567890|
+
+In Table 1, the **STUD_PHONE** column contains multi-valued attributes, violating 1NF.
+
+![image](https://github.com/user-attachments/assets/0ee758a5-c3a1-4405-aa4b-d824d7754a90)
+
+
+#### Table 2: Decomposed Relation (In 1NF)
+
+| **Roll No** | **Name** | **STUD_PHONE** |
+|-------------|----------|------------------|
+| 1           | A        | 1234567890       |
+| 1           | A        | 0987654321       |
+| 2           | B        | 2345678901       |
+| 3           | C        | 3456789012       |
+| 3           | C        | 1234567890       |
+
+In Table 2, the relation is in 1NF because each attribute contains only single-valued attributes.
+
+---
+
+### Example 2: Courses Table
+
+#### Table 3: Original Relation (Not in 1NF)
+
+| **ID** | **Name** | **Courses**     |
+|--------|----------|------------------|
+| 1      | A        | c1, c2           |
+| 2      | E        | c3               |
+| 3      | M        | c2, c3           |
+
+In Table 3, the **Courses** column is a multi-valued attribute, thus not in 1NF.
+
+#### Table 4: Decomposed Relation (In 1NF)
+
+| **ID** | **Name** | **Course** |
+|--------|----------|------------|
+| 1      | A        | c1         |
+| 1      | A        | c2         |
+| 2      | E        | c3         |
+| 3      | M        | c2         |
+| 3      | M        | c3         |
+
+In Table 4, the relation is now in 1NF as each course is listed in a separate row, ensuring all attributes are single-valued.
+
+![image](https://github.com/user-attachments/assets/867ff9ec-e0a5-4ae5-bae8-c149d1197e2c)
+
+---
+
