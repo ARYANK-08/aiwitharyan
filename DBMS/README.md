@@ -186,8 +186,10 @@ The ER Model consists of various symbols that represent different components:
 
 ### Example Images
 
-| ![ER Model Example 1](https://github.com/user-attachments/assets/528a9e95-c7e8-40b3-8657-b4959c373763 | ![ER Model Example 2](https://github.com/user-attachments/assets/b7cda717-1804-4670-85da-06c9b8a3bbfe |
+| ![ER Model Example 1](https://github.com/user-attachments/assets/528a9e95-c7e8-40b3-8657-b4959c373763) | ![ER Model Example 2](https://github.com/user-attachments/assets/b7cda717-1804-4670-85da-06c9b8a3bbfe) |
 |:---:|:---:|
+
+
 
 ---
 
@@ -281,5 +283,6 @@ The ER Model consists of various symbols that represent different components:
      | C2      | OS        | 4          |
 
    - This relationship cannot be reduced as each student can enroll in multiple courses and vice versa.
+   ![image](https://github.com/user-attachments/assets/244bd0c3-0ccb-4d2b-bcc7-549b01dcff76)
 
 ---
