@@ -150,10 +150,136 @@ If we attempt to delete a student from the base table, such as `rno = 1` (Aryan)
 1. **ON DELETE CASCADE**: Automatically deletes related records in the Course table when a record in the Student table is deleted.
 2. **ON DELETE SET NULL**: Sets the foreign key value in the Course table to NULL when the corresponding record in the Student table is deleted.
 
-### Update Scenarios
 - **Update with ON UPDATE CASCADE**: If the roll number changes from `9486` to `9701`, the referencing tables are automatically updated.
 - **Insertion Violation**: Trying to enroll a student who does not exist in the Student table will result in a violation.
 - **Deletion**: Deleting a record from the Student table where a roll number is enrolled in a course will not violate constraints if the foreign key references are handled appropriately.
 
 ---
 
+# Super Key
+
+A **Super Key** is a combination of attributes that can uniquely identify two tuples (rows) in a table. For example:
+- **Candidate Key (CK)**: Roll Number
+- **Super Key (SK)**: 
+  - Roll Number + Name
+  - Roll Number + Age
+
+A super key is essentially a superset of any candidate key.
+
+---
+
+# ER Model
+
+The **Entity-Relationship (ER) Model** is used for the logical representation of data in a conceptual manner. It helps in understanding system requirements easily, much like an architectural model of a building.
+
+## Symbols Used in the ER Model
+
+The ER Model consists of various symbols that represent different components:
+
+- **Rectangles**: Represent **Entities**.
+- **Ellipses**: Represent **Attributes**.
+- **Diamonds**: Represent **Relationships** among Entities.
+- **Lines**: Connect attributes to entities and show relationships.
+- **Double Ellipses**: Represent **Multi-Valued Attributes**.
+- **Double Rectangles**: Represent **Weak Entities**.
+- **Dotted Ellipses**: Represent **Derived Attributes**.
+
+### Example Images
+
+| ![ER Model Example 1](https://github.com/user-attachments/assets/528a9e95-c7e8-40b3-8657-b4959c373763 | ![ER Model Example 2](https://github.com/user-attachments/assets/b7cda717-1804-4670-85da-06c9b8a3bbfe |
+|:---:|:---:|
+
+---
+
+# Types of Attributes
+
+1. **Single vs. Multi-Valued Attributes**:
+   - **Single Attribute**: Roll Number (e.g., `123`)
+   - **Multi-Valued Attribute**: Mobile Number (e.g., `9876543210, 8765432109`)
+
+2. **Simple vs. Composite Attributes**:
+   - **Simple Attribute**: Age (cannot be broken down further)
+   - **Composite Attribute**: Name (can be divided into First Name, Middle Name, Last Name) or Address (can be composed of Street, City, State, Country)
+
+3. **Stored vs. Derived Attributes**:
+   - **Stored Attribute**: Date of Birth (DOB) 
+   - **Derived Attribute**: Age (calculated from DOB: Current Year - Year of Birth)
+
+4. **Key vs. Non-Key Attributes**:
+   - **Key Attribute**: Uniquely identifies each row (e.g., Roll Number, underlined in representation)
+   - **Non-Key Attribute**: Does not uniquely identify rows.
+
+5. **Required vs. Optional Attributes**:
+   - **Required**: Must have a value.
+   - **Optional**: Can have a null value.
+
+---
+
+# Degree of Relationships
+
+1. **One-to-One (1-1)**:
+   - Example: An employee works in one department.
+   - **Employee Table**:
+     | **eid (PK)** | **ename** | **age** |
+     |---------------|-----------|---------|
+     | e1            | Aryan     | 20      |
+     | e2            | Myron     | 21      |
+     | e3            | John      | 22      |
+
+   - **Department Table**:
+     | **did (PK)** | **dname** | **dlocation** |
+     |---------------|-----------|---------------|
+     | d1            | IT        | Bangalore     |
+     | d2            | HR        | Delhi         |
+
+   - **Works Table**:
+     | **eid (FK)** | **did (FK)** |
+     |---------------|---------------|
+     | e1            | d1            |
+     | e2            | d2            |
+
+   ![One-to-One Example](https://github.com/user-attachments/assets/6dcee10f-546b-457e-995d-e4c7d0b7025e)
+
+2. **One-to-Many (1-M)**:
+   - Example: A customer can place many orders.
+   - **Customer Table**:
+     | **id (PK)** | **name** | **city**    |
+     |--------------|----------|-------------|
+     | c1           | A        | Delhi       |
+     | c2           | B        | Mumbai      |
+
+   - **Orders Table**:
+     | **ono (PK)** | **item_name** | **cost** |
+     |---------------|----------------|----------|
+     | o1            | Bucket         | 100      |
+     | o2            | Shoes          | 200      |
+     | o3            | iPhone         | 300      |
+     | o4            | Tablet         | 400      |
+
+   - **Gives Table**:
+     | **id (FK)** | **ono (FK)** | **date**  |
+     |--------------|---------------|-----------|
+     | c1           | o1            | 2023-01-01|
+     | c1           | o2            | 2023-01-02|
+     | c2           | o3            | 2023-01-03|
+     | c2           | o4            | 2023-01-04|
+
+   ![One-to-Many Example](https://github.com/user-attachments/assets/2dffe2b2-e9bb-4ae1-abaf-460c3b3ca0a6)
+
+3. **Many-to-Many (M-N)**:
+   - Example: Many students can enroll in many courses.
+   - **Student Table**:
+     | **rollno** | **name** | **age** |
+     |-------------|----------|---------|
+     | 1           | Aryan    | 20      |
+     | 2           | Myron    | 21      |
+
+   - **Course Table**:
+     | **cid** | **name**  | **credit** |
+     |---------|-----------|------------|
+     | C1      | DBMS      | 3          |
+     | C2      | OS        | 4          |
+
+   - This relationship cannot be reduced as each student can enroll in multiple courses and vice versa.
+
+---
