@@ -527,3 +527,97 @@ Since there are no partial dependencies, this relation is already in **3NF**.
 To eliminate partial dependencies, relations should be normalized to 2NF, ensuring all non-prime attributes are fully determined by the entire key.
 
 
+>![Note]
+>LHS should be proper subset of ck and rhs shhould be a non prime attribute : partial dependency
+
+
+![image](https://github.com/user-attachments/assets/5d89d759-ba5c-4faa-b8b1-1883ff470185)
+
+---
+
+# Third Normal Form (3NF)
+
+## Definition
+A relation is in **Third Normal Form (3NF)** if:
+1. It is in **Second Normal Form (2NF)**.
+2. There are no **transitive dependencies**.
+
+### Key Concepts
+- **Transitive Dependency**: Occurs when a non-prime attribute is determined by another non-prime attribute. In simpler terms, if you have a non-prime attribute \( B \) that determines another non-prime attribute \( C \), then you have a transitive dependency \( A \&rarr; B \&rarr; C \).
+
+---
+
+## Example: Understanding Transitive Dependency
+
+### Table Structure
+
+| roll_no | state | city    |
+|---------|-------|---------|
+| 1       | CA    | Los Angeles |
+| 2       | NY    | New York    |
+| 3       | CA    | San Francisco |
+| 4       | TX    | Houston     |
+
+### Functional Dependencies
+
+- **Functional Dependency**: 
+  - \( roll\_no \rightarrow state \)
+  - \( state \rightarrow city \)
+
+### Explanation
+- **Primary Key (PK)**: `roll_no`
+- **Non-Prime Attributes (NPA)**: `state`, `city`
+
+In this example:
+- The primary key `roll_no` determines `state`.
+- However, `state` also determines `city`. This creates a transitive dependency because `roll_no` indirectly determines `city` through `state`.
+
+---
+
+## Issues with Transitive Dependency
+Transitive dependencies can lead to:
+- Data redundancy
+- Update anomalies (inconsistencies in data when updates are made)
+
+### Diagram Representation
+
+![Transitive Dependency Diagram](https://github.com/user-attachments/assets/9db88e12-7283-49f5-90c0-098efd2bb456)
+
+---
+
+## Conversion to 3NF
+
+To convert a relation to 3NF, we eliminate transitive dependencies by creating separate tables.
+
+### Normalized Tables
+
+1. **Table 1: Roll Number and State**
+
+| roll_no | state |
+|---------|-------|
+| 1       | CA    |
+| 2       | NY    |
+| 3       | CA    |
+| 4       | TX    |
+
+2. **Table 2: State and City**
+
+| state | city         |
+|-------|--------------|
+| CA    | Los Angeles  |
+| NY    | New York     |
+| CA    | San Francisco |
+| TX    | Houston      |
+
+### Functional Dependencies After Normalization
+- For **Table 1**: \( roll\_no &rarr; state \)
+- For **Table 2**: \( state &rarr; city \)
+
+By structuring the data this way, we eliminate the transitive dependency and maintain a clear and efficient database schema.
+
+
+>![Note]
+>The left-hand side (LHS) of all functional dependencies must be a **candidate key** (CK) or a **super key** (SK), and the right-hand side (RHS) must be a prime attribute (part of any candidate key).
+
+---
+
