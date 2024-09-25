@@ -383,21 +383,24 @@ Functional dependencies are crucial for understanding relationships among databa
 | 47      | jkl  | ME        | B2            |
 
 ### Valid Functional Dependencies
-| Dependency                       | Description                                                            |
-|----------------------------------|------------------------------------------------------------------------|
-| roll_no → {name, dept_name, dept_building} | roll_no determines name, dept_name, and dept_building.          |
-| roll_no → dept_name             | roll_no can determine dept_name (subset).                           |
-| dept_name → dept_building       | Each dept_name corresponds to a unique dept_building.               |
+
+| Dependency                                          | Description                                                           |
+|-----------------------------------------------------|-----------------------------------------------------------------------|
+| roll_no → {name, dept_name, dept_building}         | roll_no determines name, dept_name, and dept_building.              |
+| roll_no → dept_name                                 | roll_no can determine dept_name (subset).                            |
+| dept_name → dept_building                           | Each dept_name corresponds to a unique dept_building.                |
 
 ### Invalid Functional Dependencies
-| Dependency                       | Reason                                                              |
-|----------------------------------|---------------------------------------------------------------------|
-| name → dept_name                 | Same name can belong to different departments.                      |
-| dept_building → dept_name       | Multiple departments can share the same building.                   |
+
+| Dependency                                          | Reason                                                               |
+|-----------------------------------------------------|----------------------------------------------------------------------|
+| name → dept_name                                    | Same name can belong to different departments.                       |
+| dept_building → dept_name                           | Multiple departments can share the same building.                    |
 
 ---
 
 ## Armstrong’s Axioms for Functional Dependencies
+
 1. **Reflexivity**: If \( Y \) is a subset of \( X \), then \( X \rightarrow Y \) holds.
    - Example: \( \{roll_no, name\} \rightarrow name \)
   
@@ -411,25 +414,116 @@ Functional dependencies are crucial for understanding relationships among databa
 
 ## Types of Functional Dependencies
 
-| Type                            | Description                                                                                          | Example                                                  |
-|---------------------------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| **Trivial Functional Dependency**   | Dependent is a subset of the determinant.                                                        | \( \{roll_no, name\} \rightarrow name \)                |
-| **Non-Trivial Functional Dependency** | Dependent is not a subset of the determinant.                                                   | \( roll_no \rightarrow name \)                           |
-| **Multivalued Functional Dependency** | No functional dependency between dependents.                                                    | \( roll_no \rightarrow \{name, age\} \)                  |
-| **Transitive Functional Dependency** | Indirect dependency via another attribute.                                                       | \( enrol_no \rightarrow dept \) and \( dept \rightarrow building_no \) imply \( enrol_no \rightarrow building_no \) |
-| **Fully Functional Dependency**      | A set of attributes uniquely determines another attribute.                                       | \( \{X\} \rightarrow Y \)                                 |
-| **Partial Functional Dependency**    | A non-key attribute depends on part of a composite key.                                         | \( X \rightarrow Z \) where \( X \) is part of a composite key. |
+| Type                                         | Description                                                                                              | Example                                                 |
+|----------------------------------------------|----------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
+| **Trivial Functional Dependency**            | Dependent is a subset of the determinant.                                                              | \( \{roll_no, name\} \rightarrow name \)               |
+| **Non-Trivial Functional Dependency**        | Dependent is not a subset of the determinant.                                                           | \( roll_no \rightarrow name \)                          |
+| **Multivalued Functional Dependency**        | No functional dependency between dependents.                                                            | \( roll_no \rightarrow \{name, age\} \)                 |
+| **Transitive Functional Dependency**         | Indirect dependency via another attribute.                                                               | \( enrol_no \rightarrow dept \) and \( dept \rightarrow building_no \) imply \( enrol_no \rightarrow building_no \) |
+| **Fully Functional Dependency**               | A set of attributes uniquely determines another attribute.                                               | \( \{X\} \rightarrow Y \)                               |
+| **Partial Functional Dependency**             | A non-key attribute depends on part of a composite key.                                                | \( X \rightarrow Z \) where \( X \) is part of a composite key. |
 
 ---
 
 ## Advantages of Functional Dependencies
-| Advantage                      | Description                                                            |
-|-------------------------------|------------------------------------------------------------------------|
-| **Data Normalization**        | Helps organize data to minimize redundancy and enhance integrity.      |
-| **Query Optimization**        | Aids in determining table connectivity and necessary attributes for queries. |
-| **Consistency of Data**       | Maintains data consistency by preventing redundancy and inconsistencies. |
-| **Data Quality Improvement**   | Ensures data accuracy and completeness, reducing errors in analysis.    |
+
+| Advantage                        | Description                                                             |
+|----------------------------------|-------------------------------------------------------------------------|
+| **Data Normalization**           | Helps organize data to minimize redundancy and enhance integrity.       |
+| **Query Optimization**           | Aids in determining table connectivity and necessary attributes for queries. |
+| **Consistency of Data**          | Maintains data consistency by preventing redundancy and inconsistencies.  |
+| **Data Quality Improvement**      | Ensures data accuracy and completeness, reducing errors in analysis.     |
 
 
 ![image](https://github.com/user-attachments/assets/4d1968ff-aced-4b9a-a5d8-7d2bfd7bf1b5)
+
+---
+
+# Second Normal Form (2NF)
+![image](https://github.com/user-attachments/assets/2e12e680-56c0-4002-932a-928152d7791d)
+
+## Definition
+The **Second Normal Form (2NF)** is a database normalization level that addresses the concept of fully functional dependency. A relation is in 2NF if:
+- It is already in **First Normal Form (1NF)**.
+- It does not contain any **partial dependency**.
+
+### Key Concepts
+- **Composite Key**: A primary key that consists of two or more attributes.
+- **Non-prime Attribute**: An attribute that is not part of any candidate key.
+- **Partial Dependency**: A non-prime attribute that depends on a proper subset of a candidate key.
+
+---
+
+## Conditions for 2NF
+To be in 2NF:
+- It is already in **First Normal Form (1NF)**.
+- Every non-prime attribute must be fully functionally dependent on candidate key
+- There should be no partial dependencies.
+
+### Example 1: Table Normalization
+
+**Original Table**
+
+| STUD_NO | COURSE_NO | COURSE_FEE |
+|---------|-----------|------------|
+| 1       | C1        | 1000       |
+| 2       | C2        | 1500       |
+| 1       | C4        | 2000       |
+| 4       | C3        | 1000       |
+| 4       | C1        | 1000       |
+| 2       | C5        | 2000       |
+
+- **Candidate Key**: {STUD_NO, COURSE_NO}
+- **Partial Dependency**: COURSE_FEE is dependent on COURSE_NO (which is a proper subset of the candidate key).
+
+**Normalized Tables**
+
+1. **Table 1: STUDENT_COURSE**
+
+| STUD_NO | COURSE_NO |
+|---------|-----------|
+| 1       | C1        |
+| 2       | C2        |
+| 1       | C4        |
+| 4       | C3        |
+| 4       | C1        |
+| 2       | C5        |
+
+2. **Table 2: COURSE_FEE**
+
+| COURSE_NO | COURSE_FEE |
+|-----------|------------|
+| C1        | 1000       |
+| C2        | 1500       |
+| C3        | 1000       |
+| C4        | 2000       |
+| C5        | 2000       |
+
+- This normalization reduces redundancy, ensuring COURSE_FEE is only stored once per course.
+
+---
+
+### Example 2: Relation R(A, B, C, D)
+
+**Functional Dependencies**
+
+- \( AB \rightarrow C \) (A and B together determine C)
+- \( BC \rightarrow D \) (B and C together determine D)
+
+**Candidate Key**: {AB}
+
+- **Check for Partial Dependencies**: 
+  - C depends on the whole key (AB).
+  - D depends on the whole key (BC).
+  
+Since there are no partial dependencies, this relation is already in **3NF**.
+
+---
+
+## Summary of Partial Dependency
+- **Definition**: Occurs when a non-prime attribute is dependent only on part of a composite key.
+- **Issue**: Leads to data redundancy and anomalies in updates.
+
+To eliminate partial dependencies, relations should be normalized to 2NF, ensuring all non-prime attributes are fully determined by the entire key.
+
 
