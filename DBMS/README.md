@@ -362,7 +362,7 @@ In Table 4, the relation is now in 1NF as each course is listed in a separate ro
 # Functional Dependency in Database Systems
 
 ## Definition
-Functional dependency occurs when one attribute uniquely determines another attribute within a relation. It's expressed as \( A \rightarrow B \), meaning attribute A functionally determines attribute B.
+Functional dependency occurs when one attribute uniquely determines another attribute within a relation. It's expressed as \( A \→ B \), meaning attribute A functionally determines attribute B.
 
 ## Importance
 Functional dependencies are crucial for understanding relationships among database entities and play a vital role in advanced concepts of Relational Database Systems.
@@ -401,14 +401,14 @@ Functional dependencies are crucial for understanding relationships among databa
 
 ## Armstrong’s Axioms for Functional Dependencies
 
-1. **Reflexivity**: If \( Y \) is a subset of \( X \), then \( X \rightarrow Y \) holds.
-   - Example: \( \{roll_no, name\} \rightarrow name \)
+1. **Reflexivity**: If \( Y \) is a subset of \( X \), then \( X \→ Y \) holds.
+   - Example: \( \{roll_no, name\} \→ name \)
   
-2. **Augmentation**: If \( X \rightarrow Y \) is valid, then \( XZ \rightarrow YZ \) is also valid.
-   - Example: \( \{roll_no, name\} \rightarrow dept_building \) implies \( \{roll_no, name, dept_name\} \rightarrow \{dept_building, dept_name\} \)
+2. **Augmentation**: If \( X \→ Y \) is valid, then \( XZ \→ YZ \) is also valid.
+   - Example: \( \{roll_no, name\} \→ dept_building \) implies \( \{roll_no, name, dept_name\} \→ \{dept_building, dept_name\} \)
 
-3. **Transitivity**: If \( X \rightarrow Y \) and \( Y \rightarrow Z \), then \( X \rightarrow Z \).
-   - Example: \( roll_no \rightarrow dept_name \) and \( dept_name \rightarrow dept_building \) imply \( roll_no \rightarrow dept_building \)
+3. **Transitivity**: If \( X \→ Y \) and \( Y \→ Z \), then \( X \→ Z \).
+   - Example: \( roll_no \→ dept_name \) and \( dept_name \→ dept_building \) imply \( roll_no \→ dept_building \)
 
 ---
 
@@ -416,12 +416,12 @@ Functional dependencies are crucial for understanding relationships among databa
 
 | Type                                         | Description                                                                                              | Example                                                 |
 |----------------------------------------------|----------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| **Trivial Functional Dependency**            | Dependent is a subset of the determinant.                                                              | \( \{roll_no, name\} \rightarrow name \)               |
-| **Non-Trivial Functional Dependency**        | Dependent is not a subset of the determinant.                                                           | \( roll_no \rightarrow name \)                          |
-| **Multivalued Functional Dependency**        | No functional dependency between dependents.                                                            | \( roll_no \rightarrow \{name, age\} \)                 |
-| **Transitive Functional Dependency**         | Indirect dependency via another attribute.                                                               | \( enrol_no \rightarrow dept \) and \( dept \rightarrow building_no \) imply \( enrol_no \rightarrow building_no \) |
-| **Fully Functional Dependency**               | A set of attributes uniquely determines another attribute.                                               | \( \{X\} \rightarrow Y \)                               |
-| **Partial Functional Dependency**             | A non-key attribute depends on part of a composite key.                                                | \( X \rightarrow Z \) where \( X \) is part of a composite key. |
+| **Trivial Functional Dependency**            | Dependent is a subset of the determinant.                                                              | \( \{roll_no, name\} \ → name \)               |
+| **Non-Trivial Functional Dependency**        | Dependent is not a subset of the determinant.                                                           | \( roll_no \→ name \)                          |
+| **Multivalued Functional Dependency**        | No functional dependency between dependents.                                                            | \( roll_no \→ \{name, age\} \)                 |
+| **Transitive Functional Dependency**         | Indirect dependency via another attribute.                                                               | \( enrol_no \→ dept \) and \( dept \→ building_no \) imply \( enrol_no \→ building_no \) |
+| **Fully Functional Dependency**               | A set of attributes uniquely determines another attribute.                                               | \( \{X\} \→ Y \)                               |
+| **Partial Functional Dependency**             | A non-key attribute depends on part of a composite key.                                                | \( X \→ Z \) where \( X \) is part of a composite key. |
 
 ---
 
@@ -507,8 +507,8 @@ To be in 2NF:
 
 **Functional Dependencies**
 
-- \( AB \rightarrow C \) (A and B together determine C)
-- \( BC \rightarrow D \) (B and C together determine D)
+- \( AB \→ C \) (A and B together determine C)
+- \( BC \→ D \) (B and C together determine D)
 
 **Candidate Key**: {AB}
 
