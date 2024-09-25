@@ -620,4 +620,122 @@ By structuring the data this way, we eliminate the transitive dependency and mai
 >The left-hand side (LHS) of all functional dependencies must be a **candidate key** (CK) or a **super key** (SK), and the right-hand side (RHS) must be a prime attribute (part of any candidate key).
 
 ---
+# Boyce-Codd Normal Form (BCNF)
 
+## Definition
+BCNF is a normalization form that ensures a relation is free from redundancy caused by functional dependencies. It is stricter than the Third Normal Form (3NF).
+
+## Rules for BCNF
+1. **Must be in 3NF**: The relation must already be in Third Normal Form.
+2. **Superkey Requirement**: For every functional dependency \( X \rightarrow Y \), \( X \) must be a superkey.
+
+### Note
+To test for BCNF, identify all determinants and ensure they are candidate keys.
+
+---
+
+## Hierarchy of Normal Forms
+- **1NF**: Requires atomic values in tuples.
+- **2NF**: Builds on 1NF by removing partial dependencies.
+- **3NF**: Further restricts by removing transitive dependencies.
+- **BCNF**: Every determinant must be a superkey.
+
+*All relations in BCNF are also in 3NF, but not all 3NF relations are in BCNF.*
+
+---
+
+## Example
+### Given Relation
+| Stu_ID | Stu_Branch                           | Stu_Course          | Branch_Number | Stu_Course_No |
+|--------|--------------------------------------|---------------------|---------------|----------------|
+| 101    | Computer Science & Engineering       | DBMS                | B_001         | 201            |
+| 101    | Computer Science & Engineering       | Computer Networks    | B_001         | 202            |
+| 102    | Electronics & Communication Engineering | VLSI Technology     | B_003         | 401            |
+| 102    | Electronics & Communication Engineering | Mobile Communication | B_003         | 402            |
+
+### Functional Dependencies
+Stu_ID −> Stu_Branch
+Stu_Course −> {Branch_Number, Stu_Course_No}
+
+### Candidate Keys
+- {Stu_ID, Stu_Course}
+
+### Why This Table is Not in BCNF
+The table is not in BCNF because:
+- Neither **Stu_ID** nor **Stu_Course** is a superkey for the functional dependency \( \text{Stu_Course} \rightarrow \{ \text{Branch_Number}, \text{Stu_Course_No} \} \).
+
+---
+
+## How to Achieve BCNF
+To satisfy BCNF, decompose the relation into multiple tables:
+
+1. **Stu_Branch Table**
+   | Stu_ID | Stu_Branch                           |
+   |--------|--------------------------------------|
+   | 101    | Computer Science & Engineering       |
+   | 102    | Electronics & Communication Engineering |
+
+   - **Candidate Key**: Stu_ID
+
+2. **Stu_Course Table**
+   | Stu_Course          | Branch_Number | Stu_Course_No |
+   |---------------------|---------------|----------------|
+   | DBMS                | B_001         | 201            |
+   | Computer Networks    | B_001         | 202            |
+   | VLSI Technology     | B_003         | 401            |
+   | Mobile Communication | B_003         | 402            |
+
+   - **Candidate Key**: Stu_Course
+
+3. **Stu_ID to Stu_Course_No Table**
+   | Stu_ID | Stu_Course_No |
+   |--------|----------------|
+   | 101    | 201            |
+   | 101    | 202            |
+   | 102    | 401            |
+   | 102    | 402            |
+
+   - **Candidate Key**: {Stu_ID, Stu_Course_No}
+
+---
+
+After decomposition, the relations satisfy BCNF conditions, as all determinants are superkeys.
+
+
+# Difference Between Lossless and Lossy Join Decomposition
+
+## Key Concepts
+- **Decomposition**: Breaking a relation into smaller sub-relations to reduce redundancy and anomalies.
+
+## Types of Decomposition
+1. **Lossless Join Decomposition**
+   - **Definition**: Decomposed relations can be rejoined without losing any information.
+   - **Advantages**:
+     - Maintains data integrity.
+     - Ensures consistency across the database.
+     - Facilitates higher normal forms (e.g., 3NF, BCNF).
+   - **Disadvantages**:
+     - Increased storage usage.
+     - Complex queries for rejoining tables.
+
+2. **Lossy Join Decomposition**
+   - **Definition**: Some information is lost when relations are decomposed.
+   - **Advantages**:
+     - Simpler structure with smaller sub-tables.
+     - Reduced redundancy may be acceptable in some cases.
+   - **Disadvantages**:
+     - Permanent loss of data.
+     - Leads to inconsistencies in the database.
+     - Harder to manage data consistency.
+
+## Key Differences
+| Feature                       | Lossless Join                          | Lossy Join                           |
+|-------------------------------|----------------------------------------|--------------------------------------|
+| **Reconstruction**            | Original relation can be perfectly reconstructed. | Some data is permanently lost.     |
+| **Join Result**               | R1 ⨝ R2 ⨝ R3 .... ⨝ Rn = R   | R ⊂ R1 ⨝ R2 ⨝ R3 .... ⨝ Rn |
+| **Attribute Relation**        | Common attribute is a superkey.       | Common attribute is not a superkey. |
+| **Information Loss**          | No loss of information.                | Information loss leads to inconsistencies. |
+
+## Conclusion
+- **Lossless Join Decomposition** is preferred for data integrity and accuracy.
+- **Lossy Join Decomposition** may be acceptable for reducing redundancy when some data loss is tolerable.
