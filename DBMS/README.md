@@ -359,4 +359,77 @@ In Table 4, the relation is now in 1NF as each course is listed in a separate ro
 ![image](https://github.com/user-attachments/assets/867ff9ec-e0a5-4ae5-bae8-c149d1197e2c)
 
 ---
+# Functional Dependency in Database Systems
+
+## Definition
+Functional dependency occurs when one attribute uniquely determines another attribute within a relation. It's expressed as \( A \rightarrow B \), meaning attribute A functionally determines attribute B.
+
+## Importance
+Functional dependencies are crucial for understanding relationships among database entities and play a vital role in advanced concepts of Relational Database Systems.
+
+---
+
+## Examples of Functional Dependencies
+
+### Example Table
+
+| roll_no | name | dept_name | dept_building |
+|---------|------|-----------|---------------|
+| 42      | abc  | CO        | A4            |
+| 43      | pqr  | IT        | A3            |
+| 44      | xyz  | CO        | A4            |
+| 45      | xyz  | IT        | A3            |
+| 46      | mno  | EC        | B2            |
+| 47      | jkl  | ME        | B2            |
+
+### Valid Functional Dependencies
+| Dependency                       | Description                                                            |
+|----------------------------------|------------------------------------------------------------------------|
+| roll_no → {name, dept_name, dept_building} | roll_no determines name, dept_name, and dept_building.          |
+| roll_no → dept_name             | roll_no can determine dept_name (subset).                           |
+| dept_name → dept_building       | Each dept_name corresponds to a unique dept_building.               |
+
+### Invalid Functional Dependencies
+| Dependency                       | Reason                                                              |
+|----------------------------------|---------------------------------------------------------------------|
+| name → dept_name                 | Same name can belong to different departments.                      |
+| dept_building → dept_name       | Multiple departments can share the same building.                   |
+
+---
+
+## Armstrong’s Axioms for Functional Dependencies
+1. **Reflexivity**: If \( Y \) is a subset of \( X \), then \( X \rightarrow Y \) holds.
+   - Example: \( \{roll_no, name\} \rightarrow name \)
+  
+2. **Augmentation**: If \( X \rightarrow Y \) is valid, then \( XZ \rightarrow YZ \) is also valid.
+   - Example: \( \{roll_no, name\} \rightarrow dept_building \) implies \( \{roll_no, name, dept_name\} \rightarrow \{dept_building, dept_name\} \)
+
+3. **Transitivity**: If \( X \rightarrow Y \) and \( Y \rightarrow Z \), then \( X \rightarrow Z \).
+   - Example: \( roll_no \rightarrow dept_name \) and \( dept_name \rightarrow dept_building \) imply \( roll_no \rightarrow dept_building \)
+
+---
+
+## Types of Functional Dependencies
+
+| Type                            | Description                                                                                          | Example                                                  |
+|---------------------------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| **Trivial Functional Dependency**   | Dependent is a subset of the determinant.                                                        | \( \{roll_no, name\} \rightarrow name \)                |
+| **Non-Trivial Functional Dependency** | Dependent is not a subset of the determinant.                                                   | \( roll_no \rightarrow name \)                           |
+| **Multivalued Functional Dependency** | No functional dependency between dependents.                                                    | \( roll_no \rightarrow \{name, age\} \)                  |
+| **Transitive Functional Dependency** | Indirect dependency via another attribute.                                                       | \( enrol_no \rightarrow dept \) and \( dept \rightarrow building_no \) imply \( enrol_no \rightarrow building_no \) |
+| **Fully Functional Dependency**      | A set of attributes uniquely determines another attribute.                                       | \( \{X\} \rightarrow Y \)                                 |
+| **Partial Functional Dependency**    | A non-key attribute depends on part of a composite key.                                         | \( X \rightarrow Z \) where \( X \) is part of a composite key. |
+
+---
+
+## Advantages of Functional Dependencies
+| Advantage                      | Description                                                            |
+|-------------------------------|------------------------------------------------------------------------|
+| **Data Normalization**        | Helps organize data to minimize redundancy and enhance integrity.      |
+| **Query Optimization**        | Aids in determining table connectivity and necessary attributes for queries. |
+| **Consistency of Data**       | Maintains data consistency by preventing redundancy and inconsistencies. |
+| **Data Quality Improvement**   | Ensures data accuracy and completeness, reducing errors in analysis.    |
+
+
+![image](https://github.com/user-attachments/assets/4d1968ff-aced-4b9a-a5d8-7d2bfd7bf1b5)
 
