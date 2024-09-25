@@ -561,8 +561,8 @@ A relation is in **Third Normal Form (3NF)** if:
 ### Functional Dependencies
 
 - **Functional Dependency**: 
-  - \( roll\_no \rightarrow state \)
-  - \( state \rightarrow city \)
+  - \( roll\_no &rarr; state \)
+  - \( state &rarr; city \)
 
 ### Explanation
 - **Primary Key (PK)**: `roll_no`
@@ -616,7 +616,7 @@ To convert a relation to 3NF, we eliminate transitive dependencies by creating s
 By structuring the data this way, we eliminate the transitive dependency and maintain a clear and efficient database schema.
 
 
->![Note]
+>![NOTE]
 >The left-hand side (LHS) of all functional dependencies must be a **candidate key** (CK) or a **super key** (SK), and the right-hand side (RHS) must be a prime attribute (part of any candidate key).
 
 ---
