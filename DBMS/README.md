@@ -739,3 +739,104 @@ After decomposition, the relations satisfy BCNF conditions, as all determinants 
 ## Conclusion
 - **Lossless Join Decomposition** is preferred for data integrity and accuracy.
 - **Lossy Join Decomposition** may be acceptable for reducing redundancy when some data loss is tolerable.
+
+
+Here’s an improved version of the content with more detailed examples and easy-to-understand explanations using Markdown:
+
+# Joins in SQL
+
+A **Join** allows you to combine rows from two or more tables based on a related column between them.
+
+- **Basic Join Concept**: Join = (Cross Product + Condition).
+- **Key Requirement**: To perform a join, you need a common column between two tables.
+
+## Types of Joins
+
+1. **Natural Join**
+2. **Self Join**
+3. **Equijoin**
+4. **Conditional**
+5. **Outer Join**
+     - Left
+     - Right
+     - Full
+   
+![image](https://github.com/user-attachments/assets/48a21120-7f0a-4f1b-b476-03063cfe8669)
+
+---
+
+## 1. Natural Join
+
+### Definition:
+A **Natural Join** automatically joins two tables based on columns with the same name and data type in both tables.
+
+### Example:
+We want to find the names of employees (`ename`) who are working in a specific department (`dept`). The two tables, `emp` and `dept`, share a common column `eno` (employee number).
+
+```sql
+-- Using explicit condition
+SELECT ename 
+FROM emp, dept 
+WHERE emp.eno = dept.eno;
+
+-- Using NATURAL JOIN (automatically uses the common column 'eno')
+SELECT ename 
+FROM emp 
+NATURAL JOIN dept;
+```
+
+### Diagram:
+
+![Natural Join Example](https://github.com/user-attachments/assets/c8474f66-de30-4dab-a0e6-e135958abe5c)
+
+---
+
+## 2. Self Join
+
+### Definition:
+A **Self Join** is when a table is joined with itself. This is useful when you want to compare rows within the same table.
+
+### Example:
+Find the student IDs (`sid`) of students who are enrolled in at least two different courses. Here, we compare the `study` table with itself, ensuring that the course IDs (`cid`) are different.
+
+```sql
+-- Self join with alias to compare rows in the same table
+SELECT t1.sid 
+FROM study AS t1, study AS t2
+WHERE t1.sid = t2.sid 
+AND t1.cid != t2.cid;
+```
+
+### Diagram:
+
+![Self Join Example](https://github.com/user-attachments/assets/8e747b85-36e1-406a-8d29-71df000c1d67)
+
+---
+
+## 3. Equijoin
+
+### Definition:
+An **Equijoin** uses the equality (`=`) operator to match rows between tables. It joins tables based on a condition that compares columns with equal values.
+
+### Example:
+Find the employee names (`ename`) of employees who work in a department with the same location (`location`) as their address (`address`). Here, we are joining the `emp` and `dept` tables using the `location` and `address` fields.
+
+```sql
+-- Equijoin using equality condition
+SELECT ename 
+FROM emp, dept
+WHERE emp.location = dept.address;
+```
+
+### Diagram:
+
+![Equijoin Example](https://github.com/user-attachments/assets/29e3af65-e5e5-4e7c-b038-9f590402a519)
+
+---
+
+## Key Takeaways
+
+- **Natural Join**: Automatically joins using common columns.
+- **Self Join**: Joins a table with itself to compare rows within it.
+- **Equijoin**: Joins based on equality between columns of two tables.
+
