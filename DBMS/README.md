@@ -957,5 +957,164 @@ A **Full Outer Join** returns all rows when there is a match in either left or r
 - **Right Outer Join**: Shows all rows from the right, and matching from the left.
 - **Full Outer Join**: Combines left and right joins.
 
+![image](https://github.com/user-attachments/assets/0267f36e-e028-4951-940d-00f584fe6958)
+
 --- 
+
+# SQL: Structured Query Language
+
+**SQL** (Structured Query Language) is a standard language for managing and manipulating relational databases. It's a **declarative language**, meaning you specify *what* you want to do, and the SQL engine handles *how* it's done.
+
+---
+
+## Types of SQL Commands
+
+SQL commands are categorized into different types based on their functionality. Here's a breakdown:
+
+| **Category**                | **Description**                                                |
+|-----------------------------|----------------------------------------------------------------|
+| **Data Definition Language** (DDL) | Defines the structure of the database (schema) and the tables.  |
+| **Data Manipulation Language** (DML) | Manipulates data stored in the database.                   |
+| **Data Control Language** (DCL) | Controls access to the data within the database.              |
+| **Transaction Control Language** (TCL) | Manages transactions within the database.                  |
+| **Constraints**              | Ensures data integrity by defining rules for the data.         |
+
+---
+
+### 1. **Data Definition Language (DDL)**
+DDL commands are used to define and manage database schema objects, like tables, views, and indexes.
+
+| **Command** | **Description**                                           |
+|-------------|-----------------------------------------------------------|
+| `CREATE`    | Creates a new table, view, or database.                   |
+| `ALTER`     | Modifies the structure of an existing table.              |
+| `DROP`      | Deletes an existing table or database.                    |
+| `TRUNCATE`  | Removes all rows from a table without logging individual row deletions. |
+| `RENAME`    | Renames an existing object like a table or column.        |
+
+**Example:**
+
+```sql
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT
+);
+
+ALTER TABLE Students ADD Email VARCHAR(100);
+
+DROP TABLE Students;
+```
+
+---
+
+### 2. **Data Manipulation Language (DML)**
+DML commands are used to modify data within tables.
+
+| **Command**  | **Description**                                           |
+|--------------|-----------------------------------------------------------|
+| `SELECT`     | Retrieves data from one or more tables.                   |
+| `INSERT`     | Inserts new data into a table.                            |
+| `UPDATE`     | Modifies existing data in a table.                        |
+| `DELETE`     | Removes data from a table.                                |
+
+**Example:**
+
+```sql
+INSERT INTO Students (StudentID, Name, Age) 
+VALUES (1, 'Aryan', 20);
+
+SELECT * FROM Students;
+
+UPDATE Students 
+SET Age = 21 
+WHERE StudentID = 1;
+
+DELETE FROM Students 
+WHERE StudentID = 1;
+```
+
+---
+
+### 3. **Data Control Language (DCL)**
+DCL commands are used to control access to data stored in a database.
+
+| **Command** | **Description**                               |
+|-------------|-----------------------------------------------|
+| `GRANT`     | Gives users permission to perform operations. |
+| `REVOKE`    | Removes previously granted permissions.       |
+
+**Example:**
+
+```sql
+GRANT SELECT, INSERT ON Students TO 'admin';
+
+REVOKE INSERT ON Students FROM 'admin';
+```
+
+---
+
+### 4. **Transaction Control Language (TCL)**
+TCL commands are used to manage transactions within a database, ensuring data consistency.
+
+| **Command**   | **Description**                                     |
+|---------------|-----------------------------------------------------|
+| `COMMIT`      | Saves all changes made during the current transaction. |
+| `ROLLBACK`    | Undoes all changes made during the current transaction. |
+| `SAVEPOINT`   | Sets a savepoint within a transaction to roll back to. |
+
+**Example:**
+
+```sql
+BEGIN TRANSACTION;
+
+UPDATE Students SET Age = 22 WHERE StudentID = 1;
+
+SAVEPOINT AgeUpdate;
+
+ROLLBACK TO AgeUpdate;
+
+COMMIT;
+```
+
+---
+
+### 5. **Constraints**
+Constraints enforce rules to maintain data integrity within a database. These rules are applied when creating or altering tables.
+
+| **Constraint**   | **Description**                                         |
+|------------------|---------------------------------------------------------|
+| `PRIMARY KEY`    | Uniquely identifies each record in a table.             |
+| `FOREIGN KEY`    | Links records between two tables, enforcing referential integrity. |
+| `CHECK`          | Ensures that all values in a column satisfy a specific condition. |
+| `UNIQUE`         | Ensures all values in a column are distinct.            |
+| `NOT NULL`       | Ensures that a column cannot have NULL values.          |
+| `DEFAULT`        | Provides a default value for a column if none is specified. |
+
+**Example:**
+
+```sql
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    ProductID INT,
+    Quantity INT CHECK (Quantity > 0),
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    OrderDate DATE DEFAULT GETDATE(),
+    UNIQUE (ProductID)
+);
+```
+
+---
+
+## Key Takeaways:
+
+1. **DDL**: Defines and manages tables and schema.
+2. **DML**: Manipulates data within tables (insert, update, delete).
+3. **DCL**: Grants or revokes user access to data.
+4. **TCL**: Manages database transactions for data consistency.
+5. **Constraints**: Enforce rules to maintain valid and consistent data.
+
+SQL makes it easy to define, manipulate, and control access to data while ensuring the integrity of information through constraints.
+
 
