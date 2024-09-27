@@ -840,3 +840,122 @@ WHERE emp.location = dept.address;
 - **Self Join**: Joins a table with itself to compare rows within it.
 - **Equijoin**: Joins based on equality between columns of two tables.
 
+
+---
+
+## 1. Inner Join
+An **Inner Join** returns rows where there is a match in both tables. If there are no matches, no rows are returned.
+
+### SQL Query:
+```sql
+SELECT StudentCourse.COURSE_ID, Student.NAME, Student.AGE 
+FROM Student
+INNER JOIN StudentCourse
+ON Student.ROLL_NO = StudentCourse.ROLL_NO;
+```
+
+![image](https://github.com/user-attachments/assets/edb94326-b42b-4784-9bb0-d98d2ed56869)
+
+
+### Explanation:
+- We select course IDs from the `StudentCourse` table and the names and ages from the `Student` table.
+- The rows are matched based on `ROLL_NO`.
+
+### Output:
+| COURSE_ID | NAME  | AGE |
+|-----------|-------|-----|
+| CS101     | Aryan | 20  |
+| CS102     | Sara  | 21  |
+| CS103     | John  | 22  |
+
+---
+
+## 2. Left Outer Join
+A **Left Outer Join** returns all rows from the left table and the matched rows from the right table. If there is no match, NULL values are returned from the right table.
+
+### SQL Query:
+```sql
+SELECT emp_no, e_name, d_name, loc  
+FROM emp 
+LEFT OUTER JOIN dept 
+ON emp.dept_no = dept.dept_no;
+```
+
+![image](https://github.com/user-attachments/assets/13607218-c979-4c8d-a3eb-cbd05c9e26c0)
+
+### Explanation:
+- This query fetches employee details (`emp_no`, `e_name`) and department details (`d_name`, `loc`).
+- All employees are shown, even if they don't belong to a department.
+
+### Output:
+| emp_no | e_name | d_name    | loc        |
+|--------|--------|-----------|------------|
+| 1001   | Aryan  | Sales     | Mumbai     |
+| 1002   | Sara   | NULL      | NULL       |
+| 1003   | John   | Marketing | Bangalore  |
+
+> **NOTE:** Employees like `Sara` don't belong to any department, so department columns return `NULL`.
+
+### Another Example:
+```sql
+SELECT Student.NAME, StudentCourse.COURSE_ID 
+FROM Student
+LEFT JOIN StudentCourse 
+ON StudentCourse.ROLL_NO = Student.ROLL_NO;
+```
+
+---
+
+## 3. Right Outer Join
+A **Right Outer Join** returns all rows from the right table, and the matched rows from the left table. If there is no match, NULL values are returned from the left table.
+
+### SQL Query:
+```sql
+SELECT emp_no, e_name, d_name, loc 
+FROM emp 
+RIGHT OUTER JOIN dept 
+ON emp.dept_no = dept.dept_no;
+```
+
+![image](https://github.com/user-attachments/assets/8c67677f-bddf-4f10-a18c-24f0dd92ed20)
+
+
+### Explanation:
+- This query fetches department details and any employees that belong to them.
+- All departments are shown, even if they don't have any employees.
+
+### Output:
+| emp_no | e_name | d_name    | loc        |
+|--------|--------|-----------|------------|
+| 1001   | Aryan  | Sales     | Mumbai     |
+| NULL   | NULL   | Marketing | Bangalore  |
+
+> **NOTE:** The `Marketing` department has no employees, so employee columns return `NULL`.
+
+### Another Example:
+```sql
+SELECT Student.NAME, StudentCourse.COURSE_ID 
+FROM Student
+RIGHT JOIN StudentCourse 
+ON StudentCourse.ROLL_NO = Student.ROLL_NO;
+```
+
+---
+
+## 4. Full Outer Join
+A **Full Outer Join** returns all rows when there is a match in either left or right table. If there is no match, NULL values are returned for non-matching rows in either table.
+
+> **IMPORTANT**: 
+> LEFT OUTER JOIN + RIGHT OUTER JOIN = FULL OUTER JOIN
+
+--- 
+
+### Visual Explanation of Joins
+
+- **Inner Join**: Shows only matching rows.
+- **Left Outer Join**: Shows all rows from the left, and matching from the right.
+- **Right Outer Join**: Shows all rows from the right, and matching from the left.
+- **Full Outer Join**: Combines left and right joins.
+
+--- 
+
