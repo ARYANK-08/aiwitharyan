@@ -1267,6 +1267,7 @@ Changes the table name from `Employee` to `Staff`.
 
 ---
 
+
 ## `ALTER` vs `UPDATE` in SQL
 
 | **ALTER**                                    | **UPDATE**                               |
@@ -1274,29 +1275,192 @@ Changes the table name from `Employee` to `Staff`.
 | **DDL (Data Definition Language)**           | **DML (Data Manipulation Language)**     |
 | Used to change the **table structure**.      | Used to **modify data** within a table.  |
 | Works on the schema/structure of the table.  | Works on the data stored in the table.   |
-| **Example: Add a column `email`**            | **Example: Update salary**               |
-| ```sql                                       | ```sql                                   |
-| ALTER TABLE emp                              | UPDATE emp                               |
-| ADD email VARCHAR(100);                      | SET salary = salary * 2                  |
-| ```                                          | WHERE id = 1;                            |
-| **Example: Remove a column `name`**          | ```                                      |
-| ```sql                                       |                                          |
-| ALTER TABLE emp                              |                                          |
-| DROP COLUMN name;                            |                                          |
-| ```                                          |                                          |
-| **Example: Modify data type from `INT` to `VARCHAR(50)`** | **Example: Update `name`**               |
-| ```sql                                       | ```sql                                   |
-| ALTER TABLE emp                              | UPDATE emp                               |
-| MODIFY id VARCHAR(50);                       | SET name = 'Aryan Kumar'                 |
-| ```                                          | WHERE id = 1;                            |
-| **Example: Rename column/table**             | ```                                      |
-| ```sql                                       |                                          |
-| ALTER TABLE emp                              |                                          |
-| RENAME COLUMN name TO full_name;             |                                          |
-| ALTER TABLE emp RENAME TO employees;         |                                          |
-| ```                                          |                                          |
+| Example: Add a column `email`                | Example: Update salary                  |
+| Example: Remove a column `name`              | Example: Update `name`                  |
+| Example: Modify data type from `INT` to `VARCHAR(50)` | Works on rows or specific columns |
+| Example: Rename column or table              | Applies changes to records in the table |
 
 ---
 
+### Examples for `ALTER`
+
+1. **Add a column `email`:**
+
+    ```sql
+    ALTER TABLE emp
+    ADD email VARCHAR(100);
+    ```
+
+2. **Remove a column `name`:**
+
+    ```sql
+    ALTER TABLE emp
+    DROP COLUMN name;
+    ```
+
+3. **Modify data type from `INT` to `VARCHAR(50)`:**
+
+    ```sql
+    ALTER TABLE emp
+    MODIFY id VARCHAR(50);
+    ```
+
+4. **Rename a column or table:**
+
+    ```sql
+    ALTER TABLE emp
+    RENAME COLUMN name TO full_name;
+    
+    ALTER TABLE emp
+    RENAME TO employees;
+    ```
+
+---
+
+### Examples for `UPDATE`
+
+1. **Update salary by doubling it:**
+
+    ```sql
+    UPDATE emp
+    SET salary = salary * 2
+    WHERE id = 1;
+    ```
+
+2. **Update `name` of an employee:**
+
+    ```sql
+    UPDATE emp
+    SET name = 'Aryan Kumar'
+    WHERE id = 1;
+    ```
+
+
 - **`ALTER`**: Used for modifying the structure of a table (DDL).
 - **`UPDATE`**: Used for modifying the data within the table (DML).
+
+---
+
+## `DELETE` vs `DROP` vs `TRUNCATE` in SQL
+
+| **DELETE**                                   | **DROP**                                 | **TRUNCATE**                             |
+|----------------------------------------------|------------------------------------------|------------------------------------------|
+| **DML (Data Manipulation Language)**         | **DDL (Data Definition Language)**       | **DDL (Data Definition Language)**       |
+| Used to delete specific **rows/tuples** from a table using a `WHERE` clause. | Deletes the **entire table**, including its structure (schema). | Deletes all rows from a table, keeping the structure. |
+| Preserves the table structure.               | Completely removes table structure and data. | Table structure is preserved.           |
+| Slower, as it deletes one row at a time.     | Irreversible and faster for removing an entire table. | Faster than `DELETE`, but irreversible. |
+| Can use `WHERE` clause to delete specific rows. | Example: `DROP TABLE Student;`          | Deletes all rows in one go without `WHERE`. |
+| **Example:**                                 | **Example:**                             | **Example:**                             |
+| ```sql                                       | ```sql                                   | ```sql                                   |
+| DELETE FROM student WHERE id = 1;            | DROP TABLE student;                      | TRUNCATE TABLE student;                  |
+| ```                                          | ```                                      | ```                                      |
+| Supports rollback (transactional).           | Irreversible; cannot roll back.          | No rollback possible. No logging.        |
+| Slower than `TRUNCATE` due to logging of each row. | Completely wipes out the table.         | Removes all rows instantly, no individual row logging. |
+
+### Key Differences
+
+- **DELETE**: Removes specific rows from the table using `WHERE`. It logs each row and is slower. You can roll back changes using transactions.
+  
+- **DROP**: Completely removes the table, including its structure, making it irrecoverable.
+
+- **TRUNCATE**: Deletes all rows instantly but preserves the structure. Faster than `DELETE` but cannot be rolled back.
+
+---
+
+## Constraints in SQL
+
+Constraints are conditions or restrictions applied to data before it's inserted into the database, ensuring data integrity and validity.
+
+### Common Constraints:
+
+1. **UNIQUE**  
+   - Ensures all values in a column are **distinct** and no duplicate values are allowed.
+   - **Example**: Ensuring each mobile number is unique.
+   ```sql
+   CREATE TABLE Users (
+       UserID INT UNIQUE,
+       MobileNumber VARCHAR(15) UNIQUE
+   );
+   ```
+
+2. **NOT NULL**  
+   - Ensures that a column cannot have a **NULL** (empty) value.
+   - **Example**: Email ID must be filled out in a form (mandatory).
+   ```sql
+   CREATE TABLE Users (
+       UserID INT,
+       Email VARCHAR(100) NOT NULL
+   );
+   ```
+
+3. **PRIMARY KEY**  
+   - A combination of **UNIQUE** and **NOT NULL** constraints. Uniquely identifies each row in a table.
+   - **Example**: `UserID` is unique and non-null.
+   ```sql
+   CREATE TABLE Users (
+       UserID INT PRIMARY KEY,
+       Email VARCHAR(100)
+   );
+   ```
+
+4. **CHECK**  
+   - Ensures that all values in a column meet a specific condition.
+   - **Example**: Age must be greater than 18.
+   ```sql
+   CREATE TABLE Users (
+       UserID INT,
+       Age INT CHECK (Age >= 18)
+   );
+   ```
+
+5. **FOREIGN KEY**  
+   - Ensures referential integrity by linking columns to another table's **PRIMARY KEY**.
+   - **Example**: `DepartmentID` in `Employee` table refers to the `DepartmentID` in `Departments` table.
+   ```sql
+   CREATE TABLE Employee (
+       EmployeeID INT PRIMARY KEY,
+       DepartmentID INT,
+       FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+   );
+   ```
+6. **DEFAULT**
+
+The `DEFAULT` constraint provides a **default value** for a column when no value is specified. If a user doesn't insert a value into that column, the database automatically assigns the default value.
+
+#### Example: Setting a Default Salary
+
+If no salary is provided for an employee, the `DEFAULT` constraint ensures the salary is automatically set to 10,000.
+
+```sql
+CREATE TABLE Employee (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Salary INT DEFAULT 10000
+);
+```
+
+In this case, if you insert a new employee without specifying the salary, it will be set to 10,000 by default.
+
+#### Insert Example:
+```sql
+INSERT INTO Employee (EmployeeID, FirstName, LastName)
+VALUES (1, 'Aryan', 'Kyatham');
+```
+
+#### Result:
+The inserted employee will have a salary of **10,000**, as defined by the `DEFAULT` constraint:
+| EmployeeID | FirstName | LastName | Salary |
+|------------|-----------|----------|--------|
+| 1          | Aryan     | Kyatham  | 10000  |
+
+This way, the `DEFAULT` constraint ensures that missing values are handled with predefined values!  
+
+### Real-World Example:
+
+When creating a Gmail account:
+- The **UNIQUE** constraint ensures the email ID `kyathamaryan@gmail.com` isn't already taken.
+- The **NOT NULL** constraint makes it mandatory to fill out fields like email and mobile number.
+
+These constraints help maintain clean, valid, and organized data in your database!
+
