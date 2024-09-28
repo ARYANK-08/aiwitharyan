@@ -1117,4 +1117,154 @@ CREATE TABLE Orders (
 
 SQL makes it easy to define, manipulate, and control access to data while ensuring the integrity of information through constraints.
 
+---
+
+# SQL `CREATE TABLE` Command
+
+The **`CREATE TABLE`** command is used to create a new table in SQL with specified columns and constraints.
+
+---
+
+## Key Points:
+- Defines table structure (columns and data types).
+- Constraints like `PRIMARY KEY`, `NOT NULL`, `CHECK`, etc., can be added.
+- Use `CREATE TABLE IF NOT EXISTS` to avoid errors when the table already exists.
+
+---
+
+## Example: Create `Customer` Table with Constraints
+
+```sql
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    CustomerName VARCHAR(50),
+    LastName VARCHAR(50),
+    Country VARCHAR(50),
+    Age INT CHECK (Age BETWEEN 0 AND 99),
+    Phone INT(10)
+);
+```
+
+---
+
+## Insert Data:
+
+```sql
+INSERT INTO Customer (CustomerID, CustomerName, LastName, Country, Age, Phone)
+VALUES 
+    (1, 'Shubham', 'Thakur', 'India', 23, 'xxxxxxxxxx'),
+    (2, 'Aman', 'Chopra', 'Australia', 21, 'xxxxxxxxxx');
+```
+
+---
+
+## Create Table from Another Table:
+
+```sql
+CREATE TABLE SubTable AS
+SELECT CustomerID, CustomerName
+FROM Customer;
+```
+
+---
+
+# SQL `ALTER` Command
+
+The **`ALTER`** command in SQL is used to modify an existing table. It can be used to:
+- Add or remove columns.
+- Modify data types or their lengths.
+- Add or remove constraints.
+- Rename columns or tables.
+
+---
+
+## Syntax:
+
+```sql
+ALTER TABLE table_name
+-- ADD, DROP, MODIFY, RENAME commands
+```
+
+---
+
+## 1. Add a Column
+
+```sql
+ALTER TABLE Employee
+ADD Email VARCHAR(100);
+```
+Adds a new column `Email` to the `Employee` table.
+
+---
+
+## 2. Remove a Column
+
+```sql
+ALTER TABLE Employee
+DROP COLUMN Email;
+```
+Removes the `Email` column from the `Employee` table.
+
+---
+
+## 3. Modify Data Type of a Column
+
+```sql
+ALTER TABLE Employee
+MODIFY Salary DECIMAL(12, 2);
+```
+Changes the data type and length of the `Salary` column.
+
+---
+
+## 4. Modify Data Type Length
+
+```sql
+ALTER TABLE Customer
+MODIFY Phone VARCHAR(15);
+```
+Modifies the length of the `Phone` column to allow more digits.
+
+---
+
+## 5. Add a Constraint
+
+```sql
+ALTER TABLE Employee
+ADD CONSTRAINT chk_salary CHECK (Salary >= 0);
+```
+Adds a `CHECK` constraint to ensure `Salary` is not negative.
+
+---
+
+## 6. Remove a Constraint
+
+```sql
+ALTER TABLE Employee
+DROP CONSTRAINT chk_salary;
+```
+Removes the `CHECK` constraint from the `Salary` column.
+
+---
+
+## 7. Rename a Column
+
+```sql
+ALTER TABLE Employee
+RENAME COLUMN FirstName TO First_Name;
+```
+Renames the column `FirstName` to `First_Name`.
+
+---
+
+## 8. Rename a Table
+
+```sql
+ALTER TABLE Employee
+RENAME TO Staff;
+```
+Changes the table name from `Employee` to `Staff`.
+
+---
+
 
