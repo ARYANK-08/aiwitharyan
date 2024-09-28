@@ -1464,3 +1464,81 @@ When creating a Gmail account:
 
 These constraints help maintain clean, valid, and organized data in your database!
 
+
+---
+
+
+| **e_id** | **ename** | **dept** | **salary** |
+|----------|-----------|----------|------------|
+| 1        | Ram       | HR       | 10,000     |
+| 2        | Amrit     | MRKT     | 20,000     |
+| 3        | Ravi      | HR       | 30,000     |
+| 4        | Nitin     | MRKT     | 40,000     |
+| 5        | Varun     | IT       | 50,000     |
+
+## SQL Queries
+
+### 1. Display Maximum Salary from `emp` Table
+To find the maximum salary from the `emp` table, use the following query:
+
+```sql
+SELECT MAX(salary) FROM emp;
+```
+
+### 2. Display Employee Name with Maximum Salary
+To get the name of the employee earning the maximum salary:
+
+```sql
+SELECT ename FROM emp
+WHERE salary = (SELECT MAX(salary) FROM emp);
+```
+
+### 3. Display Second Highest Salary from `emp` Table
+To find the second highest salary:
+
+```sql
+SELECT MAX(salary) FROM emp 
+WHERE salary != (SELECT MAX(salary) FROM emp);
+```
+
+### 4. Display Employee Name with Second Highest Salary
+To get the name of the employee earning the second highest salary:
+
+```sql
+SELECT ename FROM emp
+WHERE salary = (SELECT MAX(salary) FROM emp 
+                WHERE salary != (SELECT MAX(salary) FROM emp));
+```
+
+> **Note:**  
+> Using `=` in conditions such as `2 = 2` is straightforward, but when checking multiple values, use the `IN` keyword for better clarity and efficiency.  
+> For example, instead of checking multiple values with `=`:
+
+```sql
+SELECT * FROM emp WHERE dept IN ('HR', 'MRKT');
+```
+
+### 5. Display Department Names with Number of Employees
+To get a count of employees working in each department:
+
+```sql
+SELECT dept, COUNT(dept) 
+FROM emp 
+GROUP BY dept;
+```
+
+#### Output:
+| **dept** | **count** |
+|----------|-----------|
+| HR       | 2         |
+| MRKT     | 2         |
+| IT       | 1         |
+
+### Important Notes on `GROUP BY`
+- When using `GROUP BY`, you can only select columns that are either grouped or aggregated. For example:
+
+```sql
+SELECT dept FROM emp GROUP BY dept;
+```
+- In this case, only the `dept` column is allowed without any other attributes.
+
