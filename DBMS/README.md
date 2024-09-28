@@ -1267,4 +1267,36 @@ Changes the table name from `Employee` to `Staff`.
 
 ---
 
+## `ALTER` vs `UPDATE` in SQL
 
+| **ALTER**                                    | **UPDATE**                               |
+|----------------------------------------------|------------------------------------------|
+| **DDL (Data Definition Language)**           | **DML (Data Manipulation Language)**     |
+| Used to change the **table structure**.      | Used to **modify data** within a table.  |
+| Works on the schema/structure of the table.  | Works on the data stored in the table.   |
+| **Example: Add a column `email`**            | **Example: Update salary**               |
+| ```sql                                       | ```sql                                   |
+| ALTER TABLE emp                              | UPDATE emp                               |
+| ADD email VARCHAR(100);                      | SET salary = salary * 2                  |
+| ```                                          | WHERE id = 1;                            |
+| **Example: Remove a column `name`**          | ```                                      |
+| ```sql                                       |                                          |
+| ALTER TABLE emp                              |                                          |
+| DROP COLUMN name;                            |                                          |
+| ```                                          |                                          |
+| **Example: Modify data type from `INT` to `VARCHAR(50)`** | **Example: Update `name`**               |
+| ```sql                                       | ```sql                                   |
+| ALTER TABLE emp                              | UPDATE emp                               |
+| MODIFY id VARCHAR(50);                       | SET name = 'Aryan Kumar'                 |
+| ```                                          | WHERE id = 1;                            |
+| **Example: Rename column/table**             | ```                                      |
+| ```sql                                       |                                          |
+| ALTER TABLE emp                              |                                          |
+| RENAME COLUMN name TO full_name;             |                                          |
+| ALTER TABLE emp RENAME TO employees;         |                                          |
+| ```                                          |                                          |
+
+---
+
+- **`ALTER`**: Used for modifying the structure of a table (DDL).
+- **`UPDATE`**: Used for modifying the data within the table (DML).
