@@ -1542,3 +1542,153 @@ SELECT dept FROM emp GROUP BY dept;
 ```
 - In this case, only the `dept` column is allowed without any other attributes.
 
+
+---
+
+### 6. Display all Departments where the Number of Employees is Less than 2
+
+This query finds departments with fewer than 2 employees.
+
+```sql
+SELECT dept
+FROM emp
+GROUP BY dept
+HAVING COUNT(dept) < 2;
+```
+
+#### Explanation:
+- `GROUP BY dept`: Groups employees by their department.
+- `HAVING COUNT(dept) < 2`: Only includes departments where the number of employees is less than 2.
+
+#### Expected Output:
+| dept  |
+|-------|
+| Sales |
+| IT    |
+
+---
+
+### 6.1. Display the Names of Employees in Departments with Fewer than 2 Employees
+
+This query returns the names of employees who work in departments where the number of employees is less than 2.
+
+```sql
+SELECT ename 
+FROM emp 
+WHERE dept IN (
+    SELECT dept
+    FROM emp
+    GROUP BY dept
+    HAVING COUNT(dept) < 2
+);
+```
+
+#### Explanation:
+- The inner query selects departments with fewer than 2 employees.
+- The outer query finds the names (`ename`) of employees in those departments.
+
+#### Expected Output:
+| ename  |
+|--------|
+| John   |
+| Alice  |
+
+---
+
+### 7. Display the Employee with the Highest Salary per Department
+
+This query shows the names of employees who are earning the highest salary in each department.
+
+```sql
+SELECT ename 
+FROM emp 
+WHERE salary IN (
+    SELECT MAX(salary) 
+    FROM emp
+    GROUP BY dept
+);
+```
+
+#### Explanation:
+- The inner query finds the maximum salary in each department.
+- The outer query finds the employees whose salary matches the maximum for their department.
+
+#### Expected Output:
+| ename  |
+|--------|
+| Ravi   |
+| Nitin  |
+| Varun  |
+
+---
+
+### IN / NOT IN Example
+
+This query finds the details of employees whose address is either 'Delhi', 'Chandigarh', or 'Pune'.
+
+```sql
+SELECT * 
+FROM emp 
+WHERE address IN ('DELHI', 'CHANDIGARH', 'PUNE');
+```
+
+#### Explanation:
+- `IN` is used to check whether a value exists within a given set of values.
+
+#### Expected Output:
+| eid | ename  | address     |
+|-----|--------|-------------|
+| 1   | Ravi   | Chandigarh  |
+| 2   | Varun  | Delhi       |
+| 3   | Nitin  | Pune        |
+
+---
+
+### Find Employees Who Are Working on a Project
+
+This query retrieves the names of employees who are working on a project.
+
+```sql
+SELECT ename 
+FROM emp 
+WHERE eid IN (
+    SELECT DISTINCT eid 
+    FROM project
+);
+```
+
+#### Explanation:
+- The inner query selects the unique employee IDs (`eid`) from the `project` table.
+- The outer query returns the names of those employees from the `emp` table.
+
+#### Expected Output:
+| ename  |
+|--------|
+| Ravi   |
+| Ammy   |
+| Nitin  |
+
+---
+
+### Nested Query Explanation
+
+- **Nested Queries**: Queries inside another query.
+- **Bottom-Up Execution**: The innermost query runs first, and its result is used by the outer query.
+
+For example, in the query:
+
+```sql
+SELECT ename 
+FROM emp 
+WHERE eid IN (
+    SELECT DISTINCT eid 
+    FROM project
+);
+```
+
+- The inner query (`SELECT DISTINCT eid FROM project`) runs first to get the employee IDs.
+- The outer query (`SELECT ename FROM emp WHERE eid IN (...)`) uses these IDs to find the employee names.
+
+---
+
+
