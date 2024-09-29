@@ -1692,3 +1692,188 @@ WHERE eid IN (
 ---
 
 
+### EXISTS and NOT EXISTS in SQL
+
+- **EXISTS**: This operator is used in a **correlated** subquery to check if rows are returned by the inner query.
+- **NOT EXISTS**: This is the opposite, checking if no rows are returned by the inner query.
+
+These operators return **TRUE** or **FALSE** based on whether the subquery finds matching records.
+
+#### Example: Find Employees Who Are Working on at Least One Project
+
+```sql
+SELECT * 
+FROM emp 
+WHERE EXISTS (
+    SELECT eid 
+    FROM project 
+    WHERE emp.eid = project.eid
+);
+```
+
+#### Explanation:
+- **Correlated Query**: The subquery depends on the outer query because it uses `emp.eid`.
+- The subquery checks for the existence of the employee (`emp.eid`) in the `project` table.
+- If a matching `eid` is found, the outer query returns the employee's details.
+
+#### Expected Output:
+
+| eid | ename  | dept   | salary |
+|-----|--------|--------|--------|
+| 1   | Aryan  | Backend| 75000  |
+| 3   | Nitin  | Android| 85000  |
+
+---
+
+### Aggregate Functions in SQL
+
+SQL offers several aggregate functions to perform calculations on data sets. These include:
+
+- **MAX**: Returns the highest value.
+- **MIN**: Returns the lowest value.
+- **COUNT**: Returns the number of rows (or non-null values in a column).
+- **SUM**: Returns the total sum of a numeric column.
+- **AVG**: Returns the average of a numeric column.
+
+#### Example: Find Maximum Salary in the Employee Table
+
+```sql
+SELECT MAX(salary) FROM emp;
+```
+
+#### Expected Output:
+| max(salary) |
+|-------------|
+| 75000       |
+
+#### Other Examples:
+
+- **MIN**: `SELECT MIN(salary) FROM emp;`
+- **COUNT (All Rows)**: `SELECT COUNT(*) FROM emp;`
+- **COUNT (Non-Null Salaries)**: `SELECT COUNT(salary) FROM emp;`
+- **SUM**: `SELECT SUM(salary) FROM emp;`
+- **AVG**: `SELECT AVG(salary) FROM emp;`
+
+---
+
+### Correlated Query in SQL
+
+- A **correlated query** is a **subquery** that uses values from the outer query.
+- It’s evaluated for each row processed by the outer query, making it a **top-down approach**.
+
+#### Example: Find All Employee Details Who Work in a Department
+
+```sql
+SELECT * 
+FROM emp 
+WHERE EXISTS (
+    SELECT * 
+    FROM dept 
+    WHERE dept.eid = emp.eid
+);
+```
+
+#### Explanation:
+- The subquery is correlated with the outer query using the condition `dept.eid = emp.eid`.
+- For each employee in the outer query, the subquery checks whether a matching `eid` exists in the `dept` table.
+
+#### Expected Output:
+
+| eid | ename  | dept    | salary |
+|-----|--------|---------|--------|
+| 1   | Aryan  | Backend | 75000  |
+| 2   | Sandy  | Testing | NULL   |
+
+---
+
+### Nested Queries vs Correlated Queries vs Joins
+
+Let’s compare **nested queries**, **correlated queries**, and **joins** based on their execution patterns.
+
+| Query Type         | Execution Pattern          | Description                              |
+|--------------------|----------------------------|------------------------------------------|
+| **Nested Query**    | **Bottom-Up**              | The inner query is executed first, and its result is used by the outer query. |
+| **Correlated Query**| **Top-Down**               | The inner query is dependent on values from the outer query and is re-executed for each row of the outer query. |
+| **Join**            | **Single Execution (Cross Product + Condition)** | Combines data from two or more tables based on a related column. Generally more efficient than correlated queries. |
+
+#### Example: Nested Query
+
+This query returns the details of all employees who work in any department.
+
+```sql
+SELECT * 
+FROM emp 
+WHERE eid IN (
+    SELECT eid 
+    FROM dept
+);
+```
+
+- **Inner Query**: Selects all `eid` from the `dept` table.
+- **Outer Query**: Fetches all employees (`emp`) whose `eid` matches the `eid` from the inner query.
+
+#### Expected Output:
+
+| eid | ename  | dept    | salary |
+|-----|--------|---------|--------|
+| 1   | Aryan  | Backend | 75000  |
+| 2   | Sandy  | Testing | NULL   |
+
+---
+
+#### Example: Correlated Query
+
+This query returns details of employees who work in a department, checking row by row.
+
+```sql
+SELECT * 
+FROM emp 
+WHERE EXISTS (
+    SELECT 1 
+    FROM dept 
+    WHERE dept.eid = emp.eid
+);
+```
+
+- **Inner Query**: Checks for the existence of `eid` in the `dept` table for each `eid` from the outer query.
+
+#### Expected Output:
+
+| eid | ename  | dept    | salary |
+|-----|--------|---------|--------|
+| 1   | Aryan  | Backend | 75000  |
+
+---
+
+#### Example: Join
+
+This query returns employee details along with department information using a join.
+
+```sql
+SELECT emp.*, dept.name 
+FROM emp 
+JOIN dept 
+ON emp.eid = dept.eid;
+```
+
+- **Join**: Combines data from `emp` and `dept` tables where `eid` matches.
+
+#### Expected Output:
+
+| eid | ename  | dept    | salary | dept_name  |
+|-----|--------|---------|--------|------------|
+| 1   | Aryan  | Backend | 75000  | IT         |
+
+---
+
+### Nested vs Correlated Query vs Join: Performance Comparison
+
+- **Nested Queries**: Process the **inner query first** and then apply the outer query. Suitable for simple data extraction.
+  
+- **Correlated Queries**: Execute the **inner query for each row** in the outer query. This can be less efficient due to repeated executions, but useful for more complex filtering.
+
+- **Joins**: Process both tables at the same time using a **cross-product and condition**. This is generally faster and more efficient than correlated queries, though it can consume more space.
+
+For example, in a correlated query, for 5 employees and 3 departments, there would be **5 × 3** executions, while in a join, a temporary buffer holds the results, making the query more efficient overall.
+
+---
