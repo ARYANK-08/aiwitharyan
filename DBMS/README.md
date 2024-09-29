@@ -1877,3 +1877,16 @@ ON emp.eid = dept.eid;
 For example, in a correlated query, for 5 employees and 3 departments, there would be **5 × 3** executions, while in a join, a temporary buffer holds the results, making the query more efficient overall.
 
 ---
+
+FIND THE Nth highest salary using sql
+
+select id, salary from emp e1
+where n - 1  = (select count(distinct salary) from emp e2 where e2.salary > e1.salary)
+
+emp (id , salary)
+   1 10000
+   2 20000
+   3 20000
+   4 30000
+   5 40000
+select
