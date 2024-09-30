@@ -1877,16 +1877,115 @@ ON emp.eid = dept.eid;
 For example, in a correlated query, for 5 employees and 3 departments, there would be **5 × 3** executions, while in a join, a temporary buffer holds the results, making the query more efficient overall.
 
 ---
+### Finding the Nth Highest Salary Using SQL
 
-FIND THE Nth highest salary using sql
+To find the **Nth highest salary** in a table, you can use a correlated subquery that counts distinct salaries greater than the salary in each row. Here's a breakdown of how it works:
 
-select id, salary from emp e1
-where n - 1  = (select count(distinct salary) from emp e2 where e2.salary > e1.salary)
+```sql
+SELECT id, salary 
+FROM emp e1
+WHERE N - 1 = (
+    SELECT COUNT(DISTINCT salary) 
+    FROM emp e2 
+    WHERE e2.salary > e1.salary
+);
+```
 
-emp (id , salary)
-   1 10000
-   2 20000
-   3 20000
-   4 30000
-   5 40000
-select
+#### Explanation:
+- `e1` is the outer query, representing each employee's salary.
+- `e2` is the inner query, counting how many distinct salaries are **greater** than `e1.salary`.
+- The condition `N - 1` ensures that we're selecting the row where exactly **N - 1** distinct salaries are greater than the current salary.
+
+#### Example:
+
+| id | salary |
+|----|--------|
+| 1  | 10000  |
+| 2  | 20000  |
+| 3  | 20000  |
+| 4  | 30000  |
+| 5  | 40000  |
+
+To find the **2nd highest salary** (`N = 2`):
+
+```sql
+SELECT id, salary 
+FROM emp e1
+WHERE 2 - 1 = (
+    SELECT COUNT(DISTINCT salary) 
+    FROM emp e2 
+    WHERE e2.salary > e1.salary
+);
+```
+
+#### Output:
+
+| id | salary |
+|----|--------|
+| 4  | 30000  |
+
+---
+
+### Alternative Approach to Finding the 2nd Highest Salary
+
+You can also use this query to find the **2nd highest salary** by excluding the highest salary:
+
+```sql
+SELECT MAX(salary) 
+FROM emp 
+WHERE salary NOT IN (
+    SELECT MAX(salary) 
+    FROM emp
+);
+```
+
+#### Explanation:
+- The subquery finds the **maximum salary**.
+- The outer query finds the **maximum salary** excluding the highest one from the subquery.
+
+#### Example Output:
+
+If the salaries are `10000, 20000, 30000, 40000`, the query will return `30000` as the 2nd highest salary.
+
+---
+
+### Query to Find Last Names with 'A' as the Second Character
+
+To find employees whose last names have an 'A' as the **second character**, use the `LIKE` operator with the underscore (`_`) wildcard for a single character:
+
+```sql
+SELECT last_name 
+FROM emp 
+WHERE last_name LIKE '_A%';
+```
+
+#### Explanation:
+- `_` represents **any single character**.
+- `A` is the second character.
+- `%` allows for any sequence of characters after the second character.
+
+#### Example:
+
+| last_name |
+|-----------|
+| Kalpana   |
+| Daniel    |
+
+This will return last names where 'A' is the second character.
+
+---
+
+### SQL Command to Remove a Table
+
+To **remove a table** (or relation) from a SQL database, you can use the `DROP TABLE` command:
+
+```sql
+DROP TABLE <TABLE_NAME>;
+```
+
+#### Example:
+
+```sql
+DROP TABLE employees;
+```
+
