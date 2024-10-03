@@ -150,3 +150,270 @@ Unlike MD5 or SHA-1, which focus on fast computations, Scrypt adds complexity by
 - **MD5**: Fast, but offers weak security. Good for basic checksums and non-critical data.
 - **SHA-1**: Better than MD5, widely used but has vulnerabilities. Replaced by **SHA-2** in modern security systems.
 - **Scrypt**: Highly secure due to its computational and memory demands. Perfect for password hashing and cryptocurrency mining.
+
+
+
+
+### HTTPS (Hypertext Transfer Protocol Secure)
+
+HTTPS (Hypertext Transfer Protocol Secure) is an extension of HTTP designed to secure data transmission between a client (e.g., browser) and a server. It uses encryption through SSL/TLS protocols to ensure data confidentiality, integrity, and authenticity. This prevents sensitive information, like login credentials or payment details, from being intercepted or tampered with by attackers. HTTPS is essential for securing web applications and has become a standard for most websites, especially those handling user data, as it helps protect against man-in-the-middle attacks and eavesdropping.
+
+#### **What is HTTPS?**
+HTTPS stands for Hypertext Transfer Protocol Secure. It’s the secure version of HTTP, which is the primary protocol used for transmitting data on the web. HTTPS encrypts data to enhance the security of data transfers, particularly when sensitive information, such as login credentials or financial information, is transmitted. Websites requiring user authentication should implement HTTPS to ensure secure communication.
+
+Modern web browsers flag non-HTTPS sites as "not secure," making it essential for websites handling user data to adopt HTTPS for trust and safety.
+
+#### **How does HTTPS work?**
+HTTPS employs the Transport Layer Security (TLS) protocol (previously known as Secure Sockets Layer or SSL) for encryption. It operates using an asymmetric public key infrastructure, involving two keys:
+- **Private Key:** Controlled by the website owner and kept secure on the web server, used for decrypting information.
+- **Public Key:** Available to everyone and used for encrypting information sent to the server.
+
+1. **Establishing a Secure Connection:** When a client connects to a server using HTTPS, the server provides its SSL certificate containing the public key. This initiates a process known as the SSL/TLS handshake, where both parties verify each other’s identity and agree on encryption methods.
+
+2. **Encryption:** Once the handshake is completed, the client and server use symmetric encryption (using session keys) to secure the communication.
+
+#### **Importance of HTTPS**
+- **Data Protection:** Encrypts information, making it unreadable to anyone intercepting the data (e.g., on public Wi-Fi).
+- **Integrity:** Ensures that the data sent and received has not been altered or tampered with.
+- **Authentication:** Confirms that users are communicating with the genuine server and not an imposter.
+
+#### **What happens if a website doesn’t have HTTPS?**
+Without HTTPS, data is transmitted in plain text, making it vulnerable to interception and manipulation. Potential risks include:
+- **Data Interception:** Attackers can easily read and capture sensitive information.
+- **Content Injection:** ISPs or malicious third parties can inject unwanted advertisements or malicious content into webpages.
+- **Reduced Trust:** Browsers mark non-HTTPS sites as "not secure," leading to decreased user trust.
+
+#### **What port does HTTPS use?**
+HTTPS operates over **port 443**, while HTTP uses **port 80**. This distinction helps in routing traffic correctly and securing connections.
+
+#### **Difference between HTTPS and HTTP**
+- **Encryption:** HTTPS uses SSL/TLS to encrypt data, while HTTP transmits data in plain text.
+- **Security:** HTTPS provides a secure communication channel; HTTP does not.
+
+#### **Understanding the TLS Handshake**
+A TLS handshake is the process that establishes a secure connection. Here’s how it works:
+1. **Client Hello:** The client sends a message to the server indicating supported TLS versions and cipher suites.
+2. **Server Hello:** The server responds with its SSL certificate and selected cipher suite.
+3. **Authentication:** The client verifies the server's SSL certificate with a trusted Certificate Authority (CA).
+4. **Session Keys Creation:** Both parties generate session keys for symmetric encryption.
+
+#### **TLS vs. SSL**
+SSL was the original protocol for securing communications, but it has been largely replaced by TLS due to security vulnerabilities. The terms SSL and TLS are often used interchangeably, but the latest standard is TLS.
+
+#### **Benefits of HTTPS**
+- **Enhanced Security:** Protects user data during transmission.
+- **Improved SEO:** Search engines favor HTTPS websites, enhancing visibility.
+- **Trust and Credibility:** Websites with HTTPS are viewed as more trustworthy by users.
+
+In summary, implementing HTTPS is essential for any website, especially those handling sensitive user information, to ensure security, privacy, and trustworthiness.
+
+```python
+import socket, threading
+
+ENCODING = "utf8"
+
+class Client(threading.Thread):
+    def run(self):
+        # initialize necessary variables
+        spacing = ""
+        clientHost = "127.0.0.1"
+        clientPort = 12345
+        clientAddress = (clientHost, clientPort)
+
+        # open connection
+        connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        print(spacing, "open")
+
+        requestData = ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", "."]
+
+        for datum in requestData:
+            # send request to server
+            print(spacing, "put:", datum)
+            connection.sendto(datum.encode(ENCODING), clientAddress)
+
+            # get response from server
+            responseData, clientAddress = connection.recvfrom(1024)
+            print(spacing, "get:", responseData.decode(ENCODING))
+
+        # close connection
+        connection.close()
+        print(spacing, "close")
+
+class Server(threading.Thread):
+    def run(self):
+        # initialize necessary variables
+        count = 0
+        spacing = "\t\t\t"
+        serverHost = "127.0.0.1"
+        serverPort = 12346
+        serverAddress = (serverHost, serverPort)
+
+        # open connection
+        connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        connection.bind(serverAddress)
+
+        print(spacing, "open")
+
+        while 1:
+            # get request from client
+            requestData, clientAddress = connection.recvfrom(1024)
+            print(spacing, "get:", requestData.decode(ENCODING))
+
+            # process request
+            count += 1
+
+            if requestData.decode(ENCODING) == ".":
+                responseData = "done"
+            else:
+                responseData = "ok [" + str(count) + "]"
+
+            # send response to client
+            print(spacing, "put:", responseData)
+            connection.sendto(responseData.encode(ENCODING), clientAddress)
+
+            # close connection
+            if requestData.decode(ENCODING) == ".":
+                break
+
+        connection.close()
+        print(spacing, "close")
+
+class Attacker(threading.Thread):
+    def run(self):
+        # initialize necessary variables
+        spacing = "            "
+        clientHost = "127.0.0.1"
+        clientPort = 12345
+        clientAddress = (clientHost, clientPort)
+
+        # open connection
+        clientConnection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        clientConnection.bind(clientAddress)
+
+        # initialize necessary variables
+        serverHost = "127.0.0.1"
+        serverPort = 12346
+        serverAddress = (serverHost, serverPort)
+
+        # open connection
+        serverConnection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        print(spacing, "open")
+
+        while 1:
+            # get request from client
+            clientRequestData, clientAddress = clientConnection.recvfrom(1024)
+            print(spacing, "get:", clientRequestData.decode(ENCODING))
+
+            # modify request (if desired)
+            serverRequestData = clientRequestData.decode(ENCODING)
+
+            if clientRequestData.decode(ENCODING) == "quick":
+                serverRequestData = "big"
+            if clientRequestData.decode(ENCODING) == "fox":
+                serverRequestData = "bear"
+            if clientRequestData.decode(ENCODING) == "jumps":
+                serverRequestData = "runs"
+            if clientRequestData.decode(ENCODING) == "lazy":
+                serverRequestData = "hyper"
+            if clientRequestData.decode(ENCODING) == "dog":
+                serverRequestData = "rabbit"
+
+            # send request to server
+            print(spacing, "put:", serverRequestData)
+            serverConnection.sendto(serverRequestData.encode(ENCODING), serverAddress)
+
+            # get response from server
+            serverResponseData, serverAddress = serverConnection.recvfrom(1024)
+            print(spacing, "get:", serverResponseData.decode(ENCODING))
+
+            # modify response (if desired)
+            clientResponseData = serverResponseData.decode(ENCODING)
+
+            # send response to client
+            print(spacing, "put:", clientResponseData)
+            clientConnection.sendto(clientResponseData.encode(ENCODING), clientAddress)
+
+            if serverResponseData.decode(ENCODING) == "done":
+                break
+
+        # close connection
+        serverConnection.close()
+        clientConnection.close()
+        print(spacing, "close")
+
+print("  Client     Attacker     Server")
+print("----------  ----------  ----------")
+
+# create all threads
+server = Server()
+attacker = Attacker()
+client = Client()
+
+# start all threads
+server.start()
+attacker.start()
+client.start()
+
+# join all threads
+server.join()
+attacker.join()
+client.join()
+
+```
+# UDP Client-Server with MITM Attack Simulation
+
+## Code Explanation
+
+### Overview
+The code implements a simple UDP client-server architecture along with an attacker thread simulating a man-in-the-middle attack. The client sends data to the server, while the attacker intercepts and modifies the data before it reaches the server.
+
+### Key Components
+
+1. **Imports**:
+   - `socket`: Provides access to the BSD socket interface.
+   - `threading`: Enables concurrent execution by creating threads.
+
+2. **Encoding**:
+   - `ENCODING = "utf8"`: Specifies the encoding for string manipulation.
+
+3. **Client Class**:
+   - Inherits from `threading.Thread` to run in a separate thread.
+   - Connects to a server at `127.0.0.1:12345` and sends a list of strings.
+   - Receives responses from the server and prints them.
+
+4. **Server Class**:
+   - Also inherits from `threading.Thread`.
+   - Listens for incoming messages on `127.0.0.1:12346`.
+   - Processes incoming messages and sends responses.
+   - Stops when it receives a "." from the client.
+
+5. **Attacker Class**:
+   - Simulates a MITM attack by intercepting messages between the client and server.
+   - Modifies specific messages (e.g., replacing "quick" with "big") before forwarding them to the server.
+   - Sends modified responses back to the client.
+
+6. **Main Execution**:
+   - Instantiates and starts all three threads: `Server`, `Attacker`, and `Client`.
+   - Uses `join()` to ensure the main thread waits for the others to finish.
+
+### Important Concepts
+
+- **UDP Sockets**: 
+  - The code uses `SOCK_DGRAM` which allows for connectionless communication. UDP is faster but does not guarantee delivery.
+
+- **Multithreading**:
+  - Each class runs in its own thread, allowing simultaneous operations (client sending requests, server processing, and attacker intercepting).
+
+- **Man-in-the-Middle Attack**:
+  - The attacker intercepts and alters messages between the client and server. This demonstrates vulnerabilities in communication protocols where data can be manipulated.
+
+### MITM Attack Example
+- The attacker listens for the client's message:
+  - If it sees "quick", it changes it to "big".
+  - Other substitutions include changing "fox" to "bear", "jumps" to "runs", etc.
+  
+### Security Implications
+- This example highlights the importance of securing communication channels (e.g., using encryption) to prevent unauthorized data interception and manipulation.
+
