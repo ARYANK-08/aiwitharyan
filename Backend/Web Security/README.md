@@ -365,9 +365,9 @@ attacker.join()
 client.join()
 
 ```
-# UDP Client-Server with MITM Attack Simulation
+## UDP Client-Server with MITM Attack Simulation
 
-## Code Explanation
+### Code Explanation
 
 ### Overview
 The code implements a simple UDP client-server architecture along with an attacker thread simulating a man-in-the-middle attack. The client sends data to the server, while the attacker intercepts and modifies the data before it reaches the server.
@@ -421,7 +421,9 @@ The code implements a simple UDP client-server architecture along with an attack
 - This example highlights the importance of securing communication channels (e.g., using encryption) to prevent unauthorized data interception and manipulation.
 
 
-### CORS (Cross-Origin Resource Sharing):
+## CORS (Cross-Origin Resource Sharing):
+
+Cross-Origin Resource Sharing (CORS) is a security mechanism implemented by web browsers to control access to resources (like APIs or fonts) on a web page from a different domain than the one serving the web page. It extends and adds flexibility to the Same-Origin Policy, allowing servers to specify who can access their resources. CORS works through a system of HTTP headers, where browsers send a preflight request to the server hosting the cross-origin resource, and the server responds with headers indicating whether the actual request is allowed. This mechanism helps prevent unauthorized access to sensitive data while enabling legitimate cross-origin requests. CORS is crucial for modern web applications that often integrate services and resources from multiple domains, balancing security needs with the functionality requirements of complex, distributed web systems.
 
 **CORS** allows web applications from one domain (origin) to access resources on another domain. By default, browsers restrict cross-origin requests for security, but CORS opens controlled access via headers.
 
@@ -463,3 +465,63 @@ This header tells the browser to allow requests from `domain-a.com`.
 
 #### Why CORS?
 CORS protects against malicious attacks where a script on one website tries to access sensitive information from another. It’s crucial for web security, ensuring that data sharing across domains happens under controlled, safe conditions.
+
+### Content Security Policy (CSP)
+
+**Content Security Policy (CSP)** is like a set of rules that tell your website what content it can trust and what it should block to avoid attacks like **Cross-Site Scripting (XSS)** and **clickjacking**.
+
+#### Real-Life Example: 
+Imagine your website is like a VIP event. **CSP** is the security team. They have a guest list (trusted content sources), and anyone not on the list (like malicious scripts) is turned away.
+
+- You specify in your site’s settings, “Only load images from `images.example.com` or scripts from `scripts.example.com`.” If a hacker tries to inject a script from a shady source, **CSP** blocks it from running.
+
+#### How to Implement CSP:
+- **HTTP Header**: You add a special header like this:
+```http
+Content-Security-Policy: script-src 'self' https://scripts.example.com
+```
+This tells the browser, "Only load JavaScript from my domain (`'self'`) or from the trusted domain."
+
+- **Meta Tag**: You can also add this in your HTML:
+```html
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://images.example.com;">
+```
+
+#### Why CSP Matters:
+- **Stops malicious code**: By restricting content sources, you prevent hackers from injecting harmful scripts.
+- **Reporting**: CSP can also alert you when someone tries to break the rules so you can investigate.
+
+---
+
+### Server Security
+
+**Server Security** is all about making sure your server (the machine that runs your website/app) stays safe from attackers. Think of it as installing locks, alarms, and cameras in your virtual house.
+
+#### Real-Life Example:
+Let’s say you run an **online store**. Your server stores customer data and processes payments. You wouldn’t leave the doors open for anyone to access, right? Server security helps lock those doors.
+
+#### Key Practices:
+
+1. **Patch Management**: Regularly update your software (like installing phone updates). Outdated software is like leaving your house with a broken lock.
+   
+2. **Access Control**: Only let authorized people in! For example, only specific employees should be able to access the payment system. Use strong passwords and multi-factor authentication (MFA).
+
+3. **Firewalls**: Think of a firewall like a bouncer at the door. It only lets in visitors with the right credentials and blocks suspicious activity.
+
+4. **Encryption**: Protect sensitive info (like passwords and credit card details) by encrypting it. Encryption is like turning your data into secret code that only authorized people can read.
+
+5. **Backup**: Regularly backup your data so that even if something goes wrong (like a server crash), you can restore it. Imagine keeping a spare copy of all your important documents somewhere safe.
+
+6. **Monitoring**: Use tools to constantly check your server’s activity. If someone tries to break in, you’ll get an alert.
+
+#### Real-World Tip:
+- For an e-commerce website, make sure payment and customer data is encrypted. Use SSL/TLS certificates so that communication between the server and users is secure (look for "https" in the URL).
+
+#### Best Practices:
+- **Disable root access** for your server’s main account (like locking away the master keys).
+- Use **firewalls and tools like fail2ban** to block repeated hacking attempts.
+- Keep **backups in multiple places** (e.g., local, cloud, and off-site) so you're prepared for any disaster.
+
+---
+
+Both **CSP** and **Server Security** are crucial for keeping your site and users safe from attacks. **CSP** protects your front-end from malicious scripts, while **server security** protects the backend from unauthorized access.
