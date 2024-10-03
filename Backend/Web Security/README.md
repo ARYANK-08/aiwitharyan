@@ -1,4 +1,4 @@
-# MD5 and Cryptographic Hash Functions
+# Web security : the beauty of safe internet :D 
 
 ### What is MD5?
 
