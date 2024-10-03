@@ -177,6 +177,9 @@ HTTPS employs the Transport Layer Security (TLS) protocol (previously known as S
 - **Integrity:** Ensures that the data sent and received has not been altered or tampered with.
 - **Authentication:** Confirms that users are communicating with the genuine server and not an imposter.
 
+![image](https://github.com/user-attachments/assets/e131da2e-7d51-43a5-8f47-ef22272bd169)
+
+
 #### **What happens if a website doesn’t have HTTPS?**
 Without HTTPS, data is transmitted in plain text, making it vulnerable to interception and manipulation. Potential risks include:
 - **Data Interception:** Attackers can easily read and capture sensitive information.
@@ -417,3 +420,46 @@ The code implements a simple UDP client-server architecture along with an attack
 ### Security Implications
 - This example highlights the importance of securing communication channels (e.g., using encryption) to prevent unauthorized data interception and manipulation.
 
+
+### CORS (Cross-Origin Resource Sharing):
+
+**CORS** allows web applications from one domain (origin) to access resources on another domain. By default, browsers restrict cross-origin requests for security, but CORS opens controlled access via headers.
+
+#### Real-Life Example
+Imagine you're working on a project at **domain-a.com**. Now, you need some data hosted on **domain-b.com**. Normally, your browser blocks this due to security reasons. But if **domain-b.com** allows it by setting CORS headers, you can access the data safely.
+
+![image](https://github.com/user-attachments/assets/cee23754-2497-4f24-a480-75a3ba82385e)
+
+
+![image](https://github.com/user-attachments/assets/ffa1590f-d316-4d5c-99aa-0d8f7ec4bcc9)
+
+#### Key Concepts:
+1. **Same-Origin Policy**: Browsers block requests from one origin (domain, protocol, port) to another by default.
+2. **CORS Headers**: Servers explicitly declare which origins can access their resources using headers like:
+   - `Access-Control-Allow-Origin`: Defines which domains are allowed to access the server.
+3. **Preflight Requests**: For certain types of requests (e.g., `POST`), the browser asks the server via an **OPTIONS** request if it’s okay to proceed before the actual request.
+
+#### Common CORS Scenario
+```javascript
+fetch("https://api.otherdomain.com/data")
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+Here, JavaScript code from `domain-a.com` fetches data from `domain-b.com`. If `domain-b.com` allows `domain-a.com` through its CORS policy, the browser will permit the data exchange.
+
+#### Preflight Request Example
+For requests like `POST` or requests with custom headers, the browser first sends a preflight **OPTIONS** request to check if the server allows the cross-origin request.
+
+---
+
+### Example of a CORS Header:
+
+```http
+Access-Control-Allow-Origin: https://domain-a.com
+```
+This header tells the browser to allow requests from `domain-a.com`.
+
+---
+
+#### Why CORS?
+CORS protects against malicious attacks where a script on one website tries to access sensitive information from another. It’s crucial for web security, ensuring that data sharing across domains happens under controlled, safe conditions.
