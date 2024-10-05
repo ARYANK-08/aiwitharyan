@@ -158,3 +158,116 @@ Above we see the IP addresses of the sending and receiving computers in the IP h
 
 
 
+---
+
+# Browser Functionality
+
+Browsers, much like operating systems, possess extensive capabilities that go beyond basic software. They provide features such as networking, timers, and data storage, allowing rich interactions with web applications.
+
+## Components of a Browser
+
+Browsers consist of several important components:
+
+1. **Data Persistence**  
+   - **Cookies**: Store small pieces of information between requests.
+   - **Local Storage**: Provides more persistent storage for data, available across sessions.
+   - **JavaScript**: Executes dynamic content and interacts with the data persistence layer.
+
+2. **User Interface (UI)**  
+   - The browser's UI is where users interact, navigate, and view content. Elements like the address bar, bookmarks, and page view area are all part of the UI.
+
+3. **Browser Engine**  
+   - Engines like **Blink** (in Chrome) or **WebKit** (in Safari) work under the hood to process web content and handle the rendering of web pages.
+   - Changing the browser engine would impact how content is displayed across the internet, making compatibility critical.
+
+---
+
+## HTML Processing
+
+HTML files go through several steps before being displayed:
+
+1. **Raw Byte Reading**  
+   The browser first reads the raw bytes of an HTML file from the disk.
+
+2. **Character Encoding**  
+   These bytes are then converted into characters based on encoding (e.g., UTF-8).
+
+3. **Tokenization**  
+   The character sequence is tokenized, breaking it into meaningful units like HTML tags (`<h1>`, `<p>`, etc.).
+
+4. **Node List Generation**  
+   The tokens are turned into a **node list** that the rendering engine (usually written in C++) understands.
+
+**Example**:  
+```html
+<h1>Hello World</h1>
+<p>This is a paragraph.</p>
+```  
+The browser converts this into a list of nodes for rendering.
+
+---
+
+## Document Object Model (DOM)
+
+The **DOM** is a structured representation of the HTML document. After tokenization, the HTML is organized into a **hierarchical model** that represents relationships between elements like parents, siblings, and children.
+
+**Example**:
+- `<body>` is a parent of `<h1>` and `<p>`.
+- `<h1>` and `<p>` are siblings.
+
+---
+
+## CSS Object Model (CSSOM)
+
+Similar to the DOM, the **CSSOM** is created by tokenizing and structuring CSS data. This model defines how styles (like colors, fonts, and layouts) should be applied to elements on the page.
+
+**Example**:
+```css
+h1 {
+  color: blue;
+}
+```
+The CSSOM ensures that the `<h1>` text is rendered in blue.
+
+---
+
+## Render Tree
+
+The **Render Tree** is built by combining the DOM and CSSOM. It calculates the layout and visual styling of elements.
+
+1. **DOM + CSSOM** = **Render Tree**  
+   - Determines where elements should appear and how they should look on the page.
+
+---
+
+## JavaScript Execution
+
+JavaScript execution happens when the browser encounters a `<script>` tag. Since JavaScript can manipulate the DOM and CSSOM, it can pause rendering.
+
+- **Script Loading**:  
+   By default, JavaScript execution blocks the loading of the DOM and CSSOM. However, using the `async` or `defer` keywords allows JavaScript to load asynchronously.
+
+**Example**:  
+```html
+<script async src="app.js"></script>
+```
+This script will load asynchronously, allowing the rest of the page to load faster.
+
+---
+
+## Rendering
+
+Once everything is processed, the browser's rendering engine (typically written in C++) takes the HTML, CSS, and JavaScript and turns it into **pixels** on the screen.
+
+**Example**:  
+The browser translates this code:
+```html
+<h1>Hello World</h1>
+<p>This is a paragraph.</p>
+```
+into a visual representation on the screen with the defined styles.
+
+![image](https://github.com/user-attachments/assets/9994f127-b1cc-4990-851d-7a538ec46a80)
+
+---
+
