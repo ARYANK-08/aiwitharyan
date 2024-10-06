@@ -571,3 +571,157 @@ By combining these techniques, you can build robust and error-resistant applicat
 
 
 ---
+# Django ORM: Querying and Updating Records with Real-World Examples
+
+In Django, manipulating the database using querysets is one of the most powerful features of the ORM (Object Relational Mapper). Let's break down how to **update**, **filter**, and **delete** records, including **field lookups** and the effect of the `on_delete` argument in ForeignKey relationships, with real-world examples.
+
+## Updating Records in Django
+
+When you update a record in Django, you can either save all fields or specify which fields to update. This can optimize your query by only touching the fields you need.
+
+### Example 1: Updating a Single Record
+
+```python
+restaurant = Restaurant.objects.first()
+print(restaurant.name)  # Output: Current Restaurant Name
+
+# Update the name and save it to the database
+restaurant.name = 'New Restaurant Name'
+restaurant.save()
+
+# OR, update only the 'name' field
+restaurant.save(update_fields=['name']) 
+```
+
+Here, using `update_fields=['name']` ensures that only the `name` field gets updated, instead of updating all fields in the model, improving efficiency.
+
+### Example 2: Updating Multiple Records
+
+You can update multiple records at once using the `update()` method on a queryset.
+
+```python
+from django.utils import timezone
+
+# Update the `date_opened` field for all restaurants
+Restaurant.objects.all().update(date_opened=timezone.now())
+```
+
+This executes a single SQL query that updates **all records**. The query looks like this:
+
+```sql
+UPDATE "core_restaurant" SET "date_opened" = '2024-10-06';
+```
+
+### Example 3: Field Lookups
+
+Field lookups are used to specify conditions in querysets, similar to SQL `WHERE` clauses.
+
+1. **Exact Match**:
+   - `Entry.objects.get(id__exact=14)` becomes `WHERE id = 14`
+   - `Entry.objects.get(id__exact=None)` becomes `WHERE id IS NULL`
+
+2. **Case-Insensitive Match**:
+   - `Blog.objects.get(name__iexact="beatles blog")` becomes `WHERE name ILIKE 'beatles blog'`
+   - This will match entries like "Beatles Blog", "beatles blog", "BeAtLes BLoG", etc.
+
+3. **Contains**:
+   - `Entry.objects.get(headline__contains="Lennon")` becomes `WHERE headline LIKE '%Lennon%'`
+   - Use `icontains` for case-insensitive search.
+
+4. **Greater Than and Less Than**:
+   - `Entry.objects.filter(id__gt=4)` becomes `WHERE id > 4`
+   - `Entry.objects.filter(id__gte=4)` becomes `WHERE id >= 4`
+
+5. **Startswith**:
+   - `Entry.objects.filter(headline__startswith="Lennon")` becomes `WHERE headline LIKE 'Lennon%'`
+   - **SQLite Note**: SQLite doesn’t support case-sensitive LIKE statements.
+
+### Example 4: Querying and Updating with Field Lookups
+
+```python
+# Get restaurants whose names start with 'P'
+restaurant_qs = Restaurant.objects.filter(name__startswith='P')
+
+# Update the `date_opened` field for these restaurants
+restaurant_qs.update(date_opened=timezone.now() - timezone.timedelta(days=365))
+
+print(connection.queries)  # To see the SQL queries being run
+```
+
+This updates all restaurants starting with "P" and sets their opening date to one year ago.
+
+## Deleting Records in Django
+
+Django makes it easy to delete records, whether it's a single object or multiple ones.
+
+### Example 1: Deleting a Single Object
+
+```python
+restaurant = Restaurant.objects.first()
+
+# Deleting the restaurant
+print(restaurant.delete())  # (7, {'core.Rating': 6, 'core.Restaurant': 1})
+```
+
+When you delete a `Restaurant`, if it has a ForeignKey relation with `Rating` (using `on_delete=models.CASCADE`), the associated ratings are deleted as well. The numbers in the output indicate how many objects were deleted (`6` ratings and `1` restaurant).
+
+### Example 2: Deleting Multiple Objects
+
+```python
+Restaurant.objects.all().delete()  # Deletes all restaurants
+```
+
+This will delete all the records in the `Restaurant` table.
+
+## Foreign Key `on_delete` Behavior
+
+Django provides options on how to handle the deletion of related objects when a referenced object is deleted.
+
+### Example 1: `CASCADE`
+When a `Restaurant` is deleted, any related `Rating` objects will be deleted as well.
+
+```python
+restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='ratings')
+```
+
+If you delete the restaurant, the SQL query generated looks like this:
+
+```sql
+DELETE FROM "core_rating" WHERE "core_rating"."restaurant_id" IN (2);
+```
+
+### Example 2: `SET_NULL`
+This sets the ForeignKey to `NULL` if the related object is deleted. This is useful if the relationship is optional.
+
+```python
+restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True, related_name='ratings')
+```
+
+### Example 3: `PROTECT`
+This prevents deletion of a referenced object. If a restaurant is referenced by a rating, attempting to delete the restaurant will raise an exception.
+
+```python
+restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name='ratings')
+```
+
+## Performance Considerations
+
+Using Django ORM provides the convenience of abstracting SQL, but be mindful of performance. For example, using `__in` lookups with large datasets may generate inefficient SQL queries. You may need to benchmark your queries, especially with nested queries, to avoid performance bottlenecks.
+
+### Example 1: Avoiding Nested Queries
+
+Instead of running a nested query, you can split it into two queries for performance reasons:
+
+```python
+# Inefficient Nested Query
+inner_qs = Blog.objects.filter(name__contains="Cheddar").values_list("pk", flat=True)
+entries = Entry.objects.filter(blog__in=list(inner_qs))
+```
+
+## Conclusion
+
+Django provides a powerful ORM that simplifies database interactions with Pythonic syntax. Understanding how to update, filter, and delete records, and how field lookups work, is essential for working efficiently with Django models. Keep in mind performance considerations and the behavior of `on_delete` for ForeignKey relationships to avoid unintended side effects.
+
+---
+
+**Real-World Example**: Think about a restaurant rating system like **Zomato**. If a restaurant is removed from the platform, all related user ratings and reviews might need to be deleted as well (using `CASCADE`), but if you simply want to **archive** the restaurant, you might use `SET_NULL` for ratings so the history remains, but the restaurant is marked as inactive.
