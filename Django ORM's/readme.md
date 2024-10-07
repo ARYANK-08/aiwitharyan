@@ -991,3 +991,160 @@ WHERE "core_rating"."rating" = 5
 
 ### Conclusion:
 By using `select_related` and `prefetch_related`, and optimizing queries with `only()`, you significantly reduce the number of database queries and the load on your database.
+
+
+### Many-to-Many Relationships in Django
+
+In Django, **many-to-many (M2M)** relationships allow a model to be related to multiple records of another model and vice versa. It's useful when you need multiple records from two models to be associated with each other.
+
+#### Example Models:
+Let's explore M2M relationships using an example of **Publications** and **Articles**, and then customize it with **Staff** and **Restaurant** relationships.
+
+```python
+from django.db import models
+
+# Publications and Articles Example
+class Publication(models.Model):
+    title = models.CharField(max_length=30)
+
+    class Meta:
+        ordering = ['title']
+
+    def __str__(self):
+        return self.title
+
+class Article(models.Model):
+    headline = models.CharField(max_length=100)
+    publications = models.ManyToManyField(Publication)
+
+    class Meta:
+        ordering = ['headline']
+
+    def __str__(self):
+        return self.headline
+```
+
+#### Add M2M Field for Restaurants and Staff:
+
+Now, let's add a **Staff** model that has a many-to-many relationship with the **Restaurant** model. We will also add an intermediate model (`StaffRestaurant`) to store additional data, such as the **salary** of staff at each restaurant.
+
+```python
+class Restaurant(models.Model):
+    name = models.CharField(max_length=100)
+    restaurant_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class Staff(models.Model):
+    name = models.CharField(max_length=120)
+    restaurants = models.ManyToManyField(Restaurant, through='StaffRestaurant')
+
+    def __str__(self):
+        return self.name
+
+
+class StaffRestaurant(models.Model):
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    salary = models.FloatField(null=True)
+
+    def __str__(self):
+        return f"{self.staff.name} works at {self.restaurant.name} earning {self.salary}"
+```
+
+In this case, we’ve added an intermediate model `StaffRestaurant` to store **extra fields** like `salary`. The `through` keyword specifies that we are using this intermediate model for the relationship.
+
+---
+
+### Querying Many-to-Many Relationships
+
+Here’s how you can create, query, and manipulate many-to-many relationships.
+
+#### Create Staff and Associate with Restaurants:
+
+```python
+# Creating a new staff
+staff, created = Staff.objects.get_or_create(name="John Wick")
+
+# Associating staff with restaurants
+restaurant = Restaurant.objects.first()  # Get the first restaurant
+staff.restaurants.add(restaurant)  # Add the relationship
+
+# Checking the associated restaurants
+print(staff.restaurants.all())  # QuerySet of all restaurants associated with this staff
+```
+
+#### Remove and Set Relationships:
+
+- **Remove** a restaurant from staff:
+    ```python
+    staff.restaurants.remove(Restaurant.objects.first())
+    print(staff.restaurants.count())  # Count remaining restaurants
+    ```
+
+- **Set** new restaurants (overwrite existing relationships):
+    ```python
+    staff.restaurants.set(Restaurant.objects.all()[:5])  # Set first 5 restaurants
+    ```
+
+- **Clear** all relationships:
+    ```python
+    staff.restaurants.clear()  # Remove all associated restaurants
+    ```
+
+#### Add Through Model (with Extra Field):
+
+You can associate restaurants and staff while specifying additional fields (e.g., salary):
+
+```python
+restaurant = Restaurant.objects.get(pk=1)
+StaffRestaurant.objects.create(staff=staff, restaurant=restaurant, salary=28000)
+
+restaurant2 = Restaurant.objects.get(pk=2)
+StaffRestaurant.objects.create(staff=staff, restaurant=restaurant2, salary=24000)
+
+# Retrieve and print salary for each restaurant-staff association
+staff_restaurants = StaffRestaurant.objects.filter(staff=staff)
+for s in staff_restaurants:
+    print(s.salary)  # Prints the salary for each restaurant-staff association
+```
+
+#### Prefetching Many-to-Many Fields for Optimization
+
+To improve performance when querying many-to-many relationships, **`prefetch_related()`** can be used to reduce the number of SQL queries executed.
+
+```python
+def index(request):
+    # Prefetch restaurants and staff using the StaffRestaurant model
+    jobs = StaffRestaurant.objects.prefetch_related('restaurant', 'staff')
+    
+    for job in jobs:
+        print(f"{job.staff.name} works at {job.restaurant.name} with salary {job.salary}")
+    
+    return render(request, 'index.html')
+```
+
+### Real-World Example:
+Consider a system where staff works at multiple restaurants, and each staff member earns different salaries at different restaurants. This setup models a common scenario in hospitality management where staff rotate between restaurants, and their salary varies.
+
+### Output Example:
+```python
+# Example Output:
+John Wick works at Restaurant A earning 28000
+John Wick works at Restaurant B earning 24000
+```
+
+By **prefetching** related fields and using intermediate models to store extra information (like salary), you ensure efficient querying even with large datasets.
+
+---
+
+### Summary of Key Methods in M2M Relationships:
+
+- **add**: Adds an object to the many-to-many relationship.
+- **remove**: Removes an object from the relationship.
+- **clear**: Removes all relationships.
+- **set**: Replaces the current relationships with a new set of objects.
+- **all**: Retrieves all related objects.
+
