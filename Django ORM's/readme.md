@@ -1,4 +1,6 @@
-### Django Models: Understanding Database Models in Django
+# Django ORM's : The beauty of Django with SQL 
+
+## Models of Django :
 
 In Django, **models** are essential to define the structure and behavior of the data you are storing. Each model maps to a single **database table**, and every model is represented as a Python class that subclasses `django.db.models.Model`. Each attribute of the model represents a field in the database.
 
@@ -919,6 +921,10 @@ def index(request):
 SELECT ••• FROM "core_rating" WHERE "core_rating"."restaurant_id" IN (...)
 ```
 
+![Screenshot 2024-10-07 094702](https://github.com/user-attachments/assets/77df8879-a07a-48ce-a412-c53c408fbd43)
+
+![Screenshot 2024-10-07 094649](https://github.com/user-attachments/assets/d0d25193-a53a-4555-900a-16d7da11a998)
+
 ---
 
 ### 3. **Using `select_related` for Foreign Keys**
@@ -1147,4 +1153,5 @@ By **prefetching** related fields and using intermediate models to store extra i
 - **clear**: Removes all relationships.
 - **set**: Replaces the current relationships with a new set of objects.
 - **all**: Retrieves all related objects.
+
 
