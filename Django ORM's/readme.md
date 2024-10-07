@@ -1,5 +1,6 @@
 # Django ORM's : The beauty of Django with SQL 
 
+## Models of Django :
 
 In Django, **models** are essential to define the structure and behavior of the data you are storing. Each model maps to a single **database table**, and every model is represented as a Python class that subclasses `django.db.models.Model`. Each attribute of the model represents a field in the database.
 
