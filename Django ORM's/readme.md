@@ -919,6 +919,10 @@ def index(request):
 SELECT ••• FROM "core_rating" WHERE "core_rating"."restaurant_id" IN (...)
 ```
 
+![Screenshot 2024-10-07 094702](https://github.com/user-attachments/assets/77df8879-a07a-48ce-a412-c53c408fbd43)
+
+![Screenshot 2024-10-07 094649](https://github.com/user-attachments/assets/d0d25193-a53a-4555-900a-16d7da11a998)
+
 ---
 
 ### 3. **Using `select_related` for Foreign Keys**
