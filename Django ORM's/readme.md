@@ -726,12 +726,7 @@ Django provides a powerful ORM that simplifies database interactions with Python
 
 **Real-World Example**: Think about a restaurant rating system like **Zomato**. If a restaurant is removed from the platform, all related user ratings and reviews might need to be deleted as well (using `CASCADE`), but if you simply want to **archive** the restaurant, you might use `SET_NULL` for ratings so the history remains, but the restaurant is marked as inactive.
 
-
 ---
-Here's an **improved and simplified explanation** of the Django ORM queries and methods you provided, along with **real-world analogies** and **examples** to make it easier to understand.
-
----
-
 ### 1. **Counting Objects in the Database**
 
 ```python
@@ -897,3 +892,102 @@ This fetches the **first** and **last** restaurants based on the default orderin
 
 ---
 
+
+### 1. **Initial Issue: Too Many Queries**
+When displaying restaurants and their ratings:
+```python
+restaurants = Restaurant.objects.all()
+```
+This leads to **N+1 queries** since each restaurant triggers a separate query for its ratings. This can cause **15+ queries** for just a few restaurants.
+
+---
+
+### 2. **Optimization: Using `prefetch_related`**
+To reduce the number of queries, you can use **`prefetch_related`** for related models like ratings and sales.
+
+#### Example:
+```python
+def index(request):
+    restaurants = Restaurant.objects.prefetch_related('ratings', 'sales')
+    context = {'restaurants': restaurants}
+    return render(request, 'index.html', context)
+```
+- **Improvement**: This fetches all related data in a **single query**, reducing the total number of SQL queries.
+  
+#### SQL Generated:
+```sql
+SELECT ••• FROM "core_rating" WHERE "core_rating"."restaurant_id" IN (...)
+```
+
+---
+
+### 3. **Using `select_related` for Foreign Keys**
+If you are querying **foreign keys**, use `select_related` to fetch related objects in one go.
+
+#### Example:
+```python
+def index(request):
+    ratings = Rating.objects.select_related('restaurant')
+    context = {'ratings': ratings}
+    return render(request, 'index.html', context)
+```
+- **Before**: 31 queries
+- **After**: **1 query**
+
+#### SQL Generated:
+```sql
+SELECT "core_rating"."id", "core_restaurant"."name", ... 
+FROM "core_rating" 
+INNER JOIN "core_restaurant" ON "core_rating"."restaurant_id" = "core_restaurant"."id"
+```
+
+---
+
+### 4. **Fetching Only Required Columns with `.only()`**
+Fetching only the necessary columns reduces the data load.
+
+#### Example:
+```python
+ratings = Rating.objects.only('restaurant__name', 'rating').select_related('restaurant')
+```
+- **Improvement**: Limits fetched data to just the `restaurant.name` and `rating` fields, optimizing bandwidth and query execution time.
+
+---
+
+### 5. **Combining with `annotate` for Aggregation**
+You can annotate your query with aggregated fields, like summing up the sales.
+
+#### Example:
+```python
+restaurants = Restaurant.objects.prefetch_related('ratings', 'sales') \
+    .filter(ratings__rating=5) \
+    .annotate(total=Sum('sales__income'))
+```
+- **Improvement**: Fetches restaurants with 5-star ratings and calculates the total sales.
+
+---
+
+### 6. **Advanced `prefetch_related` with Custom Querysets**
+You can customize `prefetch_related` to filter related objects like monthly sales.
+
+#### Example:
+```python
+month_ago = timezone.now() - timezone.timedelta(days=30)
+monthly_sales = Prefetch('sales', queryset=Sale.objects.filter(datetime__gte=month_ago))
+
+restaurants = Restaurant.objects.prefetch_related('ratings', monthly_sales) \
+    .filter(ratings__rating=5) \
+    .annotate(total=Sum('sales__income'))
+```
+- **Improvement**: Prefetches only the sales from the last 30 days, further optimizing your queries.
+
+#### SQL Generated:
+```sql
+SELECT "core_restaurant"."id", "core_restaurant"."name", ...
+FROM "core_restaurant"
+INNER JOIN "core_rating" ON ...
+WHERE "core_rating"."rating" = 5
+```
+
+### Conclusion:
+By using `select_related` and `prefetch_related`, and optimizing queries with `only()`, you significantly reduce the number of database queries and the load on your database.
