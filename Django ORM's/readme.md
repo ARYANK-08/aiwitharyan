@@ -1155,3 +1155,437 @@ By **prefetching** related fields and using intermediate models to store extra i
 - **all**: Retrieves all related objects.
 
 
+
+
+## **Aggregation Over QuerySets (Min, Max, Sum, Count, Avg)**
+
+**Aggregation** is used to compute values (like `sum`, `average`, `min`, `max`, etc.) over a set of rows in the database. The result is a **single value** for the entire queryset.
+
+### **Example: Counting the Number of Restaurants**
+```python
+from django.db.models import Count
+
+restaurants = Restaurant.objects.aggregate(total=Count('id'))
+print(restaurants)
+```
+**Output:**
+```python
+{'total': 14}
+```
+**SQL Query:**
+```sql
+SELECT COUNT("core_restaurant"."id") AS "total" FROM "core_restaurant";
+```
+
+---
+
+### **Example: Calculating the Average Rating of a Restaurant**
+```python
+from django.db.models import Avg
+
+average_rating = Rating.objects.aggregate(avg_rating=Avg('rating'))
+print(average_rating)
+```
+**Output:**
+```python
+{'avg_rating': 2.36}
+```
+**SQL Query:**
+```sql
+SELECT AVG("core_rating"."rating") AS "avg_rating" FROM "core_rating";
+```
+
+---
+
+### **Real-World Scenario: Aggregating Sales Data**
+Imagine a sales reporting tool that needs to display the **total sales**, **minimum income**, **maximum income**, and the **average income** of restaurants in the last month.
+
+```python
+from django.db.models import Sum, Min, Max, Avg
+from django.utils import timezone
+
+one_month_ago = timezone.now() - timezone.timedelta(days=30)
+sales = Sale.objects.filter(date__gte=one_month_ago)
+
+report = sales.aggregate(
+    total_sales=Sum('income'),
+    min_income=Min('income'),
+    max_income=Max('income'),
+    avg_income=Avg('income')
+)
+
+print(report)
+```
+**Output:**
+```python
+{'total_sales': 5743.40, 'min_income': Decimal('6.25'), 'max_income': Decimal('99.22'), 'avg_income': Decimal('57.43')}
+```
+**SQL Query:**
+```sql
+SELECT SUM("core_sale"."income") AS "total_sales", MIN("core_sale"."income") AS "min_income", 
+MAX("core_sale"."income") AS "max_income", AVG("core_sale"."income") AS "avg_income" 
+FROM "core_sale" WHERE "core_sale"."date" >= '2024-09-05';
+```
+
+---
+
+## **Annotating Querysets**
+
+**Annotations** allow you to add **calculated fields** to each row of the queryset. Instead of a single value for the entire queryset (like aggregation), each object in the queryset gets the annotated value.
+
+### **Example: Adding the Length of a Restaurant’s Name**
+```python
+from django.db.models.functions import Length
+
+restaurants = Restaurant.objects.annotate(len_name=Length('name'))
+print(restaurants.values('name', 'len_name'))
+```
+**Output:**
+```python
+<QuerySet [{'name': 'Bombay Bustle', 'len_name': 13}, {'name': 'Chinese 2', 'len_name': 9}, ...]>
+```
+**SQL Query:**
+```sql
+SELECT "core_restaurant"."name", LENGTH("core_restaurant"."name") AS "len_name" 
+FROM "core_restaurant";
+```
+
+---
+
+### **Example: Annotating Total Sales for Each Restaurant**
+```python
+from django.db.models import Sum
+
+restaurants = Restaurant.objects.annotate(total_sales=Sum('sales__income'))
+for r in restaurants:
+    print(r.name, r.total_sales)
+```
+**Output:**
+```python
+Bombay Bustle 3000.0
+Chinese 2 2000.0
+...
+```
+**SQL Query:**
+```sql
+SELECT "core_restaurant"."name", SUM("core_sale"."income") AS "total_sales" 
+FROM "core_restaurant" LEFT OUTER JOIN "core_sale" ON ("core_restaurant"."id" = "core_sale"."restaurant_id") 
+GROUP BY "core_restaurant"."name";
+```
+
+---
+
+### **Real-World Scenario: Annotating the Number of Reviews per Restaurant**
+You’re building a restaurant review app and need to show the **number of reviews** and the **average rating** for each restaurant.
+
+```python
+from django.db.models import Count, Avg
+
+restaurants = Restaurant.objects.annotate(
+    num_reviews=Count('ratings'),
+    avg_rating=Avg('ratings__rating')
+)
+
+for r in restaurants:
+    print(f'{r.name}: {r.num_reviews} reviews, {r.avg_rating} avg rating')
+```
+**Output:**
+```python
+Pizzeria 1: 2 reviews, 2.5 avg rating
+Pizzeria 2: 4 reviews, 2.5 avg rating
+...
+```
+**SQL Query:**
+```sql
+SELECT "core_restaurant"."name", COUNT("core_rating"."id") AS "num_reviews", 
+AVG("core_rating"."rating") AS "avg_rating" 
+FROM "core_restaurant" 
+LEFT OUTER JOIN "core_rating" ON ("core_restaurant"."id" = "core_rating"."restaurant_id") 
+GROUP BY "core_restaurant"."name";
+```
+
+---
+
+## **Using `values()` and `values_list()`**
+
+- **`values()`** returns a **dictionary** for each object in the queryset.
+- **`values_list()`** returns a **tuple** for each object in the queryset.
+
+### **Example: Using `values()`**
+```python
+restaurants = Restaurant.objects.values('name', 'date_opened')
+print(restaurants)
+```
+**Output:**
+```python
+<QuerySet [{'name': 'Bombay Bustle', 'date_opened': datetime.date(2024, 8, 24)}, {'name': 'Chinese 2', 'date_opened': datetime.date(2024, 9, 6)}]>
+```
+**SQL Query:**
+```sql
+SELECT "core_restaurant"."name", "core_restaurant"."date_opened" 
+FROM "core_restaurant";
+```
+
+---
+
+### **Example: Using `values_list()`**
+```python
+restaurants = Restaurant.objects.values_list('name', flat=True)
+print(restaurants)
+```
+**Output:**
+```python
+<QuerySet ['Bombay Bustle', 'Chinese 2', 'Golden Dragon', ...]>
+```
+**SQL Query:**
+```sql
+SELECT "core_restaurant"."name" FROM "core_restaurant";
+```
+
+---
+
+## **Transforming Values with `Upper()` and `Concat()`**
+
+### **Example: Uppercasing Restaurant Names**
+```python
+from django.db.models.functions import Upper
+
+restaurants = Restaurant.objects.values(name_upper=Upper('name'))
+print(restaurants)
+```
+**Output:**
+```python
+<QuerySet [{'name_upper': 'BOMBAY BUSTLE'}, {'name_upper': 'CHINESE 2'}, ...]>
+```
+**SQL Query:**
+```sql
+SELECT UPPER("core_restaurant"."name") AS "name_upper" FROM "core_restaurant";
+```
+
+---
+
+### **Example: Concatenating Fields with `Concat()`**
+```python
+from django.db.models import Value, CharField
+from django.db.models.functions import Concat
+
+restaurants = Restaurant.objects.annotate(
+    message=Concat('name', Value(' [Rating: '), Avg('ratings__rating'), Value(']'), output_field=CharField())
+)
+
+for r in restaurants:
+    print(r.message)
+```
+**Output:**
+```python
+Bombay Bustle [Rating: 2.0]
+Chinese 2 [Rating: 2.5]
+...
+```
+**SQL Query:**
+```sql
+SELECT "core_restaurant"."name" || ' [Rating: ' || AVG("core_rating"."rating") || ']' AS "message" 
+FROM "core_restaurant" LEFT OUTER JOIN "core_rating" ON ("core_restaurant"."id" = "core_rating"."restaurant_id") 
+GROUP BY "core_restaurant"."name";
+```
+
+---
+
+### Understanding `F` Expressions and `Q` Objects in Django ORM
+
+`F()` expressions and `Q()` objects are powerful tools in Django that help perform complex database operations directly at the SQL level without loading data into Python memory. These help improve performance by reducing the number of database queries and eliminating the need to pull data into memory for calculations or comparisons.
+
+---
+
+#### **F Expressions**
+
+`F()` expressions represent the value of a model field or an annotated column in the database. They allow you to reference a field's value directly in SQL, enabling operations such as incrementing or updating field values without loading them into memory.
+
+#### Example: Incrementing a Field
+
+##### **Without F Expressions:**
+
+```python
+reporter = Reporters.objects.get(name='Tintin')
+reporter.stories_field += 1
+reporter.save()
+```
+
+- **SQL Equivalent**: 
+    ```sql
+    SELECT "stories_field" FROM "reporters" WHERE "name" = 'Tintin';
+    UPDATE "reporters" SET "stories_field" = stories_field + 1 WHERE "name" = 'Tintin';
+    ```
+- This pulls the field from the database, modifies it in Python, and then updates it.
+
+##### **With F Expressions:**
+
+```python
+from django.db.models import F
+reporter = Reporters.objects.get(name="Tintin")
+reporter.stories_field = F("stories_field") + 1
+reporter.save()
+```
+
+- **SQL Equivalent**: 
+    ```sql
+    UPDATE "reporters" SET "stories_field" = "stories_field" + 1 WHERE "name" = 'Tintin';
+    ```
+
+This is more efficient as it performs the update directly at the database level without loading the value into memory.
+
+---
+
+### **Performance Improvement for Bulk Updates**
+
+You can use `F()` expressions to perform operations on multiple rows efficiently, such as updating every row in the table:
+
+```python
+Rating.objects.update(rating=F('rating') * 2)
+```
+
+- **SQL Equivalent**:
+    ```sql
+    UPDATE "core_rating" SET "rating" = ("core_rating"."rating" * 2);
+    ```
+
+This will double the `rating` field for all records in the `Rating` table.
+
+---
+
+#### **Using F Expressions for Calculations and Annotations**
+
+You can perform calculations directly at the database level using `F()` expressions.
+
+##### **Example: Annotating Profit**
+
+```python
+from django.db.models import F
+
+sales = Sale.objects.annotate(
+    profit=F('income') - F('expenditure')
+)
+
+for sale in sales:
+    print(sale.profit)
+```
+
+- **SQL Equivalent**:
+    ```sql
+    SELECT "income" - "expenditure" AS "profit" FROM "core_sale";
+    ```
+
+This calculates the `profit` for each sale directly in the SQL query, improving performance.
+
+---
+
+### **Q Objects for Complex Queries**
+
+`Q()` objects allow you to build complex SQL queries involving `AND`, `OR`, and `NOT` conditions. 
+
+#### **Simple Example: Filtering with OR**
+
+Suppose you want to find restaurants that are either Italian or Mexican:
+
+##### **Without Q Objects (Error)**
+
+```python
+Restaurant.objects.filter(restaurant_type=IT, restaurant_type=MEX)
+```
+- This query will raise an error because you can't have the same field in two conditions simultaneously.
+
+##### **With Q Objects:**
+
+```python
+from django.db.models import Q
+
+Restaurant.objects.filter(
+    Q(restaurant_type=IT) | Q(restaurant_type=MEX)
+)
+```
+
+- **SQL Equivalent**:
+    ```sql
+    SELECT * FROM "core_restaurant" WHERE "restaurant_type" = 'IT' OR "restaurant_type" = 'MEX';
+    ```
+
+This returns restaurants that are either Italian or Mexican.
+
+---
+
+#### **Using Q Objects with F Expressions:**
+
+You can also combine `Q()` objects with `F()` expressions for complex queries.
+
+##### **Example: Sales Where Profit > Expenditure OR Restaurant Name Has a Number**
+
+```python
+from django.db.models import Q
+
+name_has_num = Q(restaurant__name__regex=r"[0-9]+")
+profited = Q(income__gt=F('expenditure'))
+
+sales = Sale.objects.filter(name_has_num | profited)
+```
+
+- **SQL Equivalent**:
+    ```sql
+    SELECT * FROM "core_sale" 
+    WHERE "income" > "expenditure" 
+    OR "restaurant"."name" ~ '[0-9]+';
+    ```
+
+This will return all sales where the restaurant name contains a number or the sale has made a profit.
+
+---
+
+#### **Negation with Q Objects (~Q)**
+
+You can negate conditions using `~Q()`, which translates to `NOT` in SQL.
+
+##### **Example: Excluding Restaurants of a Specific Type**
+
+```python
+# Find restaurants that are not Mexican
+restaurants = Restaurant.objects.filter(~Q(restaurant_type=MEX))
+```
+
+- **SQL Equivalent**:
+    ```sql
+    SELECT * FROM "core_restaurant" WHERE NOT "restaurant_type" = 'MEX';
+    ```
+
+---
+
+### **Complex Q Example: Filtering Multiple Conditions**
+
+You can use multiple `Q()` objects and group them with parentheses for more complex queries.
+
+##### **Example: Find Recently Opened Restaurants or Italian/Mexican Restaurants**
+
+```python
+it_or_mex = Q(name__icontains="italian") | Q(name__icontains="mexican")
+recently_opened = Q(date_opened__gt=timezone.now() - timezone.timedelta(days=40))
+
+restaurants = Restaurant.objects.filter(it_or_mex | recently_opened)
+```
+
+- **SQL Equivalent**:
+    ```sql
+    SELECT * FROM "core_restaurant" 
+    WHERE "name" LIKE '%italian%' 
+    OR "name" LIKE '%mexican%' 
+    OR "date_opened" > '2024-08-30';
+    ```
+
+This query returns restaurants that are Italian, Mexican, or have opened in the last 40 days.
+
+---
+
+### **Summary**
+
+- **`F()` Expressions**: Used to refer to and manipulate model fields at the SQL level.
+- **`Q()` Objects**: Used to build complex queries with `AND`, `OR`, and `NOT` conditions.
+- Combining `F()` and `Q()` objects can help optimize performance and create powerful queries without pulling data into Python memory.
+
+These techniques can improve the efficiency of your Django queries, especially when dealing with large datasets or complex conditions!
