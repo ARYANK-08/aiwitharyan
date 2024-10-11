@@ -1,7 +1,7 @@
 # Complex SQL Queries 🔥
 
 
-# To fetch duplicate records in a more complex scenario, where you may need to consider multiple columns, you can use a combination of `ROW_NUMBER()`, `CTE (Common Table Expressions)`, and `PARTITION BY` to identify duplicates and even return all relevant details of those records.
+# Write a SQL Query to fetch all the duplicate records in a table.
 
 ### Simplest SQL Query
 
