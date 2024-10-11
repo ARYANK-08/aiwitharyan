@@ -91,7 +91,6 @@ JWTs provide a secure, compact, and easy-to-use method for **authorization** and
 
 ![image](https://github.com/user-attachments/assets/559f48cc-dca6-41b0-bf7b-c203332a5419)
 
-![image](https://github.com/user-attachments/assets/b5a4bfb7-22db-4228-8966-dd2d813c3f6d)
 
 # Simplified Explanation of JWT (JSON Web Token)
 
@@ -142,3 +141,167 @@ In simple terms, JWT acts like a **magic ticket** that you get when you log in o
 
 ![image](https://github.com/user-attachments/assets/58330c54-b26f-428c-913c-be5ab0d1349e)
 
+
+
+## OAuth: Secure Access Without Exposing Credentials
+
+OAuth (Open Authorization) is an open standard that allows third-party applications to access a user’s resources (such as their data or files) **without needing to expose their credentials**. Instead of sharing your username and password, OAuth uses **access tokens** to provide secure access.
+
+---
+
+### How OAuth Works:
+
+1. **Resource Owner (User)**: The user who owns the data or resource.
+2. **Client (Application)**: The third-party app that requests permission to access the user's resource.
+3. **Authorization Server**: Issues the access token after the user grants permission.
+4. **Resource Server**: Holds the user's data and validates access using tokens.
+
+---
+
+### Real-World Example: OAuth in Action
+
+- **Scenario**: You’re using an app that lets you post to **Twitter** on your behalf. You don’t want to give the app your **Twitter username and password**, so OAuth helps facilitate this in a more secure way.
+
+1. **Step 1: User Grants Permission**  
+   You’re redirected to Twitter’s login page from the third-party app. After you log in, Twitter asks, "Do you want to allow this app to post tweets on your behalf?" You say **yes**.
+
+2. **Step 2: Authorization Server Issues Token**  
+   Twitter (the **Authorization Server**) generates an **access token** and sends it to the third-party app.
+
+3. **Step 3: Accessing Resources**  
+   The app stores the token and uses it to make requests to **Twitter’s API** (the **Resource Server**) to post tweets. The token tells Twitter that the app is authorized to act on your behalf without exposing your login credentials.
+
+---
+
+### OAuth Use Cases
+
+- **Social Media Integration**: Apps using OAuth to let you post on Twitter, Facebook, or LinkedIn.
+- **Cloud Storage Access**: Apps that let you upload files to your **Google Drive** or **Dropbox** without directly asking for your password.
+- **Login with Google/Facebook**: Instead of creating a new account for every website, you can log in using your Google or Facebook account. OAuth makes this possible by securely handling your login.
+
+---
+
+### Python Example for OAuth Flow Using `requests-oauthlib`
+
+Here’s a simple example using Python to request authorization from GitHub:
+
+```python
+from requests_oauthlib import OAuth2Session
+
+# Replace these values with your app's settings
+client_id = 'your_client_id'
+client_secret = 'your_client_secret'
+authorization_base_url = 'https://github.com/login/oauth/authorize'
+token_url = 'https://github.com/login/oauth/access_token'
+
+# Step 1: Redirect the user to the provider (GitHub) for authorization
+github = OAuth2Session(client_id)
+authorization_url, state = github.authorization_url(authorization_base_url)
+print(f'Please go here and authorize: {authorization_url}')
+
+# Step 2: GitHub redirects back to your site with an authorization code
+redirect_response = input('Paste the full redirect URL here: ')
+
+# Step 3: Use the authorization code to fetch the access token
+github.fetch_token(token_url, client_secret=client_secret, authorization_response=redirect_response)
+
+# Step 4: Now, the app can access protected resources, like user profile
+response = github.get('https://api.github.com/user')
+print(response.json())
+```
+
+This flow allows a Python app to log in to GitHub on behalf of the user without needing to store or handle the user's password.
+
+---
+
+## Basic Authentication: The Simplest HTTP Authentication Method
+
+### What is Basic Authentication?
+
+Basic Authentication is a method defined in the HTTP standard (RFC7617) that allows a browser or client to send the user’s credentials (username and password) to the server. The **credentials are sent as a base64-encoded string** in the HTTP request header.
+
+While it is straightforward, it’s not the most secure, especially if used without **HTTPS**. The credentials are encoded, but they’re not encrypted, meaning that anyone intercepting the request can decode them easily.
+
+---
+
+### How Does Basic Authentication Work?
+
+1. **Client Request (No Authorization Header)**:  
+   The client (e.g., browser) sends a request to the server. Since it doesn’t include an Authorization header, the server responds with a **401 Unauthorized** status code and a **WWW-Authenticate** header.
+
+2. **Browser Prompts for Credentials**:  
+   Seeing the **WWW-Authenticate** header, the browser shows a login prompt to the user.
+
+3. **Client Submits Credentials**:  
+   After the user provides their username and password, the browser encodes them using **base64** and sends them in the **Authorization header**.
+
+4. **Server Validates Credentials**:  
+   The server decodes the credentials and checks if they’re valid. If they are, the server grants access to the resource; otherwise, it returns another **401 Unauthorized** response.
+
+---
+
+### Python Example for Basic Authentication
+
+Below is a simple example of how to implement Basic Authentication in Python using **Flask**:
+
+```python
+from flask import Flask, request, jsonify
+import base64
+
+app = Flask(__name__)
+
+# Simple method to decode Basic Auth credentials
+def decode_credentials(auth_header):
+    base64_credentials = auth_header.split(' ')[1]
+    decoded_credentials = base64.b64decode(base64_credentials).decode('utf-8')
+    username, password = decoded_credentials.split(':')
+    return username, password
+
+@app.route('/')
+def index():
+    auth_header = request.headers.get('Authorization')
+
+    if not auth_header:
+        # Return a 401 response with a WWW-Authenticate header
+        return (
+            jsonify({"message": "Authentication required"}),
+            401,
+            {'WWW-Authenticate': 'Basic realm="user_pages"'}
+        )
+
+    username, password = decode_credentials(auth_header)
+
+    # Check the credentials
+    if username == 'admin' and password == 'admin':
+        return jsonify({"message": "Hello, admin!"})
+    else:
+        return (
+            jsonify({"message": "Invalid credentials"}),
+            401,
+            {'WWW-Authenticate': 'Basic realm="user_pages"'}
+        )
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+### How This Example Works:
+
+1. When the user tries to access the **`/`** route, the server checks if the **Authorization header** is present.
+2. If not, it responds with a **401 Unauthorized** and a **WWW-Authenticate header** to prompt for credentials.
+3. The user inputs their credentials (e.g., 'admin'/'admin'), and the browser sends the encoded username and password in the Authorization header.
+4. The server decodes the credentials and either grants access or responds with a 401 status if they’re incorrect.
+
+---
+
+### Key Differences Between OAuth and Basic Authentication
+
+| **OAuth**                                 | **Basic Authentication**                     |
+|-------------------------------------------|----------------------------------------------|
+| Secure token-based authorization.         | Simple username-password-based authentication. |
+| Grants third-party apps controlled access to resources without sharing credentials. | Credentials are sent in every request (base64-encoded). |
+| Access tokens can be limited to certain scopes (permissions). | No permission granularity; full access. |
+| Commonly used for apps like social media or cloud storage. | Often used for internal or less sensitive systems. |
+| Example: Logging in with Google or Facebook. | Example: Authenticating to internal company tools. |
+
+Both have their uses, but OAuth is more secure and scalable for modern web applications!
