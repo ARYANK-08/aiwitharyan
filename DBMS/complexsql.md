@@ -1,4 +1,5 @@
 # Complex SQL Queries 🔥
+---
 
 
 # Write a SQL Query to fetch all the duplicate records in a table.
@@ -45,6 +46,7 @@ WHERE row_num > 1;
   - The outer query selects all columns from `DuplicateRecords`.
   - **`WHERE row_num > 1`**: Filters the results to include only duplicate records (those with a row number greater than 1).
  
+---
 
 # Write a SQL query to fetch the second last record from the employee table.
 
@@ -80,6 +82,8 @@ Feel free to ask if you have more questions!
 ### Summary of Comparison
 - The **simplest query** quickly identifies duplicate emails without providing full context for the duplicate entries.
 - The **complex query** offers more detail by retrieving all relevant columns for duplicates, making it useful when you need to see additional information about the duplicate entries, such as user IDs and names.
+
+---
 
 # Write a SQL query to display only the details of employees who either earn the highest salary or the lowest salary in each department from the employee table.
 
@@ -122,3 +126,38 @@ JOIN doctors d2 ON d1.id != d2.id
 WHERE d1.hospital = d2.hospital 
 AND d1.specialty = d2.specialty;
 ```
+
+
+---
+
+# From the login_details table, fetch the users who logged in consecutively 3 or more times.
+
+```sql
+SELECT *, 
+    CASE 
+        WHEN user_name = LEAD(user_name) OVER (ORDER BY login_id) 
+             AND user_name = LEAD(user_name, 2) OVER (ORDER BY login_id) 
+        THEN user_name 
+        ELSE NULL 
+    END AS repeated_users 
+FROM login_details 
+WHERE repeated_users IS NOT NULL;
+```
+
+### Explanation:
+1. **LEAD Function**:
+   - The `LEAD` function is used to look ahead in the result set. Here, it checks if the `user_name` is the same as the next user name and the user name two positions ahead.
+   - `LEAD(user_name) OVER (ORDER BY login_id)` checks the next row.
+   - `LEAD(user_name, 2) OVER (ORDER BY login_id)` checks two rows ahead.
+
+2. **CASE Statement**:
+   - The `CASE` statement evaluates if the current `user_name` is the same as both the next and the next-to-next entries. If so, it returns the `user_name`; otherwise, it returns `NULL`.
+
+3. **Filtering Repeated Users**:
+   - The `WHERE repeated_users IS NOT NULL` clause filters the results to only show rows where the user has logged in consecutively at least three times.
+
+### Assumptions:
+- This query assumes that `login_id` is a column that uniquely identifies each login event and is in chronological order.
+- The `user_name` column holds the names of users who logged in. 
+
+
