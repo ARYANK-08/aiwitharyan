@@ -1,7 +1,7 @@
-#complex sql queries 
+# Complex SQL Queries 🔥
 
 
-1. To fetch duplicate records in a more complex scenario, where you may need to consider multiple columns, you can use a combination of `ROW_NUMBER()`, `CTE (Common Table Expressions)`, and `PARTITION BY` to identify duplicates and even return all relevant details of those records.
+# To fetch duplicate records in a more complex scenario, where you may need to consider multiple columns, you can use a combination of `ROW_NUMBER()`, `CTE (Common Table Expressions)`, and `PARTITION BY` to identify duplicates and even return all relevant details of those records.
 
 ### Simplest SQL Query
 
@@ -46,7 +46,7 @@ WHERE row_num > 1;
   - **`WHERE row_num > 1`**: Filters the results to include only duplicate records (those with a row number greater than 1).
  
 
-2. Write a SQL query to fetch the second last record from the employee table.
+# Write a SQL query to fetch the second last record from the employee table.
 
 ## Simple Query
 ```sql
@@ -81,7 +81,7 @@ Feel free to ask if you have more questions!
 - The **simplest query** quickly identifies duplicate emails without providing full context for the duplicate entries.
 - The **complex query** offers more detail by retrieving all relevant columns for duplicates, making it useful when you need to see additional information about the duplicate entries, such as user IDs and names.
 
-3. Write a SQL query to display only the details of employees who either earn the highest salary or the lowest salary in each department from the employee table.
+# Write a SQL query to display only the details of employees who either earn the highest salary or the lowest salary in each department from the employee table.
 
 ## Simple Query
 ```sql
@@ -112,3 +112,13 @@ WHERE max_rank = 1 OR min_rank = 1;
 - **`ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary ASC)`**: Assigns a rank based on their salary in ascending order.
 - The outer query then selects all records where the rank is 1 for either the maximum or minimum salary, thus displaying employees who earn the highest or lowest salary in each department.
 
+
+# Fetch all doctors who are working in the same hospital but have different specialties.
+
+```sql
+SELECT d1.*
+FROM doctors d1
+JOIN doctors d2 ON d1.id != d2.id 
+WHERE d1.hospital = d2.hospital 
+AND d1.specialty = d2.specialty;
+```
