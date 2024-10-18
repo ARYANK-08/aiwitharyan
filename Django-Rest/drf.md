@@ -601,3 +601,258 @@ This means no authentication is required for creating a product, but for a real-
 - **Standard CRUD Operations**: If most of your views follow standard patterns like creating, retrieving, updating, or deleting data.
 
 ---
+
+### 1. **Product Update API View** (`UpdateAPIView`)
+
+```python
+# views.py
+from rest_framework import generics
+from .models import Product
+from .serializers import ProductSerializer
+from rest_framework.permissions import AllowAny
+
+class ProductUpdateAPIView(generics.UpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'  # Lookup by primary key
+    permission_classes = [AllowAny]  # No authentication required
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if not instance.content:
+            instance.content = instance.title  # Set content to title if not provided
+
+product_update_view = ProductUpdateAPIView.as_view()
+
+# Usage Example
+import requests
+
+endpoint = "http://localhost:8000/api/products/1/update"
+data = {
+    "title": "Hello world, my old friend",
+    "price": 124.77,
+}
+get_response = requests.put(endpoint, json=data)
+print(get_response.json())
+
+# Expected Output Example
+# {'title': 'Hello world, my old friend', 'content': 'Hello world, my old friend', 'price': '124.77', 'sale_price': '99.82', 'my_discount': '122'}
+```
+
+### 2. **Product Destroy API View** (`DestroyAPIView`)
+
+```python
+# views.py
+from rest_framework import generics
+from .models import Product
+from .serializers import ProductSerializer
+from rest_framework.permissions import AllowAny
+
+class ProductDestroyAPIView(generics.DestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+    permission_classes = [AllowAny]  # No authentication required
+
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+
+product_delete_view = ProductDestroyAPIView.as_view()
+
+# Usage Example
+import requests
+
+product_id = input("What is the product id?")
+try:
+    product_id = int(product_id)
+except:
+    product_id = None
+    print(f"{product_id} not a valid id")
+
+if product_id:
+    endpoint = f"http://localhost:8000/api/products/{product_id}/destroy/"
+    
+get_response = requests.delete(endpoint)
+print(get_response.status_code, get_response.status_code == 204)
+```
+
+### 3. **Authentication and Permissions Explanation**
+
+- **Authentication Classes**:
+  - `authentication.SessionAuthentication`: Uses Django's session framework, allowing logged-in users to access the API. This is used for logged-in users via the Django admin panel or a frontend login.
+  
+- **Permission Classes**:
+  - `permissions.IsAuthenticatedOrReadOnly`: Allows only authenticated users to modify data (POST, PUT, DELETE). Unauthenticated users can only read data (GET requests).
+
+### 4. **Using `DjangoModelPermissions`**
+
+- **`permissions.DjangoModelPermissions`**: This ensures that users have specific permissions to view, add, change, or delete objects based on the model-level permissions assigned in Django's admin.
+
+#### Example Setup:
+1. **Create a new user**:
+   - Assign the user `view_product` permission.
+   - The user can only view products but cannot edit or delete them.
+
+2. **Create a new group (e.g., "Product Editor")**:
+   - Assign `change_product` and `add_product` permissions.
+   - Any user in this group can edit and add new products, but cannot delete them.
+
+3. **Superuser**:
+   - Has full permissions to view, edit, delete, and add products.
+
+### 5. **Permissions in Code Example**:
+
+```python
+# views.py
+from rest_framework import generics
+from rest_framework.permissions import DjangoModelPermissions
+
+class ProductListCreateView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [DjangoModelPermissions]  # Only users with proper permissions can access
+```
+
+### Example Images:
+![image](https://github.com/user-attachments/assets/a3b5ffc5-bcac-4d3c-b2f4-ed92330980b1)
+
+![image](https://github.com/user-attachments/assets/01c6c26d-3cc3-4c7a-9a7a-9394b2045bdc)
+
+This setup allows for a secure, permission-based access model where different users have different levels of access based on their role or group in the Django admin.
+
+---
+# Permissions
+>! [TIP]
+> Authentication or identification by itself is not usually sufficient to gain access to information or code. For that, the entity requesting access must have authorization.
+
+### Key Concepts:
+1. **Permissions**:
+   - Permissions decide if a user can access a resource.
+   - They work after authentication but before the view's logic is executed.
+   - Permissions check the `request.user` and `request.auth` properties.
+  
+2. **Permission Classes**:
+   - Permissions are defined as a list of classes, each checking whether a request is allowed.
+   - If any permission fails, a 403 Forbidden or 401 Unauthorized error is raised.
+
+3. **Common Permission Classes**:
+   - `AllowAny`: Allows unrestricted access.
+   - `IsAuthenticated`: Allows access only to authenticated users.
+   - `IsAdminUser`: Only allows admin users (users with `is_staff=True`).
+   - `IsAuthenticatedOrReadOnly`: Grants full access to authenticated users but read-only access to unauthenticated users.
+
+4. **Object-level Permissions**:
+   - Applied to individual objects (e.g., model instances) to check if a user has permissions to act on them.
+   - Implemented by overriding the `has_object_permission()` method in custom permission classes.
+
+5. **Custom Permissions**:
+   - You can create custom permission classes by subclassing `BasePermission` and implementing `.has_permission()` or `.has_object_permission()` methods.
+
+6. **Setting Permissions**:
+   - You can set permissions globally in the `DEFAULT_PERMISSION_CLASSES` setting or per view using the `permission_classes` attribute.
+   - Example:  
+     ```python
+     from rest_framework.permissions import IsAuthenticated
+     class ExampleView(APIView):
+         permission_classes = [IsAuthenticated]
+     ```
+
+By utilizing these permission classes and customization options, you can finely control who can access or modify specific API resources.
+
+---
+
+# Authentication (Pluggable)
+
+**"Auth needs to be pluggable."**  
+— *Jacob Kaplan-Moss, "REST worst practices"*
+
+Authentication is the process of associating an incoming request with credentials, such as a user's identity or an authentication token. Permissions and throttling policies rely on these credentials to determine if a request should be granted access. REST framework provides several authentication schemes, and you can implement custom ones as needed.
+
+- **Key Mechanism**: Authentication runs at the very start of the view process, before permissions and other checks. The `request.user` property usually contains a `User` instance, while `request.auth` holds additional authentication info, such as a token.
+- **Note**: Authentication alone doesn't allow or deny a request—it just identifies the requester.
+
+### How Authentication is Determined
+
+Authentication schemes are specified as a list of classes. REST framework tries each class in the list and sets `request.user` and `request.auth` based on the first successful authentication. If no class authenticates, `request.user` defaults to `AnonymousUser`, and `request.auth` is set to `None`.
+
+You can change the behavior for unauthenticated requests using the `UNAUTHENTICATED_USER` and `UNAUTHENTICATED_TOKEN` settings.
+
+### Setting Authentication Scheme
+
+You can set default authentication schemes globally in `DEFAULT_AUTHENTICATION_CLASSES`:
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+```
+
+For per-view or per-viewset control, use the `authentication_classes` attribute:
+
+```python
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+class ExampleView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        content = {
+            'user': str(request.user),
+            'auth': str(request.auth),
+        }
+        return Response(content)
+```
+
+### Unauthorized and Forbidden Responses
+
+Two key response codes for denied requests:
+
+- **HTTP 401 Unauthorized**: Must include a `WWW-Authenticate` header to indicate how the client should authenticate.
+- **HTTP 403 Permission Denied**: Used when authentication succeeds but the user lacks permission.
+
+### Authentication Schemes
+
+#### 1. **BasicAuthentication**  
+   Utilizes HTTP Basic Auth (username/password). Not recommended for production without HTTPS.
+
+#### 2. **TokenAuthentication**  
+   Token-based HTTP Auth. Useful for client-server models (e.g., mobile apps). Tokens must be included in the `Authorization` header as:
+
+   ```plaintext
+   Authorization: Token <token_key>
+   ```
+
+   To generate tokens for users:
+
+   ```python
+   from rest_framework.authtoken.models import Token
+   token = Token.objects.create(user=...)
+   ```
+
+   To add an endpoint for token retrieval:
+
+   ```python
+   from rest_framework.authtoken import views
+   urlpatterns += [
+       path('api-token-auth/', views.obtain_auth_token)
+   ]
+   ```
+
+   You can customize this behavior by subclassing `ObtainAuthToken`.
+
+#### 3. **SessionAuthentication**  
+   Uses Django's session framework. Best for AJAX clients in the same session as the website. Requires CSRF tokens for unsafe methods (e.g., `POST`, `DELETE`).
+
+#### 4. **RemoteUserAuthentication**  
+   Delegates authentication to the web server, which sets the `REMOTE_USER` environment variable. Requires `RemoteUserBackend` in `AUTHENTICATION_BACKENDS`.
+
+#### 5. **Custom Authentication**  
+   To implement custom authentication, subclass `BaseAuthentication` and override `.authenticate(self, request)`. This method should return a tuple `(user, auth)` on success or `None` on failure.
+---
