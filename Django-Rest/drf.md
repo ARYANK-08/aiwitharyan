@@ -722,8 +722,9 @@ This setup allows for a secure, permission-based access model where different us
 
 ---
 # Permissions
->! [TIP]
-> Authentication or identification by itself is not usually sufficient to gain access to information or code. For that, the entity requesting access must have authorization.
+**"Authentication or identification by itself is not usually sufficient to gain access to information or code. For that, the entity requesting access must have authorization."**  
+— *— Apple Developer Documentation, "REST worst practices"*
+
 
 ### Key Concepts:
 1. **Permissions**:
