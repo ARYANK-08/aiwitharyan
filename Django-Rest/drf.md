@@ -857,3 +857,165 @@ Two key response codes for denied requests:
 #### 5. **Custom Authentication**  
    To implement custom authentication, subclass `BaseAuthentication` and override `.authenticate(self, request)`. This method should return a tuple `(user, auth)` on success or `None` on failure.
 ---
+
+## Custom Permission Class: IsStaffEditorPermission
+
+In Django REST Framework (DRF), permission classes are crucial for controlling access to views based on user roles. The `IsStaffEditorPermission` class allows only staff members to perform certain actions on a model. Here's how you can implement it:
+
+```python
+from rest_framework import permissions
+
+class IsStaffEditorPermission(permissions.DjangoModelPermissions):
+    perms_map = {
+        'GET': ['%(app_label)s.view_%(model_name)s'],
+        'OPTIONS': [],
+        'HEAD': [],
+        'POST': ['%(app_label)s.add_%(model_name)s'],
+        'PUT': ['%(app_label)s.change_%(model_name)s'],
+        'PATCH': ['%(app_label)s.change_%(model_name)s'],
+        'DELETE': ['%(app_label)s.delete_%(model_name)s'],
+    }
+
+    def has_permission(self, request, view):
+        # Allow access only if the user is a staff member
+        if not request.user.is_staff:
+            return False
+        return super().has_permission(request, view)
+```
+
+- **Purpose**: The `IsStaffEditorPermission` class inherits from `DjangoModelPermissions`, which checks the permissions based on the HTTP method being used. It maps each method to specific permissions required.
+  
+- **Permission Mapping**: 
+  - `GET` allows viewing objects.
+  - `POST` allows adding new objects.
+  - `PUT`, `PATCH`, and `DELETE` allow editing and deleting objects.
+  
+- **Custom Logic**: The `has_permission` method overrides the default permission checking to ensure that only users marked as staff can proceed with any action.
+
+### Real-World Example
+
+Imagine you are building an e-commerce platform where only staff members (like admins) should be allowed to add or modify products. By using this permission class, you ensure that regular users cannot access these critical functions, maintaining the integrity of your product data.
+
+## Product List and Create API View
+
+To utilize the custom permission class, we define a view for listing and creating products:
+
+```python
+from rest_framework import generics
+from .models import Product
+from .serializers import ProductSerializer
+
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [IsStaffEditorPermission]  # Enforce custom permission
+
+    def perform_create(self, serializer):
+        # Automatically set content if not provided
+        title = serializer.validated_data.get('title')
+        content = serializer.validated_data.get('content') or title
+        instance = serializer.save(content=content)
+```
+
+### Explanation
+
+- **View Class**: This class extends `ListCreateAPIView`, which provides built-in functionalities for listing and creating resources.
+  
+- **Permission Check**: The `permission_classes` attribute enforces the `IsStaffEditorPermission`, ensuring only staff can create or list products.
+
+- **Creating Products**: The `perform_create` method is overridden to set the content of the product. If no content is provided, it defaults to the title.
+
+### Solving Authorization Errors
+
+By assigning staff roles to users, you can solve authorization errors like “You do not have permission to perform this action.” When a staff member attempts to access the view, they are granted the required permissions based on their role.
+
+# Token Authentication
+
+Token authentication is essential for securing APIs, allowing users to authenticate without sending their credentials with every request. Here's how you can set it up:
+
+### Authentication Code Example
+
+```python
+import requests
+from getpass import getpass
+
+auth_endpoint = "http://localhost:8000/api/auth/"
+username = input("What is your username? \n")
+password = getpass("Enter your password: \n")
+
+# Authenticate user
+auth_response = requests.post(auth_endpoint, json={"username": username, "password": password})
+print(auth_response.json())
+
+if auth_response.status_code == 200:
+    token = auth_response.json()['token']
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+    endpoint = "http://localhost:8000/api/products/"
+    
+    # Access protected resource
+    get_response = requests.get(endpoint, headers=headers)
+    print(get_response.json())
+```
+
+### Explanation
+
+1. **User Input**: The script prompts the user for their username and password.
+  
+2. **Authentication Request**: It sends a POST request to the authentication endpoint to retrieve a token.
+  
+3. **Authorization Header**: If authentication is successful, it sets the `Authorization` header with the token for subsequent requests.
+
+### Custom Token Authentication Class
+
+You can customize the token authentication behavior as follows:
+
+```python
+from rest_framework.authentication import TokenAuthentication as BaseTokenAuth
+
+class TokenAuthentication(BaseTokenAuth):
+    keyword = "Bearer"  # Define the keyword for token authentication
+
+# In your settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'yourapp.authentication.TokenAuthentication',  # Include your custom authentication
+    ]
+}
+```
+
+### Explanation
+
+- **Custom Keyword**: The `TokenAuthentication` class allows you to specify a custom keyword (like "Bearer") for the authorization header.
+
+- **Settings Configuration**: You need to include your custom authentication class in the DRF settings to ensure it is used across your application.
+
+### Update Installed Apps
+
+Make sure to add the token authentication app to your installed apps in `settings.py`:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'rest_framework.authtoken',  # Add this line
+    ...
+]
+```
+
+### Update API URLs
+
+Lastly, ensure your API URLs include the authentication endpoint:
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('auth/', views.obtain_auth_token),  # Endpoint for obtaining auth tokens
+    ...
+]
+```
+
