@@ -1173,3 +1173,257 @@ In this example, if a product title contains the word "hello", or if the title a
 
 Keep it clean, reusable, and efficient. 🎯
 ```
+
+
+in mixin.py
+
+class UserQuerysetMixin():
+    user_field = 'user'
+    allow_staff_view = False
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        lookup_data ={}
+        lookup_data[self.user_field] = self.request.user
+        qs = super().get_queryset(*args, **kwargs)
+        if self.allow_staff_view and user.is_staff:
+            return qs 
+        return qs.filter(**lookup_data)
+
+    def validate_title(self, value):
+        request = self.context.get('request')
+        user = request.user
+        qs = Product.objects.filter(user=user, title__iexact=value)
+        if qs.exists():
+            raise serializers.ValidationError(f"{value} is already a produyct name")
+        return value 
+
+
+related fields and key serializer 
+def get_my_user_data(self, obj):
+return { "username" : obj.user.username }
+
+
+from rest_framework import serializers
+
+class UserPublicSerializer(serializers.Serializer):
+    username = serializers.CharField(read_only=True)
+
+
+    user = UserPublicSerializer(read_only=True)
+    id = serializers.integerfield(read_only=True) #nothing model related
+    other_products = serializers.SerializerMethodField(read_only=True)
+
+    def get_other_products(self, obj):
+        request = self.context.get('request')
+        print(obj)
+        user = obj
+        my_products = user.product_set.all()[:5]
+        return UserPRoductInlineSerizlier(qs, many=True, context = self.context).data #nested nested seralizer 
+
+class UserProductInlinbeSerizlier(serializedrs.SEriazlier):
+url = serializers.HyperlinkedIdentityField(view_name='product-detail', lookup_field = 'pk')
+title = seriazliers.ChartField(read_only=True)
+
+
+
+```
+Here's a beautifully structured and improved Markdown guide that enhances the original content with real-world examples, readability improvements, and added explanations. The focus is on permission handling, throttling, mixins, viewsets, and serializers in Django REST Framework (DRF).
+
+---
+
+# 🚀 Efficient API Development with Mixins, ViewSets, Routers, and Serializers
+
+When building APIs with Django REST Framework (DRF), **keeping your code DRY (Don't Repeat Yourself)** is crucial. One way to avoid redundancy is by using **mixins, viewsets**, and **routers**. Let’s dive into how these can make your API development more efficient!
+
+## 🛡️ Using Permission Mixins: Simplify Permission Handling
+
+In real-world applications, you often need to protect certain API views based on user permissions (e.g., only staff members or the resource owner can access it). Rather than setting `permission_classes` for each view, you can create a **Permission Mixin** to handle permissions globally.
+
+### Permission Mixin Example:
+```python
+class StaffEditorPermissionMixin:
+    permission_classes = [IsAdminUser, IsStaffEditorPermission]
+
+    def get_permissions(self):
+        return [permission() for permission in self.permission_classes]
+```
+
+**Real-world Example:**  
+Imagine a school management system where only admins and staff members can add or edit student records. This mixin can be applied to any view to enforce that only those with the correct permissions can make changes.
+
+---
+
+## ⚡ Throttling: Controlling API Usage with Limits
+
+Throttling ensures that no user overloads your API with excessive requests. For example, you might limit an API to **1000 requests/day** to prevent misuse.
+
+### DRF vs. NGINX Throttling:
+- **DRF Throttling:** Ideal for specific views or user-based limits.
+- **NGINX Throttling:** Handles project-wide limits and can throttle requests **at the server level** for better performance.
+
+**Real-world Example:**  
+In a public-facing e-commerce site, you'd limit how often a user can add items to their cart (to prevent bots from exploiting your system).
+
+---
+
+## 🛠️ DRY with Mixins for QuerySets and Serializers
+
+### Why Mixins?  
+Using mixins for QuerySets or Serializers helps avoid rewriting code across views that share similar logic. This makes your codebase cleaner and more maintainable.
+
+### Mixin Example for QuerySet:
+
+```python
+class UserQuerysetMixin():
+    user_field = 'user'
+    allow_staff_view = False
+
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        lookup_data = {self.user_field: user}
+        qs = super().get_queryset(*args, **kwargs)
+        if self.allow_staff_view and user.is_staff:
+            return qs
+        return qs.filter(**lookup_data)
+```
+
+**Real-world Example:**  
+If you have an app where users can see only their own orders (except for staff who can see all orders), this mixin can handle that logic across multiple views.
+
+---
+
+## 🖼️ ViewSets and Routers: Simplified Routing
+
+DRF’s **ViewSets** combine the logic for handling multiple HTTP methods (GET, POST, PUT, DELETE) in one class, making your views more concise.
+
+### Example: Product ViewSet
+```python
+from rest_framework import viewsets
+from .models import Product
+from .serializers import ProductSerializer
+
+class ProductViewSet(viewsets.ModelViewSet):
+    '''
+    - get -> list() -> QuerySet
+    - get -> retrieve() -> Product detail
+    - post -> create() -> Add new product
+    - put/patch -> update() -> Update product
+    - delete -> destroy() -> Remove product
+    '''
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+```
+
+### Setting up Routers for URLs:
+```python
+from rest_framework.routers import DefaultRouter
+from products.viewsets import ProductViewSet
+
+router = DefaultRouter()
+router.register('products', ProductViewSet, basename='products')
+
+urlpatterns = router.urls
+```
+
+**Real-world Example:**  
+In an online store, you could use viewsets to manage products, where **`/products/`** lists all items, and **`/products/{id}/`** retrieves details of a specific product.
+
+---
+
+## 🔍 Search Functionality with QuerySets
+
+Search functionality in APIs is common when you need to filter results based on user input. You can add custom search methods using Django's `Q` object.
+
+![image](https://github.com/user-attachments/assets/b59e35b0-e005-495e-bc97-9ec9e68652f6)
+
+### Product Search Example:
+
+```python
+from django.db.models import Q
+
+class ProductQuerySet(models.QuerySet):
+    def search(self, query, user=None):
+        lookup = Q(title__icontains=query) | Q(content__icontains=query)
+        qs = self.filter(lookup).distinct()
+        return qs
+```
+
+```python
+class SearchListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        qs = Product.objects.all()
+        q = self.request.GET.get('q')
+        if q is not None:
+            return qs.search(q)
+        return qs
+```
+
+**Real-world Example:**  
+Let’s say you run an anime store. A user searches for "Tanjiro" (from *Demon Slayer*). Your search view filters products by that keyword to show relevant items like figurines, posters, or apparel.
+
+---
+
+## 🔄 Serializers: Custom Validation and Nested Data
+
+Serializers are key to converting complex data types like querysets into JSON and handling validation for input data.
+
+### Custom Validation Example:
+
+```python
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['title', 'content', 'price']
+
+    def validate_title(self, value):
+        qs = Product.objects.filter(title__iexact=value)
+        if qs.exists():
+            raise serializers.ValidationError(f"{value} is already taken.")
+        return value
+```
+
+**Real-world Example:**  
+In an inventory management system, you want to ensure no two products have the same title to avoid confusion when searching or updating items.
+
+### Nested Serializers Example:
+
+```python
+class UserPublicSerializer(serializers.Serializer):
+    username = serializers.CharField(read_only=True)
+
+class ProductSerializer(serializers.ModelSerializer):
+    user = UserPublicSerializer(read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ['title', 'price', 'user']
+```
+
+This allows you to return user-related data along with product information in one API response.
+
+**Real-world Example:**  
+When showing product details on a marketplace, you might want to display the seller's username along with the product details.
+
+---
+
+## 🚀 Pagination for QuerySets
+
+Large datasets need to be paginated to improve performance. You can set up default pagination in **`settings.py`**:
+
+![image](https://github.com/user-attachments/assets/5d543e13-b171-4836-8518-568d89132743)
+
+```python
+# settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
+```
+
+**Real-world Example:**  
+In a movie database API, showing all films in one response would overwhelm the user and server. Pagination ensures that data is served in smaller chunks, say 10 movies per page.
+
+---
