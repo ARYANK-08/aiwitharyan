@@ -1019,3 +1019,157 @@ urlpatterns = [
 ]
 ```
 
+---
+
+# Custom Validation, Permissions & Throttling
+
+## 1. **Permission Handling with Mixins**
+   In large projects, defining permission classes for each view can become repetitive. A better way to solve this is by using **mixins** for permissions. This reduces the need to repeat permission classes in every Class-Based View (CBV) or Function-Based View (FBV).
+
+### Real-World Example:
+   Think of a warehouse where only staff members can add or remove products. Instead of giving permissions to each staff member for every action (like adding a product, removing it, updating stock), you could assign a blanket permission that covers all product-related tasks.
+
+### Implementing Permissions using Mixins:
+```python
+class ProductListCreateAPIView(
+    StaffEditorPermissionMixin,  # Mixin for permissions
+    ...
+):
+    pass
+```
+
+---
+
+## 2. **Throttling: Controlling Request Rates**
+Throttling limits the number of requests a user can make to an API, helping to prevent abuse. DRF provides throttling mechanisms, but in some cases, you may want to throttle the entire project using **Nginx** rather than DRF.
+
+### Example:
+   Imagine an e-commerce API where a user is allowed to make 1000 requests per day. If a user exceeds this limit, the API restricts further requests until the next day.
+
+- **Time-Based Throttling**: You could limit users to 1000 requests per second, minute, hour, or day.
+
+**DRF Approach**:
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '1000/day',
+        'anon': '100/hour',
+    }
+}
+```
+**Nginx Approach**: Use Nginx for global throttling to ensure project-wide rate limiting.
+
+---
+
+## 3. **Mixins for Querysets/Serializers**
+   **DRY Principle**: *Don't Repeat Yourself*. Mixins for serializers and querysets prevent redundant code. Instead of writing the same logic across multiple views, you can define a reusable block of code in a Mixin.
+
+### Example:
+```python
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'  # default lookup field
+```
+
+### Customizing with Mixins:
+```python
+class ProductGenericViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+```
+This eliminates the need to define the same `queryset` and `serializer_class` in every view.
+
+---
+
+## 4. **ViewSets and Routers**
+**ViewSets** bundle together logic for handling different HTTP methods (`GET`, `POST`, `PUT`, `DELETE`) into a single class, reducing boilerplate code.
+
+```python
+class ProductViewSet(viewsets.ModelViewSet):
+    """
+    get -> list (Retrieve all products)
+    get -> retrieve (Product detail view)
+    post -> create (Add new product)
+    put -> update (Update a product)
+    patch -> partial update (Partially update a product)
+    delete -> destroy (Delete a product)
+    """
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+```
+
+### Registering ViewSets with Routers:
+```python
+from rest_framework.routers import DefaultRouter
+from products.viewsets import ProductViewSet
+
+router = DefaultRouter()
+router.register('products', ProductViewSet, basename='products')
+
+urlpatterns = router.urls
+```
+Routers automatically generate URLs for ViewSets, saving you from manually defining routes in `urls.py`.
+
+---
+
+## 5. **Custom Serializer Methods**
+   You can define custom fields in your serializer using methods, giving you more control over how data is presented.
+
+### Example of a Product Serializer:
+```python
+class ProductSerializer(serializers.ModelSerializer):
+    my_discount = serializers.SerializerMethodField(read_only=True)
+    url = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ['url', 'pk', 'title', 'content', 'price', 'sale_price', 'my_discount']
+
+    def get_url(self, obj):
+        request = self.context.get('request')
+        if request is None:
+            return None
+        return reverse("product-detail", kwargs={"pk": obj.pk}, request=request)
+```
+
+Here, `my_discount` is a custom field, and the `get_url` method generates a dynamic URL for each product.
+
+---
+
+## 6. **Custom Validation in Serializers**
+   You can implement custom validations in DRF serializers. For example, if we want to prevent users from naming a product "Hello", we can add this restriction in the serializer.
+
+### Example:
+```python
+def validate_title_no_hello(value):
+    if "hello" in value.lower():
+        raise serializers.ValidationError("The word 'hello' is not allowed in product titles.")
+```
+
+### Adding Custom Validation:
+```python
+class ProductSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(validators=[validate_title_no_hello])
+
+    def validate_title(self, value):
+        if Product.objects.filter(title__iexact=value).exists():
+            raise serializers.ValidationError(f"'{value}' is already a product name.")
+        return value
+```
+In this example, if a product title contains the word "hello", or if the title already exists, the serializer will throw a validation error.
+
+---
+
+## Conclusion
+
+- **Mixins** help maintain **DRY** principles and simplify permission handling.
+- **Throttling** can be controlled using DRF settings or project-wide using **Nginx**.
+- **ViewSets and Routers** streamline view handling and routing in Django.
+- **Custom Serializers** give flexibility for generating dynamic fields and handling complex validation.
+
+Keep it clean, reusable, and efficient. 🎯
+```
