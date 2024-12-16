@@ -451,3 +451,212 @@ Docker Compose simplifies such deployments by managing dependencies, scaling, an
 
 ---
 
+
+# Kubernetes (K8s) Overview  
+
+## 🚀 What is Kubernetes?  
+Kubernetes (K8s) is a **leading container orchestration tool** that helps manage, scale, and deploy containerized applications.  
+- **Vendor Neutral**: Works seamlessly across all cloud providers (AWS, Azure, GCP, etc.).  
+
+---
+
+## ✅ **What Kubernetes Can Do**  
+Kubernetes offers a robust set of features:  
+1. **Service Discovery & Load Balancing**: Automatically distributes traffic across multiple containers.  
+   - *Example*: Imagine a web app where traffic spikes during a sale; Kubernetes balances the load across containers to avoid downtime.  
+2. **Automated Rollouts and Rollbacks**: Roll out updates to your application without downtime and roll back if needed.  
+   - *Example*: Like an app store updating your app while ensuring older versions still work.  
+3. **Storage Orchestration**: Attach storage—whether local or cloud-based—to containers.  
+4. **Self-Healing**: Automatically replaces failed containers.  
+   - *Example*: If a pod (unit of deployment) crashes, Kubernetes restarts it automatically.  
+5. **Secret and Configuration Management**: Manage sensitive information securely.  
+   - *Example*: Store database credentials without exposing them in your code.  
+
+---
+
+## ❌ **What Kubernetes Cannot Do**  
+While Kubernetes is powerful, it has its limitations:  
+1. **Doesn't Deploy Source Code**: You must build the container image separately.  
+2. **Doesn't Build Your Application**: Tools like Docker are required for this.  
+3. **No Application-Level Services**: It doesn't provide services like databases or message queues.  
+   - *Example*: You still need tools like MySQL or RabbitMQ for these functionalities.  
+
+---
+
+# 🏗️ Kubernetes Architecture  
+Kubernetes has a **cluster-based architecture**, organized as:  
+- **Master Node (Control Plane)**: Manages the entire cluster.  
+- **Worker Nodes**: Run application workloads.  
+
+### Cluster Hierarchy  
+1. **Cluster** → Collection of nodes.  
+2. **Node** → Physical/virtual machine running Kubernetes.  
+3. **Pod** → Smallest deployable unit (contains one or more containers).  
+
+---
+
+## 🛠️ Running Kubernetes Locally  
+To test Kubernetes locally, you need virtualization.  
+
+### Tools:  
+- **Docker Desktop**: Easiest option for local testing.  
+- **Minikube**: Multi-node cluster simulation.  
+- **MicroK8s**: Lightweight Kubernetes by Canonical.  
+- **Kind**: Runs Kubernetes clusters in Docker containers.  
+
+### Windows Users:  
+- Use **Docker Desktop** to run both Linux and Windows containers via WSL.  
+
+---
+
+# 🖥️ How Kubernetes Works  
+
+### Kubernetes REST API  
+Kubernetes exposes a **REST API**, which is the only communication point.  
+- Define the **desired state** of the cluster (e.g., run 3 instances of a service).  
+- Use `kubectl` (command-line tool) to interact with the API.  
+
+### Kubernetes Context  
+A **context** defines access parameters for a Kubernetes cluster.  
+It includes:  
+1. Kubernetes Cluster  
+2. User  
+3. Namespace  
+
+#### Common Commands:  
+```bash
+kubectl config current-context  # Show current context
+kubectl config get-contexts     # List all contexts
+kubectl config use-context <contextName>  # Switch context
+kubectl config delete-context <contextName>  # Remove a context
+```
+
+#### Example:  
+```bash
+# Rename a context:
+kubectl config rename-context old-name new-name
+```
+
+Use **kubectx** for quicker context switching.  
+- Install via Chocolatey: `choco install kubectx-ps`.  
+
+---
+
+# 🛠️ Declarative vs. Imperative Approach  
+
+### Declarative Approach  
+- Use YAML files to define resources.  
+- **Advantages**:  
+  - Reproducible, version-controlled.  
+  - Acts as a single source of truth.  
+
+#### Example YAML (Pod Definition):  
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+```
+
+**Command to Create Resources**:  
+```bash
+kubectl create -f [YAML file]
+```
+
+### Imperative Approach  
+- Run commands to create resources on-the-fly.  
+- **Disadvantages**:  
+  - Harder to reproduce consistently.  
+
+#### Example Commands:  
+```bash
+kubectl run mynginx --image=nginx --port=80
+kubectl delete pod nginx
+```
+
+---
+
+# 🗂️ Namespaces  
+Namespaces group resources, often used for **environment segregation** (e.g., dev, test, prod).  
+
+### Benefits:  
+- Isolate resources for better organization.  
+- Delete a namespace to delete all its child objects.  
+
+#### Example Namespace Definition:  
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prod
+```
+
+**Common Commands**:  
+```bash
+kubectl get namespaces
+kubectl create namespace dev
+kubectl delete namespace prod
+```
+
+---
+
+# 🏗️ Master Node Components  
+
+1. **Kube-API Server**  
+   - Acts as the cluster's "brain."  
+   - Only component interacting with the datastore (etcd).  
+
+2. **etcd**  
+   - Key-value store for cluster state data.  
+   - **Note**: Not meant for application-level data.  
+
+3. **Controller Manager**  
+   - Runs controllers (e.g., node, replication, service account).  
+
+4. **Scheduler**  
+   - Assigns pods to nodes based on resource requirements.  
+
+5. **Cloud Controller Manager**  
+   - Manages cloud provider-specific services (e.g., load balancers, volumes).  
+
+---
+
+# ⚙️ Worker Node Components  
+
+1. **Kubelet**  
+   - Manages pod lifecycle.  
+2. **Kube Proxy**  
+   - Manages network rules for communication.  
+3. **Container Runtime**  
+   - Runs containers (e.g., Docker, CRI-O).  
+
+---
+
+# 📦 Pods (Smallest Unit of Deployment)  
+
+- Represents a **unit of deployment** in Kubernetes.  
+- **Ephemeral**: Pods are replaced, not updated.  
+- **Encapsulation**: Containers in a pod share the same network and storage.  
+
+### Real-World Analogy:  
+Think of a **pod** as a "hostel room":  
+- **Shared Environment**: All roommates share the same utilities (IP, storage).  
+- **Temporary**: If one leaves, another can move in.  
+
+---
+
+# 🚀 Add-Ons  
+
+1. **DNS**: Internal name resolution.  
+2. **Web UI Dashboard**: Visual cluster management.  
+3. **Logging**: Cluster-wide logging for debugging.  
+
+---
+
